@@ -11,7 +11,7 @@ namespace FourPointImport.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Key]
+   
     public class FileUploadController : ControllerBase
     {
         protected readonly IConfiguration _configuration;
@@ -67,23 +67,23 @@ namespace FourPointImport.Web.Controllers
 
                                 ConvertToEntity<billingDetail> converter = new ConvertToEntity<billingDetail>(fileLine, pattern);
                                 _billingDetail = converter.Convert();
-
+                                var _billingEntity = converter.PairFiles(_billingDetail);
                                 //now we have the actual class, which we can build with the other functions     , _prdcovpAccess, _frmMstLAccess, _covmstrAccess, _bildtlAccess
-                                var _functions = new billingExportFunctions<SUSMSTP>(_billingEntity, _bildtlService);
+                                var _functions = new billingExportFunctions<billingDetail>(_bildtlService);
                                 if (_billingEntity.SeCert.StringSafe().Length > 0)
                                 {
-                                    _functions.HomeSavings();
-                                    _functions.Clear();
-                                    _functions.ReadAOMOB();
-                                    _functions.Form();
-                                    _functions.Custom90338();
-                                    _functions.Life();
-                                    _functions.Disability();
-                                    _functions.DebtProt();
-                                    _functions.Write();
-                                    _functions.WriteAOMOB();
+                                    //_functions.HomeSavings();
+                                    //_functions.Clear();
+                                    //_functions.ReadAOMOB();
+                                    //_functions.Form();
+                                    //_functions.Custom90338();
+                                    //_functions.Life();
+                                    //_functions.Disability();
+                                    //_functions.DebtProt();
+                                    //_functions.Write();
+                                    //_functions.WriteAOMOB();
                                 }
-                                _functions.Update();
+                                //_functions.Update();
                             }
                         }
                     }

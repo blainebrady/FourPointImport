@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Utilities;
 using FourPointImport.Web.Models;
+using FourPointImport.Data;
 
 namespace FourPointImport.Web.Functions
 {
@@ -10,7 +11,7 @@ namespace FourPointImport.Web.Functions
         private string textString;
         private List<Diagram> pattern;
         private TEntity result;
-
+        private billingExport _billingExport;
         public ConvertToEntity(string textString, List<Diagram> pattern)
         {
             this.textString = textString;
@@ -71,6 +72,35 @@ namespace FourPointImport.Web.Functions
             }
 
             return result;
+        }
+        public billingExport PairFiles(billingDetail _billingDetail)
+        {
+            _billingExport = new billingExport();
+            _billingExport.SeAgnt = _billingDetail.BXAGNT;
+            _billingExport.SeBrch = _billingDetail.BXBRCH;
+            _billingExport.SeCert =_billingDetail.BXCERT;
+            _billingExport.PgmNam = _billingDetail.BXNAME;
+            _billingExport.SeDebtCode = _billingDetail.BXCOVC;
+            _billingExport.SeEfft = _billingDetail.BXEFFT;
+            _billingExport.SeFPrm = _billingDetail.BXFROM;
+            _billingExport.BFTHRU = _billingDetail.BXTHRU;
+            _billingExport.SeExpr = _billingDetail.BXEXPR;
+            _billingExport.SeFPay = _billingDetail.BXPAID;
+         //   _billingExport.BfNext = _billingDetail.BXNEXT;
+            _billingExport.SeLAmt = _billingDetail.BXBAMT;
+            _billingExport.SeComR = _billingDetail.BXCOMM;
+            _billingExport.BFBGRS = _billingDetail.BXBGRS;
+            _billingExport.SeDAmt = _billingDetail.BXPAMT;
+            _billingExport.SeComR = _billingDetail.BXCOMP;
+          //  _billingExport.BFGRS = _billingDetail.BXBGRS;
+          //  _billingExport.BdPAmt = _billingDetail.BXMOB;
+            _billingExport.SeIntr = _billingDetail.BXINTR;
+         //   _billingExport.BdInt = _billingDetail.BXINT;
+          //  _billingExport.BFPRIN = _billingDetail.BXPRIN;
+            _billingExport.SeSchd = _billingDetail.BXSCHD;
+            _billingExport.BFMSGC = _billingDetail.BXMSGC;
+            _billingExport.BFMSGD = _billingDetail.BXMSGD;
+            return _billingExport;
         }
     }
 }

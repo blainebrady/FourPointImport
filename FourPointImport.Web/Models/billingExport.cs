@@ -80,7 +80,7 @@
         public int SeAmnt { get; set; }
         public string SeBall { get; set; }
         public decimal SeIntr { get; set; }
-        public int SeSchd { get; set; }
+        public decimal SeSchd { get; set; }
         public decimal SeLAmt { get; set; }
         public decimal SeDAmt { get; set; }
         public string SeLChg { get; set; }
@@ -183,11 +183,11 @@
         public string SeGStat { get; set; }
         public DateTime SeGDate { get; set; }
         public string BFFROM { get; set; }
-        public string BFTHRU { get; set; }
+        public DateTime BFTHRU { get; set; }
         public string BFPAID { get; set; }
         public string BFNEXT { get; set; }
         public string BFCOMM { get; set; }
-        public string BFBGRS { get; set; }
+        public decimal BFBGRS { get; set; }
         public string BFGRS { get; set; }
         public string BFMOB { get; set; }
         public decimal BFInt { get; set; }

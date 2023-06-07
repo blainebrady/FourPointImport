@@ -9,6 +9,7 @@ namespace FourPointImport.Web.Functions
     public class billingExportFunctions<TEntity>
         where TEntity : class
     {
+        private readonly billingDetailService _billingService;
         public Key02 Key_2;
         public struct Key02
         {
@@ -68,8 +69,9 @@ namespace FourPointImport.Web.Functions
             public string SeCert;
         }
         //SUSMSTPAccess tableAccess, PRDCOVPAccess prdcovpAccess, FrmMstPAccess frmMstLAccess, COVMSTRAccess covmstr,
-        public billingExportFunctions([NotNull] billingExport _inComing, billingDetailService buildAccess)
+        public billingExportFunctions([NotNull] billingDetailService billingService)
         {
+            _billingService = billingService;
             Key_2 = new Key02();
             Key_3 = new Key03();
             Key_4 = new Key04();
