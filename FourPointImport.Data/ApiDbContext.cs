@@ -12,6 +12,10 @@ namespace FourPointImport.Data
         {
             _configuration = new ConfigurationBuilder().AddJsonFile(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "@\appsettings.json").Build();
         }
+        public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options)
+        {
+            
+        }
         protected virtual IList<Assembly> Assemblies
         {
             get
@@ -46,6 +50,7 @@ namespace FourPointImport.Data
 
                         if (baseInModelCreatingGenericMethod == null)
                             continue;
+
                     }
                     catch (Exception ex)
                     {
@@ -60,7 +65,7 @@ namespace FourPointImport.Data
             {
                 _configuration = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appSettings.json")
+                    .AddJsonFile("appsettings.json")
                     .Build();
             }
             //now set the database connection

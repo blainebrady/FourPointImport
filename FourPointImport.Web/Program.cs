@@ -1,20 +1,19 @@
 using FourPointImport.Data;
 using FourPointImport.Web;
 using FourPointImport.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
-using IHost host = Host.CreateDefaultBuilder(args).Build();
-var configuration = host.Services.GetRequiredService<IConfiguration>();
-// Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<ApiDbContext>();
+
 builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddDbContext<ApiDbContext>(options =>
+//        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<ApiDbContext>();
 builder.Services.AddScoped<billingDetailService, billingDetailService>();
 
-builder.Configuration
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", true, true);
 
 var app = builder.Build();
 
