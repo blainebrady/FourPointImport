@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace FourPointImport.Data
@@ -10,12 +11,12 @@ namespace FourPointImport.Data
 
         public ApiDbContext()
         {
-            _configuration = new ConfigurationBuilder().AddJsonFile(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "@\appsettings.json").Build();
+            _configuration = new ConfigurationBuilder().AddJsonFile(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\appsettings.json").Build();
         }
         public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options)
         {
-            
         }
+
         protected virtual IList<Assembly> Assemblies
         {
             get
@@ -27,41 +28,41 @@ namespace FourPointImport.Data
         {
             foreach (var assembly in Assemblies)
             {
-                var classes = assembly.GetTypes().Where(s => s.GetInterfaces().Any(_interface => _interface.Equals(typeof(IImport))
-                    && s.IsClass && s.IsAbstract && s.IsPublic));
-
-                foreach (var _class in classes)
+                foreach (var type in assembly.GetTypes())
                 {
                     try
                     {
-                        var onModelCreatingMethod = _class.GetMethods().FirstOrDefault(x => x.Name == "OnModelCreating" && x.IsStatic);
+                        var classes = assembly.GetTypes()
+                            .Where(type => type.IsClass && type.IsPublic && (type.BaseType != null && type.BaseType == typeof(Import)) && type.IsPublic && !type.IsAbstract)
+                            .ToList();
+                        foreach (var classType in classes)
+                        {
+                            var onModelCreatingMethod = classType.GetMethods().FirstOrDefault(x => x.Name == "OnModelCreating" && x.IsStatic);
+                            if (onModelCreatingMethod != null)
+                                onModelCreatingMethod.Invoke(classType, new object[] { modelBuilder });
+                            if (classType.BaseType == null || classType.BaseType != typeof(Import))
+                            {
+                                continue;
+                            }
 
-                        if (onModelCreatingMethod != null)
-                            onModelCreatingMethod.Invoke(_class, new object[] { modelBuilder });
-                        if (_class.BaseType != null || _class.BaseType != typeof(IImport))
-                            continue;
-
-                        var baseOnModelCreatingMethod = _class.BaseType.GetMethods().FirstOrDefault(x => x.Name == "onModelCreating" && x.IsStatic);
-
-                        if (baseOnModelCreatingMethod == null)
-                            continue;
-                        
-                        var baseInModelCreatingGenericMethod = baseOnModelCreatingMethod.MakeGenericMethod(new Type[] { _class });
-
-                        if (baseInModelCreatingGenericMethod == null)
-                            continue;
-
+                            var baseOnModelCreatingMethod = classType.BaseType.GetMethods().FirstOrDefault(x => x.Name.ToLower() == "onmodelcreating" && x.IsStatic);
+                            if (baseOnModelCreatingMethod == null)
+                            {
+                                continue;
+                            }
+                            baseOnModelCreatingMethod.Invoke(typeof(Import), new object[] { modelBuilder });
+                        }
                     }
                     catch (Exception ex)
                     {
-                        //todo:create error handler
+                        Console.WriteLine(ex.Message);
                     }
                 }
             }
         }
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            if (!builder.IsConfigured)
+            if (!builder.IsConfigured || _configuration==null)
             {
                 _configuration = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory())
@@ -76,7 +77,7 @@ namespace FourPointImport.Data
         {
             foreach (var entry in ChangeTracker.Entries())
             {
-                if (entry.Entity is IImport)
+                if (entry.Entity is Import)
                 {
                     if (entry.State == EntityState.Added)
                     {
