@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FourPointImport.Data
 {
-    public class Import : IImport
+    public class Import : IBase
     {
         public int id { get; set; }
         public bool Archive { get; set; }

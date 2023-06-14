@@ -28,36 +28,38 @@ namespace FourPointImport.Data
         {
             foreach (var assembly in Assemblies)
             {
-                foreach (var type in assembly.GetTypes())
+                try
                 {
-                    try
+                    var classes = assembly.GetTypes()
+                        .Where(type => type.IsClass && type.IsPublic && type.BaseType == typeof(Import) && type.IsPublic && !type.IsAbstract)
+                        .ToList();
+                    foreach (var classType in classes)
                     {
-                        var classes = assembly.GetTypes()
-                            .Where(type => type.IsClass && type.IsPublic && (type.BaseType != null && type.BaseType == typeof(Import)) && type.IsPublic && !type.IsAbstract)
-                            .ToList();
-                        foreach (var classType in classes)
+                        Console.WriteLine("*****************" + classType.Name + "|" + classType.BaseType.ToString() + "**********************");
+                        var onModelCreatingMethod = classType.GetMethods().FirstOrDefault(x => x.Name == "OnModelCreating" && x.IsStatic);
+                        if (onModelCreatingMethod != null)
+                            onModelCreatingMethod.Invoke(classType, new object[] { modelBuilder });
+                        if (classType.BaseType == null || classType.BaseType != typeof(Import))
                         {
-                            var onModelCreatingMethod = classType.GetMethods().FirstOrDefault(x => x.Name == "OnModelCreating" && x.IsStatic);
-                            if (onModelCreatingMethod != null)
-                                onModelCreatingMethod.Invoke(classType, new object[] { modelBuilder });
-                            if (classType.BaseType == null || classType.BaseType != typeof(Import))
-                            {
-                                continue;
-                            }
-
-                            var baseOnModelCreatingMethod = classType.BaseType.GetMethods().FirstOrDefault(x => x.Name.ToLower() == "onmodelcreating" && x.IsStatic);
-                            if (baseOnModelCreatingMethod == null)
-                            {
-                                continue;
-                            }
-                            baseOnModelCreatingMethod.Invoke(typeof(Import), new object[] { modelBuilder });
+                            continue;
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
+
+                        var baseOnModelCreatingMethod = classType.BaseType.GetMethods().FirstOrDefault(x => x.Name.ToLower() == "onmodelcreating" && x.IsStatic);
+                        if (baseOnModelCreatingMethod == null)
+                        {
+                            continue;
+                        }
+                        baseOnModelCreatingMethod.Invoke(classType, new object[] { modelBuilder });
+                        //var baseInModelCratingGenericMethod = baseOnModelCreatingMethod.MakeGenericMethod(new Type[] { classType });
+                        //if (baseInModelCratingGenericMethod == null)
+                        //    continue;
                     }
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("*********************Error: " + ex.Message);
+                }
+
             }
         }
         protected override void OnConfiguring(DbContextOptionsBuilder builder)

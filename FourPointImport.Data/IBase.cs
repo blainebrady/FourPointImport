@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FourPointImport.Data
 {
-    public interface IImport
+    public interface IBase
     {
         int id { get; set; }
         bool Archive { get; set; }
@@ -16,7 +16,7 @@ namespace FourPointImport.Data
         DateTimeOffset LastUpdated { get; set; }
 
         public static void OnModelCreating<TEntity>(ModelBuilder modelBuilder)
-            where TEntity :class, IImport
+            where TEntity :class, IBase
         {
             modelBuilder.Entity<TEntity>().HasKey(entity => entity.id);
             modelBuilder.Entity<TEntity>().Property(x => x.Archive);

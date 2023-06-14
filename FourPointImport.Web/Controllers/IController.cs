@@ -9,7 +9,7 @@ namespace FourPointImport.Web.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public abstract class IController<TEntity> : ControllerBase
-        where TEntity : class, IImport, new()
+        where TEntity : class, IBase, new()
     {
         protected readonly IGenericService<TEntity> _service;
         protected IController([NotNull] IGenericService<TEntity> service)

@@ -16,7 +16,7 @@ namespace FourPointImport.Web.Controllers
     {
         protected readonly IConfiguration _configuration;
         //protected readonly SUSMSTPAccess _tableAccess;
-        //private PRDCOVPAccess _prdcovpAccess;
+        private ProductCoverageService _productCoverageService;
         //protected readonly FrmMstPAccess _frmMstLAccess;
         //protected readonly COVMSTRAccess _covmstrAccess;
         protected readonly billingDetailService _bildtlService;
@@ -68,22 +68,22 @@ namespace FourPointImport.Web.Controllers
                                 ConvertToEntity<billingDetail> converter = new ConvertToEntity<billingDetail>(fileLine, pattern);
                                 _billingDetail = converter.Convert();
                                 var _billingEntity = converter.PairFiles(_billingDetail);
-                                //now we have the actual class, which we can build with the other functions     , _prdcovpAccess, _frmMstLAccess, _covmstrAccess, _bildtlAccess
-                                var _functions = new billingExportFunctions<billingDetail>(_bildtlService);
+                                //now we have the actual class, which we can build with the other functions  _covmstrAccess, _bildtlAccess
+                                var _functions = new billingExportFunctions<billingDetail>(_bildtlService, _billingEntity, _productCoverageService);
                                 if (_billingEntity.SeCert.StringSafe().Length > 0)
                                 {
-                                    //_functions.HomeSavings();
-                                    //_functions.Clear();
-                                    //_functions.ReadAOMOB();
-                                    //_functions.Form();
-                                    //_functions.Custom90338();
-                                    //_functions.Life();
+                                    _functions.HomeSavings();
+                                    _functions.Clear();
+                                    _functions.ReadAOMOB();
+                                    _functions.Form();
+                                    _functions.Custom90338();
+                                    _functions.Life();
                                     //_functions.Disability();
                                     //_functions.DebtProt();
                                     //_functions.Write();
                                     //_functions.WriteAOMOB();
                                 }
-                                //_functions.Update();
+                                _functions.Update();
                             }
                         }
                     }
