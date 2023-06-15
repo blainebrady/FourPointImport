@@ -73,7 +73,7 @@ namespace FourPointImport.Web.Functions
 
             return result;
         }
-        public billingExport PairFiles(billingDetail _billingDetail)
+        public billingExport PairFiles(BranchOffice _billingDetail)
         {
             _billingExport = new billingExport();
             _billingExport.SeAgnt = _billingDetail.BXAGNT;

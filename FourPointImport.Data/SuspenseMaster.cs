@@ -28,7 +28,7 @@ namespace FourPointImport.Data
         public int SmAmnt { get; set; }
         public string SmBall { get; set; }
         public decimal SmIntr { get; set; }
-        public int SmSchd { get; set; }
+        public decimal SmSchd { get; set; }
         public decimal SmLAmt { get; set; }
         public decimal SmDAmt { get; set; }
         public string SmLChg { get; set; }

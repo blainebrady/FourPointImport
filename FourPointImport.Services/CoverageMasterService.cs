@@ -4,18 +4,17 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace FourPointImport.Services
 {
-    public class BillingDetailService : IGenericService<BillingDetail>
-
+    public class CoverageMasterService : IGenericService<CoverageInsuranceMaster>
     {
         protected ApiDbContext _db;
 
-        public BillingDetailService([NotNull] ApiDbContext db)
+        public CoverageMasterService([NotNull] ApiDbContext db)
         {
             _db = db;
         }
-        public virtual async Task<BillingDetail> CreateAsync(BillingDetail entity)
+        public virtual async Task<CoverageInsuranceMaster> CreateAsync(CoverageInsuranceMaster entity)
         {
-            await _db.Set<BillingDetail>().AddAsync(entity);
+            await _db.Set<CoverageInsuranceMaster>().AddAsync(entity);
             try
             {
                 await _db.SaveChangesAsync();
@@ -38,30 +37,22 @@ namespace FourPointImport.Services
             _db.Entry(entity).State = EntityState.Modified;
             await _db.SaveChangesAsync();
         }
-        public virtual async Task<List<BillingDetail>> ReadAllAsync(bool tracking = true)
+        public virtual async Task<List<CoverageInsuranceMaster>> ReadAllAsync(bool tracking = true)
         {
-            IQueryable<BillingDetail> query = _db.Set<BillingDetail>();
+            IQueryable<CoverageInsuranceMaster> query = _db.Set<CoverageInsuranceMaster>();
             if (!tracking)
                 query = query.AsNoTracking();
 
             return await query.ToListAsync();
         }
-        public virtual async Task<BillingDetail> ReadAsync(int id, bool Tracking = true)
+        public virtual async Task<CoverageInsuranceMaster> ReadAsync(int id, bool Tracking = true)
         {
-            var query = _db.Set<BillingDetail>().AsQueryable();
+            var query = _db.Set<CoverageInsuranceMaster>().AsQueryable();
             if (!Tracking)
                 query = query.AsNoTracking();
             return await query.FirstOrDefaultAsync(entity => entity.id == id);
         }
-        public virtual async Task<BillingDetail> ReadAsyncB(string Agnt, bool Tracking = true)
-        {
-            var query = _db.Set<BillingDetail>().AsQueryable();
-            if (!Tracking)
-                query = query.AsNoTracking();
-            return await query.FirstOrDefaultAsync(entity => entity.BdAgnt == Agnt);
-        }
-
-        public virtual async Task<BillingDetail> UpdateAsync(int id, BillingDetail updateEntity)
+        public virtual async Task<CoverageInsuranceMaster> UpdateAsync(int id, CoverageInsuranceMaster updateEntity)
         {
             //check that the record exists
             var entity = await ReadAsync(id);
@@ -76,7 +67,5 @@ namespace FourPointImport.Services
             }
             return entity;
         }
-    
-
     }
 }

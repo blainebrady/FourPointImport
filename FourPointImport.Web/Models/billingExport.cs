@@ -162,7 +162,7 @@
         public string SeHQ20B { get; set; }
         public string SeSig2 { get; set; }
         public string SeFlag { get; set; }                  //new or update N/U
-        public decimal SeCnl { get; set; }
+        public int SeCnl { get; set; }
         public int SeCnlL { get; set; }
         public int SeCnlD { get; set; }
         public string SeSovS { get; set; }

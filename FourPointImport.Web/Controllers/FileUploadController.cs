@@ -17,19 +17,20 @@ namespace FourPointImport.Web.Controllers
         protected readonly IConfiguration _configuration;
         //protected readonly SUSMSTPAccess _tableAccess;
         private ProductCoverageService _productCoverageService;
-        //protected readonly FrmMstPAccess _frmMstLAccess;
-        //protected readonly COVMSTRAccess _covmstrAccess;
-        protected readonly billingDetailService _bildtlService;
-        private billingDetail _billingDetail { get; set; }
+        protected readonly FormMasterService _formMasterService;
+        protected readonly CoverageMasterService _coverageService;
+        protected readonly BillingDetailService _bildtlService;
+        private BranchOffice _billingDetail { get; set; }
         //SUSMSTPAccess tableAccess, PRDCOVPAccess prdcovpAccess, FrmMstPAccess frmMstLAccess, COVMSTRAccess covmstrAccess,
-        public FileUploadController([NotNull] IConfiguration configuration, billingDetailService bildtlService)
+        public FileUploadController([NotNull] IConfiguration configuration, BillingDetailService bildtlService, CoverageMasterService coverageMasterService,
+            FormMasterService formMasterService)
         {
             _configuration = configuration;
             //_tableAccess = tableAccess;
             //_prdcovpAccess = prdcovpAccess;
-            //_frmMstLAccess = frmMstLAccess;
+            _formMasterService = formMasterService;
             _bildtlService = bildtlService;
-            //_covmstrAccess = covmstrAccess;
+            _coverageService = coverageMasterService; 
         }
         [Route("newFile")]
         [HttpPost]
@@ -65,11 +66,11 @@ namespace FourPointImport.Web.Controllers
 
                                 List<Diagram> pattern = fs.mapImportFile();
 
-                                ConvertToEntity<billingDetail> converter = new ConvertToEntity<billingDetail>(fileLine, pattern);
+                                ConvertToEntity<BranchOffice> converter = new ConvertToEntity<BranchOffice>(fileLine, pattern);
                                 _billingDetail = converter.Convert();
                                 var _billingEntity = converter.PairFiles(_billingDetail);
                                 //now we have the actual class, which we can build with the other functions  _covmstrAccess, _bildtlAccess
-                                var _functions = new billingExportFunctions<billingDetail>(_bildtlService, _billingEntity, _productCoverageService);
+                                var _functions = new billingExportFunctions<BranchOffice>(_bildtlService, _billingEntity, _coverageService, _formMasterService, _productCoverageService);
                                 if (_billingEntity.SeCert.StringSafe().Length > 0)
                                 {
                                     _functions.HomeSavings();
@@ -78,10 +79,10 @@ namespace FourPointImport.Web.Controllers
                                     _functions.Form();
                                     _functions.Custom90338();
                                     _functions.Life();
-                                    //_functions.Disability();
-                                    //_functions.DebtProt();
-                                    //_functions.Write();
-                                    //_functions.WriteAOMOB();
+                                    _functions.Disability();
+                                    _functions.DebtProt();
+                                    _functions.Write();
+                                    _functions.WriteAOMOB();
                                 }
                                 _functions.Update();
                             }

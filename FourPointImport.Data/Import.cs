@@ -9,10 +9,10 @@ namespace FourPointImport.Data
 {
     public class Import : IBase
     {
-        public int id { get; set; }
-        public bool Archive { get; set; }
-        public DateTimeOffset CreateOn { get; set; }
-        public DateTimeOffset LastUpdated { get; set; }
+        public virtual int id { get; set; }
+        public virtual bool Archive { get; set; }
+        public virtual DateTimeOffset CreateOn { get; set; }
+        public virtual DateTimeOffset LastUpdated { get; set; }
 
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
