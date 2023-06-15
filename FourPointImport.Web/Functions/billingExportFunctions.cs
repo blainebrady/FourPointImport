@@ -12,7 +12,7 @@ namespace FourPointImport.Web.Functions
         where TEntity : class
     {
         private readonly billingDetailService _billingService;
-        private readonly formMasterService _formMasterService;
+        private readonly FormMasterService _formMasterService;
         private readonly ProductCoverageService productCoverageService;
         public int GapCovC { get; set; }
         public billingExport inComing { get; set; }
