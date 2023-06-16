@@ -184,14 +184,14 @@
         public DateTime SeGDate { get; set; }
         public string BFFROM { get; set; }
         public DateTime BFTHRU { get; set; }
-        public string BFPAID { get; set; }
-        public string BFNEXT { get; set; }
+        public decimal BdPAmt { get; set; }
+        public DateTime BfNext { get; set; }
         public string BFCOMM { get; set; }
         public decimal BFBGRS { get; set; }
-        public string BFGRS { get; set; }
+        public decimal BFGRS { get; set; }
         public string BFMOB { get; set; }
-        public decimal BFInt { get; set; }
-        public string BFPRIN { get; set; }
+        public decimal BdInt { get; set; }
+        public decimal BFPRIN { get; set; }
         public string BFMSGC { get; set; }
         public string BFMSGD { get; set; }
         public string BFDESC { get; set; }

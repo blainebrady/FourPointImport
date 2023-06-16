@@ -15,6 +15,7 @@ namespace FourPointImport.Web.Functions
         private readonly FormMasterService formMasterService;
         private readonly CoverageMasterService coverageMasterService;
         private readonly ProductCoverageService productCoverageService;
+        private readonly SuspenseMasterService suspenseMasterService;
         public int GapCovC { get; set; }
         public billingExport inComing { get; set; }
         public CoverageInsuranceMaster coverageMaster { get; set; }
@@ -85,7 +86,7 @@ namespace FourPointImport.Web.Functions
 
         //suspenseMasterAccess tableAccess, PRDCOVPAccess prdcovpAccess, FrmMstPAccess frmMstLAccess, COVMSTRAccess covmstr,
         public billingExportFunctions([NotNull] BillingDetailService _billingService, billingExport _inComing, CoverageMasterService _coverageService, FormMasterService _formMasterService,
-            ProductCoverageService _productCoverageService)
+            ProductCoverageService _productCoverageService, SuspenseMasterService _suspenseMasterService)
         {
             billingService = _billingService;
             Key_2 = new Key02();
@@ -96,12 +97,12 @@ namespace FourPointImport.Web.Functions
             Key_7 = new Key07();
             Key_8 = new Key08();
 
-            //_tableAccess = tableAccess;
             productCoverageService = _productCoverageService;
             formMasterService = _formMasterService;
             coverageMasterService = _coverageService;
-            //_buildAccess = buildAccess;
+            suspenseMasterService = _suspenseMasterService;
             inComing = _inComing;
+
             Initialize();
             sysDte = (sysDate.Year * 10000 + sysDate.Month * 100 + sysDate.Day).ToString();
 
@@ -118,6 +119,7 @@ namespace FourPointImport.Web.Functions
                     inComing.SeFut2 = 0;
                 }
             }
+
         }
         public void Clear()
         {
@@ -901,9 +903,10 @@ namespace FourPointImport.Web.Functions
                 }
             }
         }
-        public void Update()
+        public async void Update()
         {
             //Delete SusMstR2;              this is probably a replacement of the data
+            suspenseMaster = await suspenseMasterService.CreateAsync(suspenseMaster);
         }
     }
 }

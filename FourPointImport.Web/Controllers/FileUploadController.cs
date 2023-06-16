@@ -20,14 +20,14 @@ namespace FourPointImport.Web.Controllers
         protected readonly FormMasterService _formMasterService;
         protected readonly CoverageMasterService _coverageService;
         protected readonly BillingDetailService _bildtlService;
-        private BranchOffice _billingDetail { get; set; }
+        protected readonly SuspenseMasterService _suspenseMasterService;
+        private ImportFile _billingDetail { get; set; }
         //SUSMSTPAccess tableAccess, PRDCOVPAccess prdcovpAccess, FrmMstPAccess frmMstLAccess, COVMSTRAccess covmstrAccess,
         public FileUploadController([NotNull] IConfiguration configuration, BillingDetailService bildtlService, CoverageMasterService coverageMasterService,
-            FormMasterService formMasterService)
+            FormMasterService formMasterService, SuspenseMasterService suspenseMasterService)
         {
             _configuration = configuration;
-            //_tableAccess = tableAccess;
-            //_prdcovpAccess = prdcovpAccess;
+            _suspenseMasterService = suspenseMasterService;
             _formMasterService = formMasterService;
             _bildtlService = bildtlService;
             _coverageService = coverageMasterService; 
@@ -66,11 +66,11 @@ namespace FourPointImport.Web.Controllers
 
                                 List<Diagram> pattern = fs.mapImportFile();
 
-                                ConvertToEntity<BranchOffice> converter = new ConvertToEntity<BranchOffice>(fileLine, pattern);
+                                ConvertToEntity<ImportFile> converter = new ConvertToEntity<ImportFile>(fileLine, pattern);
                                 _billingDetail = converter.Convert();
                                 var _billingEntity = converter.PairFiles(_billingDetail);
                                 //now we have the actual class, which we can build with the other functions  _covmstrAccess, _bildtlAccess
-                                var _functions = new billingExportFunctions<BranchOffice>(_bildtlService, _billingEntity, _coverageService, _formMasterService, _productCoverageService);
+                                var _functions = new billingExportFunctions<BillingDetail>(_bildtlService, _billingEntity, _coverageService, _formMasterService, _productCoverageService, _suspenseMasterService);
                                 if (_billingEntity.SeCert.StringSafe().Length > 0)
                                 {
                                     _functions.HomeSavings();

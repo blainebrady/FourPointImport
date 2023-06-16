@@ -73,33 +73,33 @@ namespace FourPointImport.Web.Functions
 
             return result;
         }
-        public billingExport PairFiles(BranchOffice _billingDetail)
+        public billingExport PairFiles(ImportFile _importFile)
         {
             _billingExport = new billingExport();
-            _billingExport.SeAgnt = _billingDetail.BXAGNT;
-            _billingExport.SeBrch = _billingDetail.BXBRCH;
-            _billingExport.SeCert =_billingDetail.BXCERT;
-            _billingExport.PgmNam = _billingDetail.BXNAME;
-            _billingExport.SeDebtCode = _billingDetail.BXCOVC;
-            _billingExport.SeEfft = _billingDetail.BXEFFT;
-            _billingExport.SeFPrm = _billingDetail.BXFROM;
-            _billingExport.BFTHRU = _billingDetail.BXTHRU;
-            _billingExport.SeExpr = _billingDetail.BXEXPR;
-            _billingExport.SeFPay = _billingDetail.BXPAID;
-         //   _billingExport.BfNext = _billingDetail.BXNEXT;
-            _billingExport.SeLAmt = _billingDetail.BXBAMT;
-            _billingExport.SeComR = _billingDetail.BXCOMM;
-            _billingExport.BFBGRS = _billingDetail.BXBGRS;
-            _billingExport.SeDAmt = _billingDetail.BXPAMT;
-            _billingExport.SeComR = _billingDetail.BXCOMP;
-          //  _billingExport.BFGRS = _billingDetail.BXBGRS;
-          //  _billingExport.BdPAmt = _billingDetail.BXMOB;
-            _billingExport.SeIntr = _billingDetail.BXINTR;
-         //   _billingExport.BdInt = _billingDetail.BXINT;
-          //  _billingExport.BFPRIN = _billingDetail.BXPRIN;
-            _billingExport.SeSchd = _billingDetail.BXSCHD;
-            _billingExport.BFMSGC = _billingDetail.BXMSGC;
-            _billingExport.BFMSGD = _billingDetail.BXMSGD;
+            _billingExport.SeAgnt = _importFile.BXAGNT;
+            _billingExport.SeBrch = _importFile.BXBRCH;
+            _billingExport.SeCert = _importFile.BXCERT;
+            _billingExport.PgmNam = _importFile.BXNAME;
+            _billingExport.SeDebtCode = _importFile.BXCOVC;
+            _billingExport.SeEfft = _importFile.BXEFFT;
+            _billingExport.SeFPrm = _importFile.BXFROM;
+            _billingExport.BFTHRU = _importFile.BXTHRU;
+            _billingExport.SeExpr = _importFile.BXEXPR;
+            _billingExport.SeFPay = _importFile.BXPAID;
+            _billingExport.BfNext = _importFile.BXNEXT;
+            _billingExport.SeLAmt = _importFile.BXBAMT;
+            _billingExport.SeComR = _importFile.BXCOMM;
+            _billingExport.BFBGRS = _importFile.BXBGRS;
+            _billingExport.SeDAmt = _importFile.BXPAMT;
+            _billingExport.SeComR = _importFile.BXCOMP;
+            _billingExport.BFGRS = _importFile.BXBGRS;
+            _billingExport.BdPAmt = _importFile.BXMOB;
+            _billingExport.SeIntr = _importFile.BXINTR;
+            _billingExport.BdInt = _importFile.BXINT;
+            _billingExport.BFPRIN = _importFile.BXPRIN;
+            _billingExport.SeSchd = _importFile.BXSCHD;
+            _billingExport.BFMSGC = _importFile.BXMSGC;
+            _billingExport.BFMSGD = _importFile.BXMSGD;
             return _billingExport;
         }
     }

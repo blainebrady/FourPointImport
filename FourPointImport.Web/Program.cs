@@ -13,8 +13,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<ApiDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddDbContext<ApiDbContext>();
-builder.Services.AddScoped<BillingDetailService, BillingDetailService>();
+//set up the ApiDbContext for the Migrate services
 builder.Services.AddSingleton<IDesignTimeDbContextFactory<ApiDbContext>, DesignTimeDbContext>();
+//register the other services in use
+builder.Services.AddScoped<BillingDetailService, BillingDetailService>();
+builder.Services.AddSingleton<CoverageMasterService, CoverageMasterService>();
+builder.Services.AddSingleton<FormMasterService, FormMasterService>();
+builder.Services.AddSingleton<ProductCoverageService, ProductCoverageService>();
 
 var app = builder.Build();
 
