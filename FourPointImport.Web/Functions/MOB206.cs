@@ -5,13 +5,21 @@ using Utilities;
 using FourPointImport.Services;
 using Microsoft.AspNetCore.Routing;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.DataProtection;
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualBasic;
+using System.Diagnostics.Metrics;
+using System.Runtime.Intrinsics.Arm;
+using System.Security.Cryptography;
+using System;
 
 namespace FourPointImport.Web.Functions
 {
     public class MOB206
     {
+        CoverageInsuranceMaster covInsMaster { get; set; }
         SuspenseMaster suspenseMaster { get; set; }
-        CoverageInsuranceMaster covMaster { get; set; }
+        List<CoverageInsuranceMaster> covMaster { get; set; }
         private DateTime _SmEfftTest { get; set; }
         string ErrCode { get; set; }
         private decimal ErrorLimit { get; set; }
@@ -21,42 +29,227 @@ namespace FourPointImport.Web.Functions
         private decimal LfPrct;
         private string LfDesc;
         private decimal LfBase;
+        private decimal AhBase;
+        private string AhDesc;
         bool PostData { get; set; }
         private string SecondReq { get; set; }
         private int Severity { get; set; }
+        private string SeverityDesc { get; set; }
         private string SeverityErr { get; set; }
         private int TestDays { get; set; }
-        protected readonly CoverageMasterService smService;
+        protected readonly CoverageMasterService cmService;
+        protected readonly AgentMasterService amService;
+        protected readonly CoverageInsuranceService coverageInsuranceService;
+        protected readonly RateMasterService rmService;
         DateTime WorkDate { get; set; }
         DateTime WorkDate2 { get; set; }
-        public MOB206(SuspenseMaster _suspenseMaster, CoverageMasterService _smCervice, CoverageInsuranceMaster _covMaster)
+        public Key08 Key_8;
+        public struct Key08
+        {
+            public string LfTble { get; set; }
+        }
+        public Key09 Key_9;
+        public struct Key09
+        {
+            public string LfTble { get; set; }
+            public string SmTrml { get; set; }
+        }
+        public Key09a Key_9a;
+        public struct Key09a
+        {
+            public string LfTble { get; set; }
+        }
+        public Key10 Key_10;
+        public struct Key10
+        {
+            public string AhTble { get; set; }
+        }
+        public Key11 Key_11;
+        public struct Key11
+        {
+            public string AhTble { get; set; }
+            public int SmTrmD { get; set; }
+        }
+        public MOB206(SuspenseMaster _suspenseMaster, CoverageMasterService _cmCervice, AgentMasterService _amService, CoverageInsuranceService _coverageInsuranceService,
+            RateMasterService _rmService)
         {
             suspenseMaster = _suspenseMaster;
-            smService = _smCervice;
-            covMaster = _covMaster;
+            coverageInsuranceService = _coverageInsuranceService;
+            cmService = _cmCervice;
+            amService = _amService;
+            rmService = _rmService;
             WorkDate = DateTime.Now;
+            getCoverage();
+        }
+        private async void getCoverage()
+        {
+            covMaster = await cmService.ReadAllAsync();
+        }
+        public SuspenseMaster Process()
+        {
+            //if (suspenseMaster.SmCert.StringSafe().Length == 0)
+            //{
+            //    Key01 Setll     SusMstL3
+            //    Key01         Reade SusMstL3
+            //}                                                                 This finds the right record in SuspenseMaster 
+            //else                                                              Seeing as we're doing this a record at a time, we'll drop it
+            //{
+            //    Key01b Setll SusMstL3
+
+            //    Key01b Reade SusMstL3
+            //}
+
+            // IF RECORD WAS CANCELLED DON'T CHECK DATA                                                        
 
             if (suspenseMaster.SmCnl > 0 || suspenseMaster.SmCnlL > 0 || suspenseMaster.SmCnlD > 0)
             {
-                ExCd = suspenseMaster.SmExcd;
                 PostData = true;
                 UpdHist();
                 ChgData(suspenseMaster.SmAgnt);
-                suspenseMaster = new MOB210(suspenseMaster.SmAgnt, suspenseMaster.SmCert, suspenseMaster);
-
-                Confirm();
-                if (suspenseMaster.SmCert.StringSafe().Length == 0)
-                {
-
-                }
+                Post_Data();
+                NextRead();
             }
 
+            SmEfftTest();
+            //* Make Sure the Agent is Active and On File                    
+            ErrCode = "";
+
+            Severity = 0;
+
+            SeverityDesc = "";
+
+            SeverityErr = "";
+            PostData = false;
+
+            Agent_Master();
+            if (ErrCode == "AGTMSTL1")
+            {
+                NextRead();
+            }
+
+            // Test for second insured and valid joint coverage selected                    
+            Test2nd();
+            // Make Sure the Dates are Valid                             
+            Dates();
+            if (Severity > ErrorLimit)
+                NextRead();
+
+            // Get the Underwriting Limits from the Agent Detail Files                      
+            Agent_Detail();
+            // Get the Rates for Life  coverage                              
+            if (suspenseMaster.SmLif > 0)
+            {
+                LfRates();
+            }
+            // Get the Rates for Disability Coverage                   
+            if (suspenseMaster.SmDis > ) {
+
+                AhRates();
+            }
+            //Get the Rates for Debt Protection Coverage                          
+            if (suspenseMaster.SmDebt > 0)
+            {
+                DpRates();
+            }
+            // Test all the fields in the Suspense Master Record ....                              
+            FieldTest();
+            PostData = false;
+            if (Severity <= ErrorLimit)
+            {
+                PostData = true;
+                UpdHist();
+                ChgData();
+                Post_Data();
+            }
+
+            NextRead();
+            Confirm();
+            if (suspenseMaster.SmCert == "")
+            {
+                //Key01         Reade SusMstL3
+            }
+            else
+            {
+                // Key01b Reade SusMstL3
+            }
+
+            EndPgm();
+        }
+        private async void Agent_Master()
+        {
+            var agMaster = await amService.ReadAllAsync();
+            if (agMaster != null && agMaster.Count > 0)
+            {
+                var collection = agMaster.Find(x => x.AMEFFT <= _SmEfftTest && x.AMEXPR >= _SmEfftTest);
+                if (collection != null)
+                {
+                    return;
+                }
+            }
+            ErrCode = "AgentMaster";
+        }
+        private async void AhRates()
+        {
+            //----------------------------------------------------------------------*
+            //Get Rate Amounts and Defintions                                   
+            //----------------------------------------------------------------------*
+            //Get the Rate Master file infirmation for "LIFE RATES"                                                 
+            var RatMaster = await rmService.ReadAllAsync();
+            var RatMstL1 = RatMaster.Find(x => x.RmEfft <= _SmEfftTest && x.RmExpr >= _SmEfftTest);
+            if (RatMstL1 != null)
+            { 
+                AhBase = RatMstL1.RmBase;
+                AhDesc = RatMstL1.RmDesc;
+
+            }
+            // No Rate Master File Found of Not Active                                 
+            else
+            {
+                ErrCode = "AH-RATMSTP";
+                ErrMsg(ErrCode);
+            }                                                                             
+                                                                            
+// Get the Rate Detail for "LIFE" Coverage                                 
+   Key11         Setll     RatDtlP                                
+  Key11         Reade     RatDtlP                                
+                 Dow * In11 = *Off                                
+                  If        SmEfftTest >= RdEfft               And                
+                        SmEfftTest <= RdExpr                              
+                 Eval      AhBand = RdBand                                 
+                 Eval      AhRate = RdRate                                    
+                  Eval      AhPrct = RdPrct                             
+               Leave                                             
+                  EndIf                                                  
+     Key11         Reade     RatDtlP                             
+                    EndDo                                        
+                                                                                   
+// If No record found for this Coverage / Term check Term = 0(Straight Percentage)     
+                  If * In11 = *On                                              
+   Key11A        Setll     RatDtlP                                     
+      Key11A        Reade     RatDtlP                              
+                Dow * In11 = *Off                              
+                  If        SmEfftTest >= RdEfft               And            
+                             SmEfftTest <= RdExpr                           
+                Eval      AhBand = RdBand                              
+                  Eval      AhRate = RdRate                               
+                   Eval      AhPrct = RdPrct                           
+                Leave                                                 
+                   EndIf                                           
+    Key11A        Reade     RatDtlP                            
+                  EndDo                                          
+                EndIf                                            
+                                                                          
+// No Rate Detail File Found of Not Active                                  
+                 If * In11 = *On                                 
+                  Move      'AH-RATDTLP'  ErrCode                     
+                  ExSr      $ErrMsg                                       
+                   EndIf        
         }
         private async void ChgData(string SmAgnt)
         {
             if (Utils.ParseNumControlledReturn(suspenseMaster.SmAgnt) <= 90000 || Utils.ParseNumControlledReturn(suspenseMaster.SmAgnt) >= 99999)
             {
-                List<CoverageInsuranceMaster> CovMstL1 = await smService.ReadAllAsync();                                           //need to fill this
+                List<CoverageInsuranceMaster> CovMstL1 = await cmService.ReadAllAsync();                                           //need to fill this
                 var covMstL1 = CovMstL1.Find(x => x.CmAgnt == SmAgnt);
                 if (covMstL1 != null)
                     foreach (var item in CovMstL1)
@@ -77,7 +270,7 @@ namespace FourPointImport.Web.Functions
                         }
                         if(coverageInsuranceMaster.LastUpdated== DateTime.Today)
                         {
-                            smService.UpdateAsync(coverageInsuranceMaster.id, coverageInsuranceMaster);
+                            cmService.UpdateAsync(coverageInsuranceMaster.id, coverageInsuranceMaster);
                         }
                     }
 
@@ -152,7 +345,10 @@ namespace FourPointImport.Web.Functions
             Mob207_Parm4 = "";
             return suspenseMaster;
         }
-
+        private void Post_Data()
+        {
+            suspenseMaster = new MOB210(suspenseMaster).Process();
+        }
         public void Dates()
         {
             // Validate First Payment Date / First Premium DueDate
@@ -438,7 +634,7 @@ namespace FourPointImport.Web.Functions
 
             // Get the Rate Master file information for "LIFE RATES"
             List<RateMaster> ratMstL1 = new List<RateMaster>();
-            var ratMstL = ratMstL1.Find(x => x.RmDATA == key08);
+            var ratMstL = ratMstL1.Find(x => x.RmTble == Key_8.LfTble);
 
             if (ratMstL != null)
             {
@@ -457,7 +653,7 @@ namespace FourPointImport.Web.Functions
 
             // Get the Rate Detail for "LIFE" Coverage
             List<RateDetailLife> ratDtlP = new List<RateDetailLife>();
-            var ratDtl = ratDtlP.Find(x => x.RDDATA == key09);
+            var ratDtl = ratDtlP.Find(x => x.RDTBLE == Key_9.LfTble);
 
             if (ratDtl != null)
             {
@@ -470,7 +666,7 @@ namespace FourPointImport.Web.Functions
             }
             else             // If No record found for this Coverage / Term check Term = 0 ( Straight Percentage )
             {
-                ratDtl = ratDtlP.Find(x => x.RDDATA == key09A);
+                ratDtl = ratDtlP.Find(x => x.RDTBLE == Key_9a.LfTble);
 
                 if (ratDtl != null)
                 {
@@ -527,7 +723,7 @@ namespace FourPointImport.Web.Functions
             }
             else
             {
-                new MOB208DCC(pragnt, suspenseMaster.SmCert, prdebt, suspenseMaster, covMaster);
+                new MOB208DCC(pragnt, suspenseMaster.SmCert, prdebt, suspenseMaster, covInsMaster);
             }
         }
         //BegSr

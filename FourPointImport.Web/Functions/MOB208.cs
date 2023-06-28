@@ -1,24 +1,36 @@
 ﻿using FourPointImport.Data;
+using FourPointImport.Services;
 
 namespace FourPointImport.Web.Functions
 {
     public class MOB208
     {
-        public LoanApplicationMaster InsMstL1 { get; set; }
-        public CoverageInsuranceMaster covMstr { get; set; }
-        public MOB208(string pragnt, string prcert, SuspenseMaster susMst, CoverageInsuranceMaster CovMstr)
+        public LoanApplicationMaster patronCustomer1 { get; set; }
+        public readonly LoanApplicationService lmService;
+        public readonly PatronCustomerService patCustService;
+        public List<CoverageInsuranceMaster> covMstr { get; set; }
+       public List<LoanApplicationMaster> lonMstL1 { get; set; }
+        public List<PatronCustomer> patronCustomer { get; set; }
+        public MOB208(string pragnt, string prcert, SuspenseMaster susMst, List<CoverageInsuranceMaster> CovMstr, LoanApplicationService _lmService,
+            PatronCustomerService _patCustService )
         {
-            List<LoanApplicationMaster> lonMstL1 = new List<LoanApplicationMaster>();
             covMstr = CovMstr;
-
+            lmService = _lmService;
+            patCustService = _patCustService;
+            SetService();
 
             if (lonMstL1 != null)
             {
                 foreach (var item in lonMstL1)
                 {
                     // Copy all Insured Master Records to History (DO NOT Delete Production records)
-                    InsMstL1A();
-                    InsMstL1B();
+                    var loanApp = lonMstL1.Select(x => x.LmAgnt == pragnt && x.LmCert == prcert).ToList();
+                    foreach (var item2 in loanApp)
+                    {
+                        patronCustomer1A(item2);
+                        patronCustomer1B(item2);
+                    }
+                    
 
                     // Copy all Loan Master Records to History (Then Delete Production Records)
                     LoanApplicationHistory lonHstR = LoanApplicationHistory.ImportClass(item);
@@ -29,28 +41,30 @@ namespace FourPointImport.Web.Functions
                 CovMstL1();
             }
         }
-        void InsMstL1A()
+        private async void SetService()
         {
-            if (InsMstL1.LmIdn1 != 0)
+            lonMstL1 = await lmService.ReadAllAsync();
+            patronCustomer = await patCustService.ReadAllAsync();
+        }
+        void patronCustomer1A(LoanApplicationMaster laMaster)
+        {
+            if (laMaster.LmIdn1 != 0)
             {
-                List<PatronCustomer> InsMstL = new List<PatronCustomer>();
-                var insMstL = InsMstL.Find(x => x.ImIDN == InsMstL1.LmIdn1);
-                if (insMstL != null)
+                var paCustomer = patronCustomer.Find(x => x.ImIDN == patronCustomer1.LmIdn1);
+                if (paCustomer != null)
                 {
-                    PatronCustHist insHstR = PatronCustHist.ImportClass(insMstL);
+                    PatronCustHist insHstR = PatronCustHist.ImportClass(paCustomer);
                 }
             }
         }
 
-        void InsMstL1B()
+        void patronCustomer1B(LoanApplicationMaster laMaster)
         {
-            if (InsMstL1.LmIdn2 != 0)
-            {
-                List<PatronCustomer> InsMstL = new List<PatronCustomer>();
-                var insMstL = InsMstL.Find(x => x.ImIDN == InsMstL1.LmIdn1);
-                if (insMstL != null)
+            if (laMaster.LmIdn2 != 0)
+            { 
+                if (patronCustomer != null)
                 {
-                    PatronCustHist insHstR = PatronCustHist.ImportClass(insMstL);
+                    PatronCustHist insHstR = PatronCustHist.ImportClass(paCustomer);
                     //insHstR.Write();
 
                 }

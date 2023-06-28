@@ -28,6 +28,7 @@ namespace FourPointImport.Web.Functions
         {
             _smService = service;
             _cmService = cmService;
+            
             foreach (var item in suspenseMaster)
             {
                 var suspenseMasterRes = item;
@@ -41,7 +42,7 @@ namespace FourPointImport.Web.Functions
                 {
                     suspenseMasterRes.SmCert = "";
                     suspenseMasterRes.SmDebt = 20;
-                    suspenseMasterRes = new MOB206(suspenseMasterRes, _cmService);
+                    suspenseMasterRes = new MOB206(suspenseMasterRes, _cmService).Process();
                 }
                 if (!CompareAgentNumbers(item.SmAgnt, "DH00000") && CompareAgentNumbers(item.SmAgnt, "DH99999"))
                 {

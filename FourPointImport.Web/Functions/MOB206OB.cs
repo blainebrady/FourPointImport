@@ -93,23 +93,15 @@ namespace FourPointImport.Web.Functions
             
             ConFirm();
             Mob207();
+            //this appears to just be a write statement
 
-                if (prCert == string.Empty)
-                    Key01ReadeSusMstL3();
-                else
-                    Key01bReadeSusMstL3();
+                //if (susMaster.SmCert == string.Empty)
+                //    Key01ReadeSusMstL3();
+                //else
+                //    Key01bReadeSusMstL3();
             
         
         
-        }
-        private void Key01ReadeSusMstL3()
-        {
-            // Reade operation for Key01 in SusMstL3 file
-        }
-
-        private void Key01bReadeSusMstL3()
-        {
-            // Reade operation for Key01b in SusMstL3 file
         }
 
         private int ConvertAlphaToNumeric(string alphaValue)
@@ -165,7 +157,7 @@ namespace FourPointImport.Web.Functions
         private void Mob207()
         {
             // Call MOB207 program for duplicate record processing
-            new MOB207(susMaster.SmAgnt, susMaster.SmCert, "OB", "MOB207OB", susMaster);
+            new MOB207(susMaster.SmAgnt, susMaster.SmCert,0, "OB", susMaster);
 
         }
 

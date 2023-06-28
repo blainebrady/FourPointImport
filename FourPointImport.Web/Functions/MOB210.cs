@@ -1,11 +1,12 @@
 ﻿using FourPointImport.Data;
+using Microsoft.AspNetCore.DataProtection;
 using Utilities;
 
 namespace FourPointImport.Web.Functions
 {
     public class MOB210
     {
-        public SuspenseMaster susMstl { get; set; }
+        public SuspenseMaster susMaster { get; set; }
         public CoverageInsuranceMaster cOVMSTR { get; set; }
         public LoanApplicationHistory lONMSTP { get; set; }
         public QuestionAnswer qstNsp { get; set; }
@@ -26,14 +27,19 @@ namespace FourPointImport.Web.Functions
         // Key to File : FrmMstL1 - Form Number and Type 
         public int Key06 { get; set; }
         public string Key07 { get; set; }
-        public MOB210(string SmAgnt, string SmCert, SuspenseMaster SusMstl3)
+        public MOB210(SuspenseMaster _susMaster)
         {
-            Key02A = SmAgnt;
-            Key02B = SmCert;
-            UserId = SmAgnt;
+            
             cOVMSTR = new CoverageInsuranceMaster();
-            susMstl = SusMstl3;//.Chain("01", "03/09/04");
-            if (susMstl != null)
+            susMaster = _susMaster;
+            Key02A = susMaster.SmAgnt;
+            Key02B = susMaster.SmCert;
+            UserId = susMaster.SmAgnt;
+           
+        }
+        public SuspenseMaster Process()
+        {
+            if (susMaster != null)
             {
                 CertChg();
                 Upper();
@@ -49,47 +55,48 @@ namespace FourPointImport.Web.Functions
                 CovMst_DP();
                 Delete_Sus();
             }
+            return susMaster;
         }
         public void CertChg()
         {
             string CertHold = string.Empty; //assuming CertHold is a string variable
-            if (susMstl.SmFlag == "U")
+            if (susMaster.SmFlag == "U")
             {
-                if (susMstl.SmCert2.Trim() != string.Empty)
+                if (susMaster.SmCert2.Trim() != string.Empty)
                 {
-                    CertHold = susMstl.SmCert2.Trim();
-                    susMstl.SmCert2 = susMstl.SmCert.Trim();
-                    susMstl.SmCert = CertHold;
+                    CertHold = susMaster.SmCert2.Trim();
+                    susMaster.SmCert2 = susMaster.SmCert.Trim();
+                    susMaster.SmCert = CertHold;
                 }
             }
         }
         public void Upper()
         {
-            susMstl.SmRegn = susMstl.SmRegn.ToUpper();
-            susMstl.SmTerr = susMstl.SmTerr.ToUpper();
-            susMstl.SmBrch = susMstl.SmBrch.ToUpper();
-            susMstl.SmOffc = susMstl.SmOffc.ToUpper();
-            susMstl.SmBen1 = susMstl.SmBen1.ToUpper();
-            susMstl.SmBen2 = susMstl.SmBen2.ToUpper();
-            susMstl.SmType = susMstl.SmType.ToUpper();
-            susMstl.SmCalc = susMstl.SmCalc.ToUpper();
-            susMstl.SmLend = susMstl.SmLend.ToUpper();
-            susMstl.SmLNam1 = susMstl.SmLNam1.ToUpper();
-            susMstl.SmFNam1 = susMstl.SmFNam1.ToUpper();
-            susMstl.SmMNam1 = susMstl.SmMNam1.ToUpper();
-            susMstl.SmSufx1 = susMstl.SmSufx1.ToUpper();
-            susMstl.SmAdd11 = susMstl.SmAdd11.ToUpper();
-            susMstl.SmAdd21 = susMstl.SmAdd21.ToUpper();
-            susMstl.SmCity1 = susMstl.SmCity1.ToUpper();
-            susMstl.SmSte1 = susMstl.SmSte1.ToUpper();
-            susMstl.SmLNam2 = susMstl.SmLNam2.ToUpper();
-            susMstl.SmFNam2 = susMstl.SmFNam2.ToUpper();
-            susMstl.SmMNam2 = susMstl.SmMNam2.ToUpper();
-            susMstl.SmSufx2 = susMstl.SmSufx2.ToUpper();
-            susMstl.SmAdd12 = susMstl.SmAdd12.ToUpper();
-            susMstl.SmAdd22 = susMstl.SmAdd22.ToUpper();
-            susMstl.SmCity2 = susMstl.SmCity2.ToUpper();
-            susMstl.SmSte2 = susMstl.SmSte2.ToUpper();
+            susMaster.SmRegn = susMaster.SmRegn.ToUpper();
+            susMaster.SmTerr = susMaster.SmTerr.ToUpper();
+            susMaster.SmBrch = susMaster.SmBrch.ToUpper();
+            susMaster.SmOffc = susMaster.SmOffc.ToUpper();
+            susMaster.SmBen1 = susMaster.SmBen1.ToUpper();
+            susMaster.SmBen2 = susMaster.SmBen2.ToUpper();
+            susMaster.SmType = susMaster.SmType.ToUpper();
+            susMaster.SmCalc = susMaster.SmCalc.ToUpper();
+            susMaster.SmLend = susMaster.SmLend.ToUpper();
+            susMaster.SmLNam1 = susMaster.SmLNam1.ToUpper();
+            susMaster.SmFNam1 = susMaster.SmFNam1.ToUpper();
+            susMaster.SmMNam1 = susMaster.SmMNam1.ToUpper();
+            susMaster.SmSufx1 = susMaster.SmSufx1.ToUpper();
+            susMaster.SmAdd11 = susMaster.SmAdd11.ToUpper();
+            susMaster.SmAdd21 = susMaster.SmAdd21.ToUpper();
+            susMaster.SmCity1 = susMaster.SmCity1.ToUpper();
+            susMaster.SmSte1 = susMaster.SmSte1.ToUpper();
+            susMaster.SmLNam2 = susMaster.SmLNam2.ToUpper();
+            susMaster.SmFNam2 = susMaster.SmFNam2.ToUpper();
+            susMaster.SmMNam2 = susMaster.SmMNam2.ToUpper();
+            susMaster.SmSufx2 = susMaster.SmSufx2.ToUpper();
+            susMaster.SmAdd12 = susMaster.SmAdd12.ToUpper();
+            susMaster.SmAdd22 = susMaster.SmAdd22.ToUpper();
+            susMaster.SmCity2 = susMaster.SmCity2.ToUpper();
+            susMaster.SmSte2 = susMaster.SmSte2.ToUpper();
         }
         void FrmMstL1()
         {
@@ -110,21 +117,21 @@ namespace FourPointImport.Web.Functions
         {
             // Define Data Area for Manufactured Customer ID Number
 
-            if (susMstl.SmIdn1 == 0)
+            if (susMaster.SmIdn1 == 0)
             {
-                if (susMstl.SmIdn1 < 2)
+                if (susMaster.SmIdn1 < 2)
                 {
-                    susMstl.SmIdn1 = 1;
+                    susMaster.SmIdn1 = 1;
                 }
             }
 
-            if (!string.IsNullOrEmpty(susMstl.SmLNam2))
+            if (!string.IsNullOrEmpty(susMaster.SmLNam2))
             {
-                if (susMstl.SmIdn2 == 0)
+                if (susMaster.SmIdn2 == 0)
                 {
-                    if (susMstl.SmIdn2 < 2)
+                    if (susMaster.SmIdn2 < 2)
                     {
-                        susMstl.SmIdn2 = 1;
+                        susMaster.SmIdn2 = 1;
                     }
                 }
             }
@@ -133,7 +140,7 @@ namespace FourPointImport.Web.Functions
 
         public void BrcMstL2()
         {
-            if (susMstl.SmRegn.StringSafe().Length > 0 || susMstl.SmTerr.StringSafe().Length > 0 || susMstl.SmBrch.StringSafe().Length > 0 || susMstl.SmOffc.StringSafe().Length > 0)
+            if (susMaster.SmRegn.StringSafe().Length > 0 || susMaster.SmTerr.StringSafe().Length > 0 || susMaster.SmBrch.StringSafe().Length > 0 || susMaster.SmOffc.StringSafe().Length > 0)
             {
                 List<BranchOffice> brcMstp = new List<BranchOffice>();
                 var record = brcMstp.Find(x => x.BmAgnt == Key07);
@@ -143,11 +150,11 @@ namespace FourPointImport.Web.Functions
                     return;
                 }
 
-                susMstl.SmAgnt = record.BmAgnt;
-                susMstl.SmRegn = record.BmRegn;
-                susMstl.SmTerr = record.BmTerr;
-                susMstl.SmBrch = record.BmBrch;
-                susMstl.SmOffc = record.BmOffc;
+                susMaster.SmAgnt = record.BmAgnt;
+                susMaster.SmRegn = record.BmRegn;
+                susMaster.SmTerr = record.BmTerr;
+                susMaster.SmBrch = record.BmBrch;
+                susMaster.SmOffc = record.BmOffc;
                 record.BmDatA = DateTime.Now;
                 record.BmUsrA = PgmNam;
                 //brcMstp.Write(record);
@@ -156,35 +163,35 @@ namespace FourPointImport.Web.Functions
 
         void LonMst()
         {
-            lONMSTP.LmAgnt = susMstl.SmAgnt;
-            lONMSTP.LmRegn = susMstl.SmRegn;
-            lONMSTP.LmTerr = susMstl.SmTerr;
-            lONMSTP.LmBrch = susMstl.SmBrch;
-            lONMSTP.LmOffc = susMstl.SmOffc;
-            lONMSTP.LmCert = susMstl.SmCert;
-            lONMSTP.LmIdn1 = susMstl.SmIdn1;
-            lONMSTP.LmIdn2 = susMstl.SmIdn2;
-            lONMSTP.LmBen1 = susMstl.SmBen1;
-            lONMSTP.LmBen2 = susMstl.SmBen2;
-            lONMSTP.LmFPay = susMstl.SmFPay;
-            lONMSTP.LmEfft = susMstl.SmEfft;
-            lONMSTP.LmExpr = susMstl.SmExpr;
-            lONMSTP.LmTerm = susMstl.SmTerm;
-            lONMSTP.LmFreq = susMstl.SmFreq;
-            lONMSTP.LmAmnt = susMstl.SmAmnt;
-            lONMSTP.LmSchd = susMstl.SmSchd;
-            lONMSTP.LmIntr = susMstl.SmIntr;
-            lONMSTP.LmForm = susMstl.SmForm;
+            lONMSTP.LmAgnt = susMaster.SmAgnt;
+            lONMSTP.LmRegn = susMaster.SmRegn;
+            lONMSTP.LmTerr = susMaster.SmTerr;
+            lONMSTP.LmBrch = susMaster.SmBrch;
+            lONMSTP.LmOffc = susMaster.SmOffc;
+            lONMSTP.LmCert = susMaster.SmCert;
+            lONMSTP.LmIdn1 = susMaster.SmIdn1;
+            lONMSTP.LmIdn2 = susMaster.SmIdn2;
+            lONMSTP.LmBen1 = susMaster.SmBen1;
+            lONMSTP.LmBen2 = susMaster.SmBen2;
+            lONMSTP.LmFPay = susMaster.SmFPay;
+            lONMSTP.LmEfft = susMaster.SmEfft;
+            lONMSTP.LmExpr = susMaster.SmExpr;
+            lONMSTP.LmTerm = susMaster.SmTerm;
+            lONMSTP.LmFreq = susMaster.SmFreq;
+            lONMSTP.LmAmnt = susMaster.SmAmnt;
+            lONMSTP.LmSchd = susMaster.SmSchd;
+            lONMSTP.LmIntr = susMaster.SmIntr;
+            lONMSTP.LmForm = susMaster.SmForm;
             lONMSTP.LmStat = "";
-            lONMSTP.LmSig1 = susMstl.SmSig1;
-            lONMSTP.LmSig2 = susMstl.SmSig2;
-            lONMSTP.LmCnlD = susMstl.SmCnlD;
+            lONMSTP.LmSig1 = susMaster.SmSig1;
+            lONMSTP.LmSig2 = susMaster.SmSig2;
+            lONMSTP.LmCnlD = susMaster.SmCnlD;
             lONMSTP.LmDatA = DateTime.Now;
             lONMSTP.LmUsrA = UserId;
-            lONMSTP.LmPani = susMstl.SmPanI;
-            lONMSTP.LmLine = susMstl.SmLine;
-            lONMSTP.LmPrev = susMstl.SmCert2;
-            lONMSTP.LmMntf = susMstl.Smmntf;
+            lONMSTP.LmPani = susMaster.SmPanI;
+            lONMSTP.LmLine = susMaster.SmLine;
+            lONMSTP.LmPrev = susMaster.SmCert2;
+            lONMSTP.LmMntf = susMaster.Smmntf;
 
             //LonMstR.Write();
         }
@@ -192,19 +199,19 @@ namespace FourPointImport.Web.Functions
         {
             var recFound = Insmstl1.Find(x => x.ImStat == Key02A);
 
-            recFound.ImIDN = susMstl.SmIdn1;
-            recFound.ImLNam = susMstl.SmLNam1;
-            recFound.ImFNam = susMstl.SmFNam1;
-            recFound.ImMNam = susMstl.SmMNam1;
-            recFound.ImSufx = susMstl.SmSufx1;
-            recFound.ImAdd1 = susMstl.SmAdd11;
-            recFound.ImAdd2 = susMstl.SmAdd21;
-            recFound.ImCity = susMstl.SmCity1;
-            recFound.ImSte = susMstl.SmSte1;
-            recFound.ImZip = susMstl.SmZip1;
-            recFound.ImPhne = susMstl.SmPhne1;
-            recFound.ImDob = susMstl.SmDob1;
-            recFound.ImSex = susMstl.SmSex1;
+            recFound.ImIDN = susMaster.SmIdn1;
+            recFound.ImLNam = susMaster.SmLNam1;
+            recFound.ImFNam = susMaster.SmFNam1;
+            recFound.ImMNam = susMaster.SmMNam1;
+            recFound.ImSufx = susMaster.SmSufx1;
+            recFound.ImAdd1 = susMaster.SmAdd11;
+            recFound.ImAdd2 = susMaster.SmAdd21;
+            recFound.ImCity = susMaster.SmCity1;
+            recFound.ImSte = susMaster.SmSte1;
+            recFound.ImZip = susMaster.SmZip1;
+            recFound.ImPhne = susMaster.SmPhne1;
+            recFound.ImDob = susMaster.SmDob1;
+            recFound.ImSex = susMaster.SmSex1;
             recFound.ImUsrA = UserId;
 
             if (recFound != null)
@@ -224,23 +231,23 @@ namespace FourPointImport.Web.Functions
         }
         void InsMst_02()
         {
-            if (susMstl.SmIdn2 > 0)
+            if (susMaster.SmIdn2 > 0)
             {
                 var recFound = Insmstl1.Find(x => x.ImUsrA == Key02B);
 
-                recFound.ImIDN = susMstl.SmIdn2;
-                recFound.ImLNam = susMstl.SmLNam2;
-                recFound.ImFNam = susMstl.SmFNam2;
-                recFound.ImMNam = susMstl.SmMNam2;
-                recFound.ImSufx = susMstl.SmSufx2;
-                recFound.ImAdd1 = susMstl.SmAdd12;
-                recFound.ImAdd2 = susMstl.SmAdd22;
-                recFound.ImCity = susMstl.SmCity2;
-                recFound.ImSte = susMstl.SmSte2;
-                recFound.ImZip = susMstl.SmZip2;
-                recFound.ImPhne = susMstl.SmPhne2;
-                recFound.ImDob = susMstl.SmDob2;
-                recFound.ImSex = susMstl.SmSex2;
+                recFound.ImIDN = susMaster.SmIdn2;
+                recFound.ImLNam = susMaster.SmLNam2;
+                recFound.ImFNam = susMaster.SmFNam2;
+                recFound.ImMNam = susMaster.SmMNam2;
+                recFound.ImSufx = susMaster.SmSufx2;
+                recFound.ImAdd1 = susMaster.SmAdd12;
+                recFound.ImAdd2 = susMaster.SmAdd22;
+                recFound.ImCity = susMaster.SmCity2;
+                recFound.ImSte = susMaster.SmSte2;
+                recFound.ImZip = susMaster.SmZip2;
+                recFound.ImPhne = susMaster.SmPhne2;
+                recFound.ImDob = susMaster.SmDob2;
+                recFound.ImSex = susMaster.SmSex2;
                 //        recFound.ImRtng = SmRtng2;
                 //        recFound.ImAcct = SmAcct2;
                 recFound.ImUsrA = UserId;
@@ -263,11 +270,11 @@ namespace FourPointImport.Web.Functions
         }
         public void GapMstL1()
         {
-            if (susMstl.SmVIN.Trim() != "" || susMstl.SmMake.Trim() != "" || susMstl.SmModel.Trim() != "")
+            if (susMaster.SmVIN.Trim() != "" || susMaster.SmMake.Trim() != "" || susMaster.SmModel.Trim() != "")
             {
                 // Move a Copy of the current record to History File
                 List<GAPInsurance> GapMstL1 = new List<GAPInsurance>();
-                var record = GapMstL1.Find(x => x.GmVIN == susMstl.SmVIN);
+                var record = GapMstL1.Find(x => x.GmVIN == susMaster.SmVIN);
                 if (record != null)
                 {
                     record.GmHstD = DateTime.Now;
@@ -275,18 +282,18 @@ namespace FourPointImport.Web.Functions
                     //GapHstR.Write();
 
                     // Update Existing Record with new information
-                    record.GmAgnt = susMstl.SmAgnt;
-                    record.GmCert = susMstl.SmCert;
-                    record.GmVIN = susMstl.SmVIN;
-                    record.GmYear = susMstl.SmYear;
-                    record.GmMake = susMstl.SmMake;
-                    record.GmModel = susMstl.SmModel;
-                    record.GmFee = susMstl.SmFee;
-                    record.GmComR = susMstl.SmComR;
-                    record.GmEfft = Utils.DecimalToDate(susMstl.SmGEfft);
-                    record.GmExpr = Utils.DecimalToDate(susMstl.SmGExpr);
-                    record.GmStat = susMstl.SmGStat;
-                    record.GmSDte = susMstl.SmGDate;
+                    record.GmAgnt = susMaster.SmAgnt;
+                    record.GmCert = susMaster.SmCert;
+                    record.GmVIN = susMaster.SmVIN;
+                    record.GmYear = susMaster.SmYear;
+                    record.GmMake = susMaster.SmMake;
+                    record.GmModel = susMaster.SmModel;
+                    record.GmFee = susMaster.SmFee;
+                    record.GmComR = susMaster.SmComR;
+                    record.GmEfft = Utils.DecimalToDate(susMaster.SmGEfft);
+                    record.GmExpr = Utils.DecimalToDate(susMaster.SmGExpr);
+                    record.GmStat = susMaster.SmGStat;
+                    record.GmSDte = susMaster.SmGDate;
                     record.GmDatU = DateTime.Now;
                     record.GmUsrU = UserId;
                     record.GmHstU = "";
@@ -295,18 +302,18 @@ namespace FourPointImport.Web.Functions
                 else
                 {
                     // Create new Record
-                    record.GmAgnt = susMstl.SmAgnt;
-                    record.GmCert = susMstl.SmCert;
-                    record.GmVIN = susMstl.SmVIN;
-                    record.GmYear = susMstl.SmYear;
-                    record.GmMake = susMstl.SmMake;
-                    record.GmModel = susMstl.SmModel;
-                    record.GmFee = susMstl.SmFee;
-                    record.GmComR = susMstl.SmComR;
-                    record.GmEfft = Utils.DecimalToDate(susMstl.SmGEfft);
-                    record.GmExpr = Utils.DecimalToDate(susMstl.SmGExpr);
-                    record.GmStat = susMstl.SmGStat;
-                    record.GmSDte = susMstl.SmGDate;
+                    record.GmAgnt = susMaster.SmAgnt;
+                    record.GmCert = susMaster.SmCert;
+                    record.GmVIN = susMaster.SmVIN;
+                    record.GmYear = susMaster.SmYear;
+                    record.GmMake = susMaster.SmMake;
+                    record.GmModel = susMaster.SmModel;
+                    record.GmFee = susMaster.SmFee;
+                    record.GmComR = susMaster.SmComR;
+                    record.GmEfft = Utils.DecimalToDate(susMaster.SmGEfft);
+                    record.GmExpr = Utils.DecimalToDate(susMaster.SmGExpr);
+                    record.GmStat = susMaster.SmGStat;
+                    record.GmSDte = susMaster.SmGDate;
                     record.GmDatA = DateTime.Now;
                     record.GmUsrA = UserId;
                     record.GmHstU = "";
@@ -351,36 +358,36 @@ namespace FourPointImport.Web.Functions
 
         void CovMst_Lif()
         {
-            if (susMstl.SmLif > 0)
+            if (susMaster.SmLif > 0)
             {
-                cOVMSTR.CmAgnt = susMstl.SmAgnt;
-                cOVMSTR.CmCert = susMstl.SmCert;
-                cOVMSTR.CmIDN1 = susMstl.SmIdn1;
-                cOVMSTR.CmIDN2 = susMstl.SmIdn2;
-                cOVMSTR.CmFPrm = susMstl.SmFPrm;
-                cOVMSTR.CmTerm = susMstl.SmTrmL;
-                cOVMSTR.CmDays = susMstl.SmDays;
+                cOVMSTR.CmAgnt = susMaster.SmAgnt;
+                cOVMSTR.CmCert = susMaster.SmCert;
+                cOVMSTR.CmIDN1 = susMaster.SmIdn1;
+                cOVMSTR.CmIDN2 = susMaster.SmIdn2;
+                cOVMSTR.CmFPrm = susMaster.SmFPrm;
+                cOVMSTR.CmTerm = susMaster.SmTrmL;
+                cOVMSTR.CmDays = susMaster.SmDays;
                 cOVMSTR.CmStat = string.Empty;
-                cOVMSTR.CmCovc = susMstl.SmLif;
+                cOVMSTR.CmCovc = susMaster.SmLif;
                 cOVMSTR.CmTble = string.Empty;
                 cOVMSTR.CmLapD = 0;
                 cOVMSTR.CmLapR = string.Empty;
                 cOVMSTR.CmCand = 0;
                 cOVMSTR.CmCanr = string.Empty;
-                cOVMSTR.CmEfft = susMstl.SmEfft;
+                cOVMSTR.CmEfft = susMaster.SmEfft;
 
                 // Life Benefit Amount from 4Point - Added per Diana Santellan (March 6th 2008)
-                cOVMSTR.CmBAmt = susMstl.SmLBen;
+                cOVMSTR.CmBAmt = susMaster.SmLBen;
 
                 // Life Cancellation Date
-                if (susMstl.SmCnl > 0 && susMstl.SmCnlL == 0)
+                if (susMaster.SmCnl > 0 && susMaster.SmCnlL == 0)
                 {
-                    susMstl.SmCnlL = (int)susMstl.SmCnl;
+                    susMaster.SmCnlL = (int)susMaster.SmCnl;
                 }
 
-                if (susMstl.SmCnlL > 0)
+                if (susMaster.SmCnlL > 0)
                 {
-                    cOVMSTR.CmCand = susMstl.SmCnlL;
+                    cOVMSTR.CmCand = susMaster.SmCnlL;
                     if (cOVMSTR.CmCanr != string.Empty)
                     {
                         cOVMSTR.CmCanr = "CANCELLED PER 4POINT";
@@ -391,17 +398,17 @@ namespace FourPointImport.Web.Functions
                 cOVMSTR.CMUsrA = UserId;
 
                 // Life Effective Date / Term and Expiration Date
-                cOVMSTR.CmEfft = !susMstl.SmEffL.DateNotNull() ? susMstl.SmEfft : cOVMSTR.CmEfft;
-                cOVMSTR.CmTerm = susMstl.SmTrmL == 0 ? susMstl.SmTerm : cOVMSTR.CmTerm;
+                cOVMSTR.CmEfft = !susMaster.SmEffL.DateNotNull() ? susMaster.SmEfft : cOVMSTR.CmEfft;
+                cOVMSTR.CmTerm = susMaster.SmTrmL == 0 ? susMaster.SmTerm : cOVMSTR.CmTerm;
 
-                if (!susMstl.SmExpL.DateNotNull())
+                if (!susMaster.SmExpL.DateNotNull())
                 {
                     DateTime LmFPayDate = lONMSTP.LmFPay.AddMonths(cOVMSTR.CmTerm);
                     cOVMSTR.CmExpr = LmFPayDate;
                 }
                 else
                 {
-                    cOVMSTR.CmExpr = susMstl.SmExpL;
+                    cOVMSTR.CmExpr = susMaster.SmExpL;
                 }
 
                 RateTable();
@@ -412,7 +419,7 @@ namespace FourPointImport.Web.Functions
                 }
                 else
                 {
-                    cOVMSTR.CmAmnt = susMstl.SmLAmt;
+                    cOVMSTR.CmAmnt = susMaster.SmLAmt;
                 }
 
                 //CovMstR.Insert();
@@ -420,35 +427,35 @@ namespace FourPointImport.Web.Functions
         }
         private void CovMst_Dis()
         {
-            if (susMstl.SmDis > 0)
+            if (susMaster.SmDis > 0)
             {
-                cOVMSTR.CmAgnt = susMstl.SmAgnt;
-                cOVMSTR.CmCert = susMstl.SmCert;
-                cOVMSTR.CmIDN1 = susMstl.SmIdn1;
-                cOVMSTR.CmIDN2 = susMstl.SmIdn2;
-                cOVMSTR.CmFPrm = susMstl.SmFPrm;
-                cOVMSTR.CmTerm = susMstl.SmTrmD;
-                cOVMSTR.CmDays = susMstl.SmDays;
+                cOVMSTR.CmAgnt = susMaster.SmAgnt;
+                cOVMSTR.CmCert = susMaster.SmCert;
+                cOVMSTR.CmIDN1 = susMaster.SmIdn1;
+                cOVMSTR.CmIDN2 = susMaster.SmIdn2;
+                cOVMSTR.CmFPrm = susMaster.SmFPrm;
+                cOVMSTR.CmTerm = susMaster.SmTrmD;
+                cOVMSTR.CmDays = susMaster.SmDays;
                 cOVMSTR.CmStat = string.Empty;
-                cOVMSTR.CmCovc = susMstl.SmDis;
+                cOVMSTR.CmCovc = susMaster.SmDis;
                 cOVMSTR.CmTble = string.Empty;
                 cOVMSTR.CmLapD = 0;
                 cOVMSTR.CmLapR = string.Empty;
                 cOVMSTR.CmCand = 0;
                 cOVMSTR.CmCanr = string.Empty;
-                cOVMSTR.CmEfft = susMstl.SmEfft;
+                cOVMSTR.CmEfft = susMaster.SmEfft;
 
                 // Disability Benefit Amount from 4Point
-                susMstl.SmDBen = (int)cOVMSTR.CmBAmt;
+                susMaster.SmDBen = (int)cOVMSTR.CmBAmt;
 
                 // A&H Cancellation Date
-                if (susMstl.SmCnl > 0 && susMstl.SmCnlD == 0)
+                if (susMaster.SmCnl > 0 && susMaster.SmCnlD == 0)
                 {
-                    susMstl.SmCnlD = (int)susMstl.SmCnl;
+                    susMaster.SmCnlD = (int)susMaster.SmCnl;
                 }
-                if (susMstl.SmCnlD > 0)
+                if (susMaster.SmCnlD > 0)
                 {
-                    cOVMSTR.CmCand = susMstl.SmCnlD;
+                    cOVMSTR.CmCand = susMaster.SmCnlD;
                     if (string.IsNullOrWhiteSpace(cOVMSTR.CmCanr))
                     {
                         cOVMSTR.CmCanr = "CANCELLED PER 4POINT";
@@ -459,9 +466,9 @@ namespace FourPointImport.Web.Functions
                 cOVMSTR.CMUsrA = UserId;
 
                 // Disability Effective Date / Term and Expiration Date
-                cOVMSTR.CmEfft = !susMstl.SmEffD.DateNotNull() ? susMstl.SmEfft : cOVMSTR.CmEfft;
-                cOVMSTR.CmTerm = susMstl.SmTrmD == 0 ? susMstl.SmTerm : cOVMSTR.CmTerm;
-                if (!susMstl.SmExpD.DateNotNull())
+                cOVMSTR.CmEfft = !susMaster.SmEffD.DateNotNull() ? susMaster.SmEfft : cOVMSTR.CmEfft;
+                cOVMSTR.CmTerm = susMaster.SmTrmD == 0 ? susMaster.SmTerm : cOVMSTR.CmTerm;
+                if (!susMaster.SmExpD.DateNotNull())
                 {
                     DateTime LmFPayDate = lONMSTP.LmFPay;
                     LmFPayDate = LmFPayDate.AddMonths(cOVMSTR.CmTerm);
@@ -469,7 +476,7 @@ namespace FourPointImport.Web.Functions
                 }
                 else
                 {
-                    cOVMSTR.CmExpr = susMstl.SmExpD;
+                    cOVMSTR.CmExpr = susMaster.SmExpD;
                 }
 
                 RateTable();
@@ -479,7 +486,7 @@ namespace FourPointImport.Web.Functions
                 }
                 else
                 {
-                    cOVMSTR.CmAmnt = susMstl.SmDAmt;
+                    cOVMSTR.CmAmnt = susMaster.SmDAmt;
                 }
 
                 //CovMstR.Write();
@@ -488,28 +495,28 @@ namespace FourPointImport.Web.Functions
 
         void CovMst_DP()
         {
-            if (susMstl.SmDebt > 0)
+            if (susMaster.SmDebt > 0)
             {
-                cOVMSTR.CmAgnt = susMstl.SmAgnt;
-                cOVMSTR.CmCert = susMstl.SmCert;
-                cOVMSTR.CmIDN1 = susMstl.SmIdn1;
-                cOVMSTR.CmIDN2 = susMstl.SmIdn2;
-                cOVMSTR.CmFPrm = susMstl.SmFPrm;
-                cOVMSTR.CmTerm = susMstl.SmTrmP;
-                cOVMSTR.CmDays = susMstl.SmDays;
+                cOVMSTR.CmAgnt = susMaster.SmAgnt;
+                cOVMSTR.CmCert = susMaster.SmCert;
+                cOVMSTR.CmIDN1 = susMaster.SmIdn1;
+                cOVMSTR.CmIDN2 = susMaster.SmIdn2;
+                cOVMSTR.CmFPrm = susMaster.SmFPrm;
+                cOVMSTR.CmTerm = susMaster.SmTrmP;
+                cOVMSTR.CmDays = susMaster.SmDays;
                 cOVMSTR.CmStat = "";
-                cOVMSTR.CmCovc = susMstl.SmDebt;
+                cOVMSTR.CmCovc = susMaster.SmDebt;
                 cOVMSTR.CmTble = "";
                 cOVMSTR.CmLapD = 0;
                 cOVMSTR.CmLapR = "";
                 cOVMSTR.CmCand = 0;
                 cOVMSTR.CmCanr = "";
-                cOVMSTR.CmEfft = susMstl.SmEfft;
+                cOVMSTR.CmEfft = susMaster.SmEfft;
                 cOVMSTR.CmBAmt = 0;
 
-                if (susMstl.SmCnl > 0)
+                if (susMaster.SmCnl > 0)
                 {
-                    cOVMSTR.CmCand = (int)susMstl.SmCnl;
+                    cOVMSTR.CmCand = (int)susMaster.SmCnl;
                     if (cOVMSTR.CmCanr == "")
                     {
                         cOVMSTR.CmCanr = "Cancelled Per 4 Point";
@@ -521,19 +528,19 @@ namespace FourPointImport.Web.Functions
                 cOVMSTR.CMUsrA = UserId;
 
                 // Disability Effective Date / Term and Expiration Date
-                cOVMSTR.CmEfft = susMstl.SmEffP;
+                cOVMSTR.CmEfft = susMaster.SmEffP;
 
-                if (!susMstl.SmEffP.DateNotNull())
+                if (!susMaster.SmEffP.DateNotNull())
                 {
-                    cOVMSTR.CmEfft = susMstl.SmEfft;
+                    cOVMSTR.CmEfft = susMaster.SmEfft;
                 }
 
-                if (susMstl.SmTrmP == 0)
+                if (susMaster.SmTrmP == 0)
                 {
-                    cOVMSTR.CmTerm = susMstl.SmTerm;
+                    cOVMSTR.CmTerm = susMaster.SmTerm;
                 }
 
-                if (!susMstl.SmExpP.DateNotNull())
+                if (!susMaster.SmExpP.DateNotNull())
                 {
                     DateTime LmFPayDate = lONMSTP.LmFPay;
                     DateTime CmExprDate = LmFPayDate.AddMonths(cOVMSTR.CmTerm);
@@ -542,7 +549,7 @@ namespace FourPointImport.Web.Functions
                 }
                 else
                 {
-                    cOVMSTR.CmExpr = susMstl.SmExpP;
+                    cOVMSTR.CmExpr = susMaster.SmExpP;
                 }
 
                 RateTable();
@@ -552,7 +559,7 @@ namespace FourPointImport.Web.Functions
                 }
                 else
                 {
-                    cOVMSTR.CmAmnt = susMstl.SmDAmt;
+                    cOVMSTR.CmAmnt = susMaster.SmDAmt;
                 }
 
                 //ExprDate();
@@ -578,7 +585,7 @@ namespace FourPointImport.Web.Functions
             {
                 foreach (var item in agtDtll1)
 
-                    if (susMstl.SmEfft >= item.AdEfft && susMstl.SmEfft <= item.AdExpr)
+                    if (susMaster.SmEfft >= item.AdEfft && susMaster.SmEfft <= item.AdExpr)
                     {
                         cOVMSTR.CmTble = item.AdTble;
                         break;
@@ -587,255 +594,255 @@ namespace FourPointImport.Web.Functions
         }
         void Health01()
         {
-            qstNsp.QaAgnt = susMstl.SmAgnt;
-            qstNsp.QaCert = susMstl.SmCert;
-            qstNsp.QaIDN = susMstl.SmIdn1;
+            qstNsp.QaAgnt = susMaster.SmAgnt;
+            qstNsp.QaCert = susMaster.SmCert;
+            qstNsp.QaIDN = susMaster.SmIdn1;
 
-            if (susMstl.SmHQ01A.Trim() != string.Empty)
+            if (susMaster.SmHQ01A.Trim() != string.Empty)
             {
-                qstNsp.QaQstn = susMstl.SmHQ01A;
+                qstNsp.QaQstn = susMaster.SmHQ01A;
                 qstNsp.QaSeq = 1;
             }
 
-            if (susMstl.SmHQ02A.Trim() != string.Empty)
+            if (susMaster.SmHQ02A.Trim() != string.Empty)
             {
-                qstNsp.QaQstn = susMstl.SmHQ02A;
+                qstNsp.QaQstn = susMaster.SmHQ02A;
                 qstNsp.QaSeq = 2;
             }
 
-            if (susMstl.SmHQ03A.Trim() != string.Empty)
+            if (susMaster.SmHQ03A.Trim() != string.Empty)
             {
-                qstNsp.QaQstn = susMstl.SmHQ03A;
+                qstNsp.QaQstn = susMaster.SmHQ03A;
                 qstNsp.QaSeq = 3;
             }
 
-            if (susMstl.SmHQ04A.Trim() != string.Empty)
+            if (susMaster.SmHQ04A.Trim() != string.Empty)
             {
-                qstNsp.QaQstn = susMstl.SmHQ04A;
+                qstNsp.QaQstn = susMaster.SmHQ04A;
                 qstNsp.QaSeq = 4;
             }
 
-            if (susMstl.SmHQ05A.Trim() != string.Empty)
+            if (susMaster.SmHQ05A.Trim() != string.Empty)
             {
-                qstNsp.QaQstn = susMstl.SmHQ05A;
+                qstNsp.QaQstn = susMaster.SmHQ05A;
                 qstNsp.QaSeq = 5;
             }
 
-            if (susMstl.SmHQ06A.Trim() != string.Empty)
+            if (susMaster.SmHQ06A.Trim() != string.Empty)
             {
-                qstNsp.QaQstn = susMstl.SmHQ06A;
+                qstNsp.QaQstn = susMaster.SmHQ06A;
                 qstNsp.QaSeq = 6;
             }
 
-            if (susMstl.SmHQ07A.Trim() != string.Empty)
+            if (susMaster.SmHQ07A.Trim() != string.Empty)
             {
-                qstNsp.QaQstn = susMstl.SmHQ07A;
+                qstNsp.QaQstn = susMaster.SmHQ07A;
                 qstNsp.QaSeq = 7;
             }
 
-            if (susMstl.SmHQ08A.Trim() != string.Empty)
+            if (susMaster.SmHQ08A.Trim() != string.Empty)
             {
-                qstNsp.QaQstn = susMstl.SmHQ08A;
+                qstNsp.QaQstn = susMaster.SmHQ08A;
                 qstNsp.QaSeq = 8;
             }
 
-            if (susMstl.SmHQ09A.Trim() != string.Empty)
+            if (susMaster.SmHQ09A.Trim() != string.Empty)
             {
-                qstNsp.QaQstn = susMstl.SmHQ09A;
+                qstNsp.QaQstn = susMaster.SmHQ09A;
                 qstNsp.QaSeq = 9;
             }
 
-            if (susMstl.SmHQ10A.Trim() != string.Empty)
+            if (susMaster.SmHQ10A.Trim() != string.Empty)
             {
-                qstNsp.QaQstn = susMstl.SmHQ10A;
+                qstNsp.QaQstn = susMaster.SmHQ10A;
                 qstNsp.QaSeq = 10;
             }
 
-            if (susMstl.SmHQ11A.Trim() != string.Empty)
+            if (susMaster.SmHQ11A.Trim() != string.Empty)
             {
-                qstNsp.QaQstn = susMstl.SmHQ11A;
+                qstNsp.QaQstn = susMaster.SmHQ11A;
                 qstNsp.QaSeq = 11;
             }
 
-            if (susMstl.SmHQ12A.Trim() != string.Empty)
+            if (susMaster.SmHQ12A.Trim() != string.Empty)
             {
-                qstNsp.QaQstn = susMstl.SmHQ12A;
+                qstNsp.QaQstn = susMaster.SmHQ12A;
                 qstNsp.QaSeq = 12;
             }
 
-            if (susMstl.SmHQ13A.Trim() != string.Empty)
+            if (susMaster.SmHQ13A.Trim() != string.Empty)
             {
-                qstNsp.QaQstn = susMstl.SmHQ13A;
+                qstNsp.QaQstn = susMaster.SmHQ13A;
                 qstNsp.QaSeq = 13;
             }
 
-            if (susMstl.SmHQ14A.Trim() != string.Empty)
+            if (susMaster.SmHQ14A.Trim() != string.Empty)
             {
-                qstNsp.QaQstn = susMstl.SmHQ14A;
+                qstNsp.QaQstn = susMaster.SmHQ14A;
                 qstNsp.QaSeq = 14;
             }
 
-            if (susMstl.SmHQ15A.Trim() != string.Empty)
+            if (susMaster.SmHQ15A.Trim() != string.Empty)
             {
-                qstNsp.QaQstn = susMstl.SmHQ15A;
+                qstNsp.QaQstn = susMaster.SmHQ15A;
                 qstNsp.QaSeq = 15;
             }
 
-            if (susMstl.SmHQ16A.Trim() != string.Empty)
+            if (susMaster.SmHQ16A.Trim() != string.Empty)
             {
-                qstNsp.QaQstn = susMstl.SmHQ16A;
+                qstNsp.QaQstn = susMaster.SmHQ16A;
                 qstNsp.QaSeq = 16;
             }
 
-            if (susMstl.SmHQ17A != " ")
+            if (susMaster.SmHQ17A != " ")
             {
-                qstNsp.QaQstn = susMstl.SmHQ17A;
+                qstNsp.QaQstn = susMaster.SmHQ17A;
                 qstNsp.QaSeq = 17;
             }
 
 
-            if (susMstl.SmHQ18A != " ")
+            if (susMaster.SmHQ18A != " ")
             {
-                qstNsp.QaQstn = susMstl.SmHQ18A;
+                qstNsp.QaQstn = susMaster.SmHQ18A;
                 qstNsp.QaSeq = 18;
             }
 
-            if (susMstl.SmHQ19A != " ")
+            if (susMaster.SmHQ19A != " ")
             {
-                qstNsp.QaQstn = susMstl.SmHQ19A;
+                qstNsp.QaQstn = susMaster.SmHQ19A;
                 qstNsp.QaSeq = 19;
             }
 
 
-            if (susMstl.SmHQ20A != " ")
+            if (susMaster.SmHQ20A != " ")
             {
-                qstNsp.QaQstn = susMstl.SmHQ20A;
+                qstNsp.QaQstn = susMaster.SmHQ20A;
                 qstNsp.QaSeq = 20;
             }
         }
         void Health02()
         {
-            qstNsp.QaAgnt = susMstl.SmAgnt;
-            qstNsp.QaCert = susMstl.SmCert;
-            qstNsp.QaIDN = susMstl.SmIdn2;
+            qstNsp.QaAgnt = susMaster.SmAgnt;
+            qstNsp.QaCert = susMaster.SmCert;
+            qstNsp.QaIDN = susMaster.SmIdn2;
 
-            if (susMstl.SmHQ01B.Trim() != "")
+            if (susMaster.SmHQ01B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ01B;
+                qstNsp.QaQstn = susMaster.SmHQ01B;
                 qstNsp.QaSeq = 1;
             }
 
-            if (susMstl.SmHQ02B.Trim() != "")
+            if (susMaster.SmHQ02B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ02B;
+                qstNsp.QaQstn = susMaster.SmHQ02B;
                 qstNsp.QaSeq = 2;
             }
 
-            if (susMstl.SmHQ03B.Trim() != "")
+            if (susMaster.SmHQ03B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ03B;
+                qstNsp.QaQstn = susMaster.SmHQ03B;
                 qstNsp.QaSeq = 3;
             }
 
-            if (susMstl.SmHQ04B.Trim() != "")
+            if (susMaster.SmHQ04B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ04B;
+                qstNsp.QaQstn = susMaster.SmHQ04B;
                 qstNsp.QaSeq = 4;
             }
 
-            if (susMstl.SmHQ05B.Trim() != "")
+            if (susMaster.SmHQ05B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ05B;
+                qstNsp.QaQstn = susMaster.SmHQ05B;
                 qstNsp.QaSeq = 5;
             }
 
-            if (susMstl.SmHQ06B.Trim() != "")
+            if (susMaster.SmHQ06B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ06B;
+                qstNsp.QaQstn = susMaster.SmHQ06B;
                 qstNsp.QaSeq = 6;
             }
 
-            if (susMstl.SmHQ07B.Trim() != "")
+            if (susMaster.SmHQ07B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ07B;
+                qstNsp.QaQstn = susMaster.SmHQ07B;
                 qstNsp.QaSeq = 7;
             }
 
-            if (susMstl.SmHQ08B.Trim() != "")
+            if (susMaster.SmHQ08B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ08B;
+                qstNsp.QaQstn = susMaster.SmHQ08B;
                 qstNsp.QaSeq = 8;
             }
 
-            if (susMstl.SmHQ09B.Trim() != "")
+            if (susMaster.SmHQ09B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ09B;
+                qstNsp.QaQstn = susMaster.SmHQ09B;
                 qstNsp.QaSeq = 9;
             }
 
-            if (susMstl.SmHQ10B.Trim() != "")
+            if (susMaster.SmHQ10B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ10B;
+                qstNsp.QaQstn = susMaster.SmHQ10B;
                 qstNsp.QaSeq = 10;
             }
 
-            if (susMstl.SmHQ11B.Trim() != "")
+            if (susMaster.SmHQ11B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ11B;
+                qstNsp.QaQstn = susMaster.SmHQ11B;
                 qstNsp.QaSeq = 11;
             }
 
-            if (susMstl.SmHQ12B.Trim() != "")
+            if (susMaster.SmHQ12B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ12B;
+                qstNsp.QaQstn = susMaster.SmHQ12B;
                 qstNsp.QaSeq = 12;
             }
 
-            if (susMstl.SmHQ13B.Trim() != "")
+            if (susMaster.SmHQ13B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ13B;
+                qstNsp.QaQstn = susMaster.SmHQ13B;
                 qstNsp.QaSeq = 13;
             }
 
-            if (susMstl.SmHQ14B.Trim() != "")
+            if (susMaster.SmHQ14B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ14B;
+                qstNsp.QaQstn = susMaster.SmHQ14B;
                 qstNsp.QaSeq = 14;
             }
 
-            if (susMstl.SmHQ15B.Trim() != "")
+            if (susMaster.SmHQ15B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ15B;
+                qstNsp.QaQstn = susMaster.SmHQ15B;
                 qstNsp.QaSeq = 15;
             }
 
-            if (susMstl.SmHQ16B.Trim() != "")
+            if (susMaster.SmHQ16B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ16B;
+                qstNsp.QaQstn = susMaster.SmHQ16B;
                 qstNsp.QaSeq = 16;
             }
 
-            if (susMstl.SmHQ17B.Trim() != "")
+            if (susMaster.SmHQ17B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ17B;
+                qstNsp.QaQstn = susMaster.SmHQ17B;
                 qstNsp.QaSeq = 17;
             }
 
-            if (susMstl.SmHQ18B.Trim() != "")
+            if (susMaster.SmHQ18B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ18B;
+                qstNsp.QaQstn = susMaster.SmHQ18B;
                 qstNsp.QaSeq = 18;
             }
 
-            if (susMstl.SmHQ19B.Trim() != "")
+            if (susMaster.SmHQ19B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ19B;
+                qstNsp.QaQstn = susMaster.SmHQ19B;
                 qstNsp.QaSeq = 19;
             }
 
-            if (susMstl.SmHQ20B.Trim() != "")
+            if (susMaster.SmHQ20B.Trim() != "")
             {
-                qstNsp.QaQstn = susMstl.SmHQ20B;
+                qstNsp.QaQstn = susMaster.SmHQ20B;
                 qstNsp.QaSeq = 20;
             }
         }
