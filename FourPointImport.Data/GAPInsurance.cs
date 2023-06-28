@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FourPointImport.Data
 {
+    [Table("GAPInsurance", Schema = "dbo")]
     public class GAPInsurance : Import
     {
         public string GmAgnt { get; set; }

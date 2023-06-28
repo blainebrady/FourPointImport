@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace FourPointImport.Data
 {
+    [Table("Confirmation", Schema = "dbo")]
     public class Confirmation : Import
     {
         public string CfAgnt { get; set; }

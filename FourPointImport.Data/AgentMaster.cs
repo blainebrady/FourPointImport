@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FourPointImport.Data
 {
+    [Table("AgentMaster", Schema = "dbo")]
     public class AgentMaster : Import
     {
         public string AMHOLD { get; set; }
