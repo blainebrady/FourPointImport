@@ -12,6 +12,9 @@ using System.Diagnostics.Metrics;
 using System.Runtime.Intrinsics.Arm;
 using System.Security.Cryptography;
 using System;
+using System.Data;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using static FourPointImport.Web.Functions.billingExportFunctions<TEntity>;
 
 namespace FourPointImport.Web.Functions
 {
@@ -31,6 +34,11 @@ namespace FourPointImport.Web.Functions
         private decimal LfBase;
         private decimal AhBase;
         private string AhDesc;
+        private decimal AhBand;
+        private decimal AhRate;
+        private decimal AhPrct;
+        private AgentDetail agDetail { get; set; }
+        private AgentMaster agMaster { get; set; }
         bool PostData { get; set; }
         private string SecondReq { get; set; }
         private int Severity { get; set; }
@@ -38,15 +46,30 @@ namespace FourPointImport.Web.Functions
         private string SeverityErr { get; set; }
         private int TestDays { get; set; }
         protected readonly CoverageMasterService cmService;
+        protected readonly AgentDetailService adService;
         protected readonly AgentMasterService amService;
         protected readonly CoverageInsuranceService coverageInsuranceService;
+        protected readonly FormMasterService fmService;
         protected readonly RateMasterService rmService;
+        protected readonly RateDetailService rdService;
         DateTime WorkDate { get; set; }
         DateTime WorkDate2 { get; set; }
         public Key08 Key_8;
         public struct Key08
         {
             public string LfTble { get; set; }
+        }
+        public Key03LF Key_3LF;
+        public struct Key03LF
+        {
+            public string PrAgnt { get; set; }
+            public int SmLif { get; set; }
+        }
+        public Key07 Key_7;
+        public struct Key07
+        {
+            public string PrAgnt { get; set; }
+            public int SmForm { get; set; }
         }
         public Key09 Key_9;
         public struct Key09
@@ -70,14 +93,22 @@ namespace FourPointImport.Web.Functions
             public string AhTble { get; set; }
             public int SmTrmD { get; set; }
         }
+        public Key11a Key_11a;
+        public struct Key11a
+        {
+            public string AhTble { get; set; }
+        }
         public MOB206(SuspenseMaster _suspenseMaster, CoverageMasterService _cmCervice, AgentMasterService _amService, CoverageInsuranceService _coverageInsuranceService,
-            RateMasterService _rmService)
+            RateMasterService _rmService, RateDetailService _rdService, FormMasterService _fmService, AgentDetailService _adService)
         {
             suspenseMaster = _suspenseMaster;
             coverageInsuranceService = _coverageInsuranceService;
             cmService = _cmCervice;
+            adService = _adService;
             amService = _amService;
+            fmService = _fmService;
             rmService = _rmService;
+            rdService = _rdService;
             WorkDate = DateTime.Now;
             getCoverage();
         }
@@ -107,7 +138,7 @@ namespace FourPointImport.Web.Functions
                 UpdHist();
                 ChgData(suspenseMaster.SmAgnt);
                 Post_Data();
-                NextRead();
+                return suspenseMaster;
             }
 
             SmEfftTest();
@@ -124,7 +155,7 @@ namespace FourPointImport.Web.Functions
             Agent_Master();
             if (ErrCode == "AGTMSTL1")
             {
-                NextRead();
+                return suspenseMaster;
             }
 
             // Test for second insured and valid joint coverage selected                    
@@ -132,17 +163,17 @@ namespace FourPointImport.Web.Functions
             // Make Sure the Dates are Valid                             
             Dates();
             if (Severity > ErrorLimit)
-                NextRead();
+                return suspenseMaster;
 
             // Get the Underwriting Limits from the Agent Detail Files                      
-            Agent_Detail();
+            BuildAgentDetail();
             // Get the Rates for Life  coverage                              
             if (suspenseMaster.SmLif > 0)
             {
                 LfRates();
             }
             // Get the Rates for Disability Coverage                   
-            if (suspenseMaster.SmDis > ) {
+            if (suspenseMaster.SmDis > 0) {
 
                 AhRates();
             }
@@ -158,7 +189,7 @@ namespace FourPointImport.Web.Functions
             {
                 PostData = true;
                 UpdHist();
-                ChgData();
+                ChgData(suspenseMaster.SmAgnt);
                 Post_Data();
             }
 
@@ -174,14 +205,15 @@ namespace FourPointImport.Web.Functions
             }
 
             EndPgm();
+            return suspenseMaster;
         }
         private async void Agent_Master()
         {
-            var agMaster = await amService.ReadAllAsync();
-            if (agMaster != null && agMaster.Count > 0)
+            var agMasterList = await amService.ReadAllAsync();
+            if (agMasterList != null && agMasterList.Count > 0)
             {
-                var collection = agMaster.Find(x => x.AMEFFT <= _SmEfftTest && x.AMEXPR >= _SmEfftTest);
-                if (collection != null)
+                agMaster = agMasterList.Find(x => x.AMEFFT <= _SmEfftTest && x.AMEXPR >= _SmEfftTest);
+                if (agMaster != null)
                 {
                     return;
                 }
@@ -209,41 +241,150 @@ namespace FourPointImport.Web.Functions
                 ErrMsg(ErrCode);
             }                                                                             
                                                                             
-// Get the Rate Detail for "LIFE" Coverage                                 
-   Key11         Setll     RatDtlP                                
-  Key11         Reade     RatDtlP                                
-                 Dow * In11 = *Off                                
-                  If        SmEfftTest >= RdEfft               And                
-                        SmEfftTest <= RdExpr                              
-                 Eval      AhBand = RdBand                                 
-                 Eval      AhRate = RdRate                                    
-                  Eval      AhPrct = RdPrct                             
-               Leave                                             
-                  EndIf                                                  
-     Key11         Reade     RatDtlP                             
-                    EndDo                                        
-                                                                                   
-// If No record found for this Coverage / Term check Term = 0(Straight Percentage)     
-                  If * In11 = *On                                              
-   Key11A        Setll     RatDtlP                                     
-      Key11A        Reade     RatDtlP                              
-                Dow * In11 = *Off                              
-                  If        SmEfftTest >= RdEfft               And            
-                             SmEfftTest <= RdExpr                           
-                Eval      AhBand = RdBand                              
-                  Eval      AhRate = RdRate                               
-                   Eval      AhPrct = RdPrct                           
-                Leave                                                 
-                   EndIf                                           
-    Key11A        Reade     RatDtlP                            
-                  EndDo                                          
-                EndIf                                            
-                                                                          
-// No Rate Detail File Found of Not Active                                  
-                 If * In11 = *On                                 
-                  Move      'AH-RATDTLP'  ErrCode                     
-                  ExSr      $ErrMsg                                       
-                   EndIf        
+// Get the Rate Detail for "LIFE" Coverage
+            var RateDetail = await rdService.ReadAllAsync();
+            var RatDtlP   = RateDetail.Find(x=>x.RdEfft<= _SmEfftTest && x.RdExpr >= _SmEfftTest);
+            if (RatDtlP != null)
+            {
+                AhBand = RatDtlP.RdBand;
+                AhRate = RatDtlP.RdRate;
+                AhPrct = RatDtlP.RdPrct;
+                Key_11.AhTble = RatDtlP.RDTBLE;
+                return;
+            }
+            else
+            {
+                // If No record found for this Coverage / Term check Term = 0(Straight Percentage)  
+                RatDtlP = RateDetail.Find(x => x.RDTBLE == Key_11a.AhTble);
+                if (RatDtlP != null)
+                {
+                    if (_SmEfftTest >= RatDtlP.RdEfft && _SmEfftTest <= RatDtlP.RdExpr)
+                    {
+                        AhBand = RatDtlP.RdBand;
+                        AhRate = RatDtlP.RdRate;
+                        AhPrct = RatDtlP.RdPrct;
+                    }
+
+                    else
+                    {
+                        // No Rate Detail File Found of Not Active
+                        ErrCode = "AH-RATDTLP";  
+                        ErrMsg(ErrCode); 
+                    }
+                }
+            }                
+        }
+        private async void BuildAgentDetail()
+        {
+            agDetail = new AgentDetail();
+            // Get Agent Detail Lif(e Underwriting Limits                                                              
+            if (suspenseMaster.SmLif > 0)
+            {
+                var AgtDtll1 = await adService.ReadAllAsync();
+                var agDetailList = AgtDtll1.Where(x => x.ADAGNT == Key_3LF.PrAgnt);
+                if (agDetailList == null)
+                {
+                    ErrCode = "AGTDTL - Lif";
+                    ErrMsg(ErrCode);
+                }
+                else
+                    foreach (var ag in agDetailList)
+                    {
+                        if (_SmEfftTest >= agDetail.AdEfft &&
+                                  _SmEfftTest <= agDetail.AdExpr)
+                        {
+                            LfTble = agDetail.AdTble;
+                            LfType = agDetail.AdType;
+                            LfMxBa = agDetail.AdMxBa;
+                            LfMxBM = agDetail.AdMxBM;
+                            LfMnAg = agDetail.AdMnAg;
+                            LfMxAg = agDetail.AdMxAg;
+                            LfMnA2 = agDetail.AdMnA2;
+                            LfMxTr = agDetail.AdMxTr;
+
+                            LfMxCT = agDetail.AdMxCT;
+                            LfHqML = agDetail.AdHqML;
+                            LfHlth = agDetail.AdHlth;
+                            LfLaps = agDetail.AdLaps;
+                            LfComm = agDetail.AdComm;
+                            LfPRat = agDetail.AdPRat;
+                            LfTolP = agDetail.AdTolP;
+                            LfTolA = agDetail.AdTolA;
+                            break;
+                        }
+                    }
+
+
+            }
+        
+
+// Get Agent Detail Disability Underwriting Limits               
+if (SmDis > 0 &&
+                            SmDis <= 999
+    Key03Ah Setll     AgtDtll1
+ Key03Ah       Reade     AgtDtll1                                                                 
+                Dow       *In03       = *Off                                                          
+                  if(        SmEfftTest >= AdEfft               &&                                       
+                          SmEfftTest <= AdExpr                                                         
+                        AhType      = AdType                                                         
+                         AhTble      = AdTble                                                         
+                       AhMxBa      = AdMxBa                                                         
+                          AhMxBM      = AdMxBM                                                         
+                        AhMnAg      = AdMnAg                                                         
+                       AhMxAg      = AdMxAg                                                         
+                       AhMnA2      = AdMnA2                                                         
+                        AhMxTr      = AdMxTr                                                         
+                      AhMxCT      = AdMxCT                                                         
+                        AhHqML      = AdHqML                                                         
+        AhHlth      = AdHlth                                                         
+                        AhLaps      = AdLaps                                                         
+                       AhComm      = AdComm                                                         
+                        AhPRat      = AdPRat                                                         
+                       AhTolP      = AdTolP                                                         
+                        AhTolA      = AdTolA                                                         
+                   Leave                                                                                  
+                  }                                                                                  
+     Key03Ah Reade     AgtDtlL1                                                        
+                 EndDo                                                                                  
+                  if(        *In03       = *On                                                           
+                  Move      "AGTDTL-DIS"  ErrCode                                                        
+                  ErrMsg(ErrCode);                                                                      
+                }                                                                                  
+                  }                                                                                  
+                                                                                                              
+//Get Agent Detail Debt Protection underwriting Limits                                                   
+                  if (SmDebt > 0
+     Key03Dp Setll     AgtDtll1
+     Key03Dp       Reade     AgtDtll1                                                            
+                  Dow       *In03       = *Off                                                           
+                if(        SmEfftTest >= AdEfft               &&                                       
+                            SmEfftTest <= AdExpr                                                         
+                         DpType      = AdType                                                         
+                       DpTble      = AdTble                                                         
+                        DpMxBa      = AdMxBa                                                         
+                         DpMxBM      = AdMxBM                                                         
+                        DpMnAg      = AdMnAg                                                         
+                        DpMxAg      = AdMxAg                                                         
+                        DpMnA2      = AdMnA2                                                         
+                       DpMxTr      = AdMxTr                                                         
+                      DpMxCT      = AdMxCT                                                         
+                      DpHqML      = AdHqML                                                         
+                        DpHlth      = AdHlth                                                         
+                       DpLaps      = AdLaps                                                         
+                        DpComm      = AdComm                                                         
+                         DpPRat      = AdPRat                                                         
+                        DpTolP      = AdTolP                                                         
+                       DpTolA      = AdTolA                                                         
+                   Leave                                                                                  
+                   }                                                                                  
+  Key03Dp Reade     AgtDtlL1                                                           
+                 EndDo                                                                                  
+                 if(        *In03       = *On                                                            
+                  Move      "AGTDTL-DP "  ErrCode                                                        
+                 ErrMsg(ErrCode);                                                                      
+                  }                                                                                  
+                  }                                                                                  
+                   
         }
         private async void ChgData(string SmAgnt)
         {
@@ -283,6 +424,401 @@ namespace FourPointImport.Web.Functions
             //process as it would normally...  
 
             return new MOB217(smAgnt, smcert, cOVMSTR).covMSTR;
+        }
+        private void FieldTest()
+        {
+            //***** Field : Agent - Checked in Subroutine "$AGTMSTL1" **************************************           
+            // ***** Field : Cert  - Checked in Subroutine "$LONMSTL1" **************************************            
+            //  ***** Field : Region - Optional by Bank - No Edit Checking ***********************************            
+            if (agMaster.AMRTRQ == "Y" || agMaster.AMRTRQ == "R")
+            {
+                if (suspenseMaster.SmRegn == "")
+                {
+                    ErrCode = "REGION";
+                    ErrMsg(ErrCode);
+                }
+            }
+
+            //***** Field : Territory - Optional by Bank - No Edit Checking ********************************   
+            if (agMaster.AMRTRQ == "Y" || agMaster.AMRTRQ == "T")
+            {
+                if (suspenseMaster.SmTerr == "")
+                {
+                    ErrCode = "TERRITORY";
+                    ErrMsg(ErrCode);
+
+                }
+            }
+            // ***** Field : Branch - (AMBORQ) Branch / Officer Required ************************************
+            if (agMaster.AmBoRq == "Y" || agMaster.AmBoRq == "B")
+            {
+                if (suspenseMaster.SmBrch == "")
+                {
+                    ErrCode = "BRANCH";
+                    ErrMsg(ErrCode);
+                }
+            }
+
+            //***** Field : Offcier - (AMBORQ) Branch / Officer Required ***********************************   
+
+            if (agMaster.AmBoRq == "Y" || agMaster.AmBoRq == "O")
+            {
+                if (suspenseMaster.SmOffc == "")
+                {
+                    ErrCode = "OFFICER";
+                    ErrMsg(ErrCode);
+                }
+            }
+
+            //***** Field : Beneficiary # 1 - Not Currently Used !! ****************************************     
+
+            //***** Field : Beneficiary # 2 - Not Currently Used !! ****************************************       
+
+            //***** Field : First Payment Date - Test in the Subroutine "$DATES" ***************************    
+
+            //***** Field : Effective Date - Test in the Subroutine "$DATES" *******************************   
+
+            //***** Field : Loan Expiration Date - Tested in the Subroutine "$DATES" ***********************    
+            //***** Field : Loan Term **********************************************************************    
+            if (suspenseMaster.SmTerm == 0)
+            {
+                ErrCode = "LOANTERMMN";
+                ErrMsg(ErrCode);
+            }
+
+            //***** Field : Loan Payment Frequency **- Payments Per Year -**********************************
+            if (suspenseMaster.SmFreq == 1 ||
+                 suspenseMaster.SmFreq == 2 ||
+                       suspenseMaster.SmFreq == 4 ||
+                     suspenseMaster.SmFreq == 6 ||
+                        suspenseMaster.SmFreq == 12 ||
+                       suspenseMaster.SmFreq == 24 ||
+                        suspenseMaster.SmFreq == 26 ||
+                       suspenseMaster.SmFreq == 52)
+            { }
+            else
+            {
+                ErrCode = "PAYMNTFREQ";
+                ErrMsg(ErrCode);
+            }
+
+            //***** Field : Loan Amount ********************************************************************
+            if (suspenseMaster.SmAmnt <= 0 && suspenseMaster.SmType != "OEDP")
+            {
+                ErrCode = "LOANAMTMN";
+                ErrMsg(ErrCode);
+            }
+
+            //*****Field : Interest Rate ******************************************************************   
+            if (suspenseMaster.SmIntr == 0)
+            {
+                if (suspenseMaster.SmCalc == "LM" ||
+                             suspenseMaster.SmCalc == "DA" ||
+                           suspenseMaster.SmCalc == "DP")
+                { }
+                else {
+                    ErrCode = "INTRATE";
+                    ErrMsg(ErrCode);
+                }
+            }
+
+            //***** Field : Scheduled Payment **************************************************************
+            if (suspenseMaster.SmSchd == 0)
+            {
+                if (suspenseMaster.SmType != 'OEDP")
+                     {
+                    ErrCode = "SCHDPMT";
+                    ErrMsg(ErrCode);
+                }
+            }
+            //***** Field : Form Number ********************************************************************            
+            //* -------------------------------------------------- *                                                   
+            //* - Skip Per Karen Stockton 3/19/2003              - *                                                   
+            //* -------------------------------------------------- *                                                   
+            Form_Master();
+
+
+            //* ****Field : Daily Life Rate * ***************************************************************
+
+            //***** Field : Daily Disability Rate **********************************************************            
+
+            // ***** Field : Estimated Annual Life Charge ***************************************************            
+            //**********************************************************************************************            
+            //** Steve Clark - 09/16/2004 - Condition the Life amount check with the A&H Only field from  **            
+            //**                            the Agent Master File - If A&H Only is allowed then this check**            
+            //**                            should be skipped becasue a $0 amount is allowed . . . . .    **            
+            //**********************************************************************************************            
+            if (suspenseMaster.SmLChg.StringSafe().Length <= 0)
+                if (suspenseMaster.SmType == "CEMOB")
+                    if (suspenseMaster.SmLif > 0)
+                        if (agMaster.AmOnly == "N") {
+                            ErrCode("ANNUAL-LIF");
+                            ErrMsg(ErrCode);
+                        }
+
+
+            if (agMaster.AmOnly == "Y")
+            {
+                ErrCode = "A&H ONLY  ";
+                ErrMsg(ErrCode);
+
+            }
+
+            //***** Field : Intial Amount of Life Insurance ************************************************            
+            if (suspenseMaster.SmLif > 0)
+            {
+                if (suspenseMaster.SmLBen <= 0)
+                {
+                    ErrCode = "LFAMNT=0";
+                    ErrMsg(ErrCode);
+                }
+                if (suspenseMaster.SmLBen > suspenseMaster.SmAmnt)
+                {
+                    ErrCode = "LFAMNT";
+                    ErrMsg(ErrCode);
+                }
+                if (suspenseMaster.SmLBen > AdMxBa)
+                {
+                    ErrCode = "LFAMNT-MAX";
+                    ErrMsg(ErrCode);
+                }
+            }
+            //***** Field : Intial Amount of Disability Insurance ******************************************            
+            if (suspenseMaster.SmDis > 0)
+            {
+                if (suspenseMaster.SmDBen <= 0)
+                {
+                    ErrCode = "AHAMNT=0";
+                    ErrMsg(ErrCode);
+                }
+                if (suspenseMaster.SmDBen > suspenseMaster.SmSchd)
+                {
+                    ErrCode = "AHAMNT";
+                    ErrMsg(ErrCode);
+                }
+                if (suspenseMaster.SmDBen > AHMxBA)
+                {
+                    AHExBa = (suspenseMaster.SmDBen * suspenseMaster.SmTrmD) - 1;
+
+                    if (AHExBa > AHMxBA)
+                    {
+                        ErrCode = "AHAMNT-MAX";
+                        ErrMsg(ErrCode);
+                    }
+                }
+            }
+            //***** Field : First Premium Due Date - Checked in Subroutine "$DATES" ************************            
+            //***** Field : Term of Life Coverage **********************************************************            
+            if (suspenseMaster.SmLif > 0)
+            {
+                if (suspenseMaster.SmTrmL <= 0)
+                {
+                    ErrCode = "LF-TERM-MN";
+                    ErrMsg(ErrCode);
+                }
+                if (suspenseMaster.SmTrmL > LfMxCt)
+                {
+                    ErrCode = "LF-TERM-MX";
+                    ErrMsg(ErrCode);
+                }
+            }
+            //***** Field : Term of Disability Coverage ****************************************************            
+            if (suspenseMaster.SmDis > 0)
+            {
+                if (suspenseMaster.SmTrmD <= 0)
+                {
+                    ErrCode = "AH-TERM-MN";
+                    ErrMsg(ErrCode);
+                }
+                if (suspenseMaster.SmTrmD > AhMxCt)
+                {
+                    ErrCode = "AH-TERM-MX";
+                    ErrMsg(ErrCode);
+                }
+            }
+            // ***** Field : Term of Debt Protection Coverage ***********************************************            
+            if (suspenseMaster.SmDebt > 0)
+            {
+                if (suspenseMaster.SmTrmP <= 0)
+                {
+                    ErrCode = "DP-TERM-MN";
+                    ErrMsg(ErrCode);
+                }
+                if (suspenseMaster.SmTrmP > DPMxCt)
+                {
+                    if (suspenseMaster.SmType == "CEDP")
+                    {
+                        ErrCode = "TRUNC-DP";
+                        ErrMsg(ErrCode);
+                    }
+                }
+            }
+            //***** Field : Extra Days - Tested in the Subroutine "$DATES" *********************************            
+            //***** Field : Life Coverage Code - Tested in Subroutine "$PRDCOVL1 & AGTDTLL1" ***************            
+            //***** Field : Disability  Coverage Code - Tested in Subroutine "$PRDCOVL1 & AGTDTLL1" ********            
+            //***** Field : First Insured ID - No Editing or Validation ************************************            
+            //***** Field : First Insured Last Name ********************************************************            
+            if (suspenseMaster.SmLNam1 == "" || suspenseMaster.SmLNam1A == "")
+            {
+                ErrCode = "1ST-LNAME";
+                ErrMsg(ErrCode);
+            }
+
+            //***** Field : First Insured First Name *******************************************************            
+            if (suspenseMaster.SmFNam1 == "" || suspenseMaster.SmFNam1A == "")
+            {
+                ErrCode = "1ST-FNAME";
+                ErrMsg(ErrCode);
+
+            }
+            //***** Field : First Insured Middle Name - No editing or Validation ***************************            
+            // ***** Field : First Insured Address Line 1 - No Editing or Validation ************************            
+            //    ***** Field : First Insured Address Line 2 - No Editing or Validation ************************            
+            //    ***** Field : First Insured City  - No editing or Validation *********************************            
+            //    ***** Field : First Insured State - No editing or Validation *********************************            
+            //    ***** Field : First Insured ZipCode - No editing or Validation *******************************            
+            //  ***** Field : First Insured Phone   - No editing or Validation *******************************            
+            //   ***** Field : First Insured Date of Birth - Checked and Edited in Subroutine "$DATES" ********            
+
+            //***** Field : First Insured Gender  - No editing or Validation *******************************            
+            if (suspenseMaster.SmSex1 != "M" &&
+                 suspenseMaster.SmSex1 != "F" &&
+                       suspenseMaster.SmSex1 != " ")
+            {
+                ErrCode = "1ST-GENDER";
+                ErrMsg(ErrCode);
+            }
+
+            //***** Field : First Insured Health Question # 1 - Must be "Y" / "N" / " " ********************            
+            if (suspenseMaster.SmHQ01A == "Y" ||
+                      suspenseMaster.SmHQ01A == "N" ||
+                       suspenseMaster.SmHQ01A == " ")
+            { }
+            else
+            {
+                ErrCode = "1ST-HQ#1";
+                ErrMsg(ErrCode);
+            }
+
+            //***** Field : First Insured Health Question # 2 - Must be "Y" / "N" / " " ********************            
+            if (suspenseMaster.SmHQ02A == "Y" ||
+                     suspenseMaster.SmHQ02A == "N" ||
+                     suspenseMaster.SmHQ02A == " ")
+            { }
+            else {
+                ErrCode = "1ST-HQ#2";
+                ErrMsg(ErrCode);
+            }
+
+            //***** Field : First Insured Health Question # 3 - Must be "Y" / "N" / " " ********************            
+            if (suspenseMaster.SmHQ03A == "Y" ||
+                      suspenseMaster.SmHQ03A == "N" ||
+                     suspenseMaster.SmHQ03A == " ")
+            { }
+            else {
+                ErrCode = "1ST-HQ#3";
+                ErrMsg(ErrCode);
+            }
+
+            //***** Field : First Insured Health Question # 4 - Must be "Y" / "N" / " " ********************            
+            if (suspenseMaster.SmHQ04A == "Y" ||
+                       suspenseMaster.SmHQ04A == "N" ||
+                       suspenseMaster.SmHQ04A == " ")
+            { }
+            else {
+                ErrCode"1ST-HQ#4  ";
+                ErrMsg(ErrCode);
+            }
+
+            // ***** Field : Second Insured Last Name *******************************************************            
+            if (suspenseMaster.SmLNam2 == "" or suspenseMaster.SmLNam2A == ""  )
+                {
+                ErrCode = "2ND-LNAME";
+                ErrMsg(ErrCode);
+            }                                                                                                                                                                                  
+//***** Field : Second Insured First Name ******************************************************            
+            if(suspenseMaster.SmFNam2     == "" || suspenseMaster.SmFNam2A == ""   )
+            {
+                ErrCode   "2ND-FNAME";
+                ErrMsg(ErrCode);
+            }
+
+            //***** Field : smidn2 is not a duplicate of first *********************************************           
+
+            if (suspenseMaster.SmIdn2 == suspenseMaster.SmIdn1 && suspenseMaster.SmIdn2 != 0)
+            {
+                ErrCode = "2ND-ID DUP";
+                ErrMsg(ErrCode);
+            }
+            //***** Field : Second Insured Address Line 1 - No Editing or Validation ***********************            
+
+            //***** Field : Second Insured Middle Name - No editing or Validation **************************           
+            //***** Field : Second Insured Address Line 1 - No Editing or Validation ***********************           
+            //***** Field : Second Insured Address Line 2 - No Editing or Validation ***********************            
+            //***** Field : Second Insured City  - No editing or Validation ********************************            
+            //     ***** Field : Second Insured State - No editing or Validation ********************************            
+            //      ***** Field : Second Insured ZipCode - No editing or Validation ******************************            
+
+            //    ***** Field : Second Insured Phone   - No editing or Validation ******************************            
+            //      ***** Field : Second Insured Date of Birth - Checked and Edited in Subroutine "$DATES" *******            
+            //***** Field : Second Insured Gender  - No editing or Validation ******************************            
+            if (suspenseMaster.SmSex2 != "M" &&
+                      suspenseMaster.SmSex2 != "F" &&
+                      suspenseMaster.SmSex2 != " ") 
+            {
+                ErrCode = "2ND-GENDER";
+                ErrMsg(ErrCode);
+            }
+
+            //***** Field : Second Insured Health Question # 1 - Must be "Y" / "N" / " " *******************            
+            if (suspenseMaster.SmHQ01B != "Y" &&
+                      suspenseMaster.SmHQ01B != "N" &&
+                    suspenseMaster.SmHQ01B != " ")
+            {
+                ErrCode = "2ND-HQ#1";
+                ErrMsg(ErrCode);
+            }
+
+            //***** Field : Second Insured Health Question # 2 - Must be "Y" / "N" / " " *******************            
+            if (suspenseMaster.SmHQ02B != "Y" &&
+                     suspenseMaster.SmHQ02B != "N" &&
+                     suspenseMaster.SmHQ02B != " ")
+            {
+                ErrCode = "2ND-HQ#2";
+                ErrMsg(ErrCode);
+            }
+
+            //***** Field : Second Insured Health Question # 3 - Must be "Y" / "N" / " " *******************            
+            if (suspenseMaster.SmHQ03B != "Y" &&
+                      suspenseMaster.SmHQ03B != "N" &&
+                      suspenseMaster.SmHQ03B != " ")
+            {
+                ErrCode = "2ND-HQ#3";
+                ErrMsg(ErrCode);
+            }
+
+            //***** Field : Second Insured Health Question # 4 - Must be "Y" / "N" / " " *******************            
+            if (suspenseMaster.SmHQ04B != "Y" &&
+                      suspenseMaster.SmHQ04B != "N" &&
+                      suspenseMaster.SmHQ04B != " ")
+            {
+                ErrCode = "2ND-HQ#4";
+                ErrMsg(ErrCode);
+            }                                                                       
+                                                                                                                                                                                
+                          
+        }
+        private async void Form_Master()
+        {
+            var FrmMstl1 = await fmService.ReadAllAsync();
+            if (FrmMstl1 != null)
+            {
+                var frmMast = FrmMstl1.Find(x => x.FmAGNT == Key_7.PrAgnt && x.FmForm == Key_7.SmForm);
+                if (_SmEfftTest >= frmMast.FmEfft && _SmEfftTest <= frmMast.FmExpr)
+                {
+                    return;
+                }
+            }
         }
         private CoverageInsuranceMaster GapChg(string smAgnt, string smcert, CoverageInsuranceMaster cOVMSTR)
         {

@@ -54,6 +54,10 @@ namespace FourPointImport.Data
         public string SmLNam2 { get; set; }
         public string SmLNam1 { get; set; }
         public string SmFNam1 { get; set; }
+        public string SmLNam1A { get; set; }
+        public string SmFNam1A { get; set; }
+        public string SmLNam2A { get; set; }
+        public string SmFNam2A { get; set; }
         public string SmSufx1 { get; set; }
         public string SmAdd11 { get; set; }
         public string SmAdd21 { get; set; }
@@ -290,6 +294,10 @@ namespace FourPointImport.Data
             modelBuilder.Entity<SuspenseMaster>().Property(x => x.SmUsrU).HasMaxLength(10);
             modelBuilder.Entity<SuspenseMaster>().Property(x => x.Smmntf).HasPrecision(11, 2);
             modelBuilder.Entity<SuspenseMaster>().Property(x => x.SmCert2).HasMaxLength(20);
+            modelBuilder.Entity<SuspenseMaster>().Property(x => x.SmLNam2A).HasMaxLength(25);
+            modelBuilder.Entity<SuspenseMaster>().Property(x => x.SmFNam2A).HasMaxLength(25);
+            modelBuilder.Entity<SuspenseMaster>().Property(x => x.SmLNam1A).HasMaxLength(25);
+            modelBuilder.Entity<SuspenseMaster>().Property(x => x.SmFNam1A).HasMaxLength(25);
         }
     }
 }

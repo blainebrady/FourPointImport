@@ -19,7 +19,9 @@ namespace FourPointImport.Web.Functions
             susMaster = _susMaster;
             conf = _conf;
             outputStructure = new OutputStructure();
-            
+        }
+        public void Process()
+        { 
             ConvertToUpper();
 
             // Bank Number Conversion from Alpha to Numeric

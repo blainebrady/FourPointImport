@@ -10,6 +10,11 @@ namespace FourPointImport.Web.Functions
         //Called Program "MOB206" Parameter
         protected readonly SuspenseMasterService _smService;
         protected readonly CoverageMasterService _cmService;
+        protected readonly AgentMasterService _amService;
+        protected readonly CoverageInsuranceService _coverageInsuranceService;
+        protected readonly RateMasterService _rmService;
+        protected readonly RateDetailService _rdService;
+        protected readonly Confirmation _conf;
         public string Param1
         {
             get; set;
@@ -24,10 +29,16 @@ namespace FourPointImport.Web.Functions
         }
         public string LastAgent { get; set; }
                                                        
-        public MOB201(List<SuspenseMaster> suspenseMaster, SuspenseMasterService service, CoverageMasterService cmService)
+        public MOB201(List<SuspenseMaster> suspenseMaster, SuspenseMasterService service, CoverageMasterService cmService, AgentMasterService amService,
+            CoverageInsuranceService coverageInsuranceService, RateMasterService rmService, RateDetailService rdService, Confirmation conf)
         {
             _smService = service;
             _cmService = cmService;
+            _rmService = rmService;
+            _rdService = rdService;
+            _amService = amService;
+            _coverageInsuranceService = coverageInsuranceService;
+            _conf = conf;
             
             foreach (var item in suspenseMaster)
             {
@@ -42,11 +53,11 @@ namespace FourPointImport.Web.Functions
                 {
                     suspenseMasterRes.SmCert = "";
                     suspenseMasterRes.SmDebt = 20;
-                    suspenseMasterRes = new MOB206(suspenseMasterRes, _cmService).Process();
+                    suspenseMasterRes = new MOB206(suspenseMasterRes, _cmService, _amService, _coverageInsuranceService,_rmService, _rdService).Process();
                 }
                 if (!CompareAgentNumbers(item.SmAgnt, "DH00000") && CompareAgentNumbers(item.SmAgnt, "DH99999"))
                 {
-                    MOB206(item.SmAgnt, "", 20);
+                    suspenseMasterRes = new MOB206(item, _cmService, _amService, _coverageInsuranceService,_rmService, _rdService).Process();
                 }
                 //Process the CEMOB New Business Records from the Suspense File    
                 if (item.SmAgnt.ToInt() >= 90000 && item.SmAgnt.ToInt() <= 99999)
@@ -58,7 +69,7 @@ namespace FourPointImport.Web.Functions
                 // Process the OEMOB New Business Records from the Suspense File       
                 if (item.SmAgnt.ToInt() >= 20000 && item.SmAgnt.ToInt() <= 29999)
                 {
-                    MOB206OB(item.SmAgnt, item.SmCert);
+                    new MOB206OB(item, _conf);
                 }
             }
         }

@@ -14,5 +14,5 @@ namespace FourPointImport.Services
         public CoverageInsuranceService(ApiDbContext dbContext) : base(dbContext) { }
         
     }
-    }
+    
 }

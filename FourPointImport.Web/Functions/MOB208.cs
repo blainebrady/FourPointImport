@@ -24,7 +24,7 @@ namespace FourPointImport.Web.Functions
                 foreach (var item in lonMstL1)
                 {
                     // Copy all Insured Master Records to History (DO NOT Delete Production records)
-                    var loanApp = lonMstL1.Select(x => x.LmAgnt == pragnt && x.LmCert == prcert).ToList();
+                    var loanApp = lonMstL1.Where(x => x.LmAgnt == pragnt && x.LmCert == prcert);
                     foreach (var item2 in loanApp)
                     {
                         patronCustomer1A(item2);
@@ -46,7 +46,7 @@ namespace FourPointImport.Web.Functions
             lonMstL1 = await lmService.ReadAllAsync();
             patronCustomer = await patCustService.ReadAllAsync();
         }
-        void patronCustomer1A(LoanApplicationMaster laMaster)
+        private void patronCustomer1A(LoanApplicationMaster laMaster)
         {
             if (laMaster.LmIdn1 != 0)
             {

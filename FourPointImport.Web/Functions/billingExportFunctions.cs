@@ -820,13 +820,18 @@ namespace FourPointImport.Web.Functions
                     suspenseMaster.SmCnlD = 0;
 
                     //If "Billed"--Cancel.If Not--Let system delete this cert 110607 101000
-                    var bildt = await billingService.ReadAsyncB(Key_8.SeAgnt);
+                    var bildt = await billingService.ReadAllAsync(); 
 
                     if (bildt != null)
                     {
-                        Key_8.SeCert = suspenseMaster.SmCert;
-                        CertHold = inComing.SeCert2;
-                        suspenseMaster.SmCert2 = "";
+                        var item = bildt.Find(x => x.BdAgnt == Key_8.SeAgnt);
+                        if (item!= null)
+                        {
+                            Key_8.SeCert = suspenseMaster.SmCert;
+                            CertHold = inComing.SeCert2;
+                            suspenseMaster.SmCert2 = "";
+                        }
+                        
                     }
                 }
             }
@@ -894,12 +899,16 @@ namespace FourPointImport.Web.Functions
 
                 // If "Billed"--Cancel. If Not--Let system delete this cert
 
-                var _record = await billingService.ReadAsyncB(suspenseMaster.SmAgnt);
-                if (_record != null)
+                var bs = await billingService.ReadAllAsync(); 
+                if (bs != null)
                 {
-                    _record.BdBill = suspenseMaster.SmCnl;
-                    CertHold = inComing.SeCert2;
-                    suspenseMaster.SmCert2 = "";
+                    var _record = bs.Find(x => x.BdAgnt == suspenseMaster.SmAgnt);
+                    if (_record != null)
+                    {
+                        _record.BdBill = suspenseMaster.SmCnl;
+                        CertHold = inComing.SeCert2;
+                        suspenseMaster.SmCert2 = "";
+                    }
                 }
             }
         }

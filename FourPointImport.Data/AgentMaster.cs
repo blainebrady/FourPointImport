@@ -26,9 +26,9 @@ namespace FourPointImport.Data
         public int AMSSNO { get; set; }
         public int AMREP { get; set; }
         public string AMSTAT { get; set; }
-        public string AMONLY { get; set; }
+        public string AmOnly { get; set; }
         public string AMRTRQ { get; set; }
-        public string AMBORQ { get; set; }
+        public string AmBoRq { get; set; }
         public string AMBILL { get; set; }
         public string AMCLMD { get; set; }
         public string AMMTHD { get; set; }
@@ -58,9 +58,9 @@ namespace FourPointImport.Data
             modelBuilder.Entity<AgentMaster>().Property(x => x.AMSSNO);
             modelBuilder.Entity<AgentMaster>().Property(x => x.AMREP);
             modelBuilder.Entity<AgentMaster>().Property(x => x.AMSTAT).HasMaxLength(1);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMONLY).HasMaxLength(1);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AmOnly).HasMaxLength(1);
             modelBuilder.Entity<AgentMaster>().Property(x => x.AMRTRQ).HasMaxLength(1);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMBORQ).HasMaxLength(1);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AmBoRq).HasMaxLength(1);
             modelBuilder.Entity<AgentMaster>().Property(x => x.AMBILL).HasMaxLength(1);
             modelBuilder.Entity<AgentMaster>().Property(x => x.AMCLMD).HasMaxLength(1);
             modelBuilder.Entity<AgentMaster>().Property(x => x.AMMTHD).HasMaxLength(2);
