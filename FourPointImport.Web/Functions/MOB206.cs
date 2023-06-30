@@ -13,8 +13,6 @@ using System.Runtime.Intrinsics.Arm;
 using System.Security.Cryptography;
 using System;
 using System.Data;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using static FourPointImport.Web.Functions.billingExportFunctions<TEntity>;
 
 namespace FourPointImport.Web.Functions
 {
@@ -52,13 +50,17 @@ namespace FourPointImport.Web.Functions
         protected readonly FormMasterService fmService;
         protected readonly RateMasterService rmService;
         protected readonly RateDetailService rdService;
+        protected readonly LoanApplicationService lmService;
+        protected readonly PatronCustomerService patCustService;
         DateTime WorkDate { get; set; }
         DateTime WorkDate2 { get; set; }
-        public Key08 Key_8;
-        public struct Key08
+        public Key03Ah Key_3Ah;
+        public struct Key03Ah
         {
-            public string LfTble { get; set; }
+            public string PrAgnt { get; set; }
+            public int SmDis { get; set; }
         }
+               
         public Key03LF Key_3LF;
         public struct Key03LF
         {
@@ -70,6 +72,11 @@ namespace FourPointImport.Web.Functions
         {
             public string PrAgnt { get; set; }
             public int SmForm { get; set; }
+        }
+        public Key08 Key_8;
+        public struct Key08
+        {
+            public string LfTble { get; set; }
         }
         public Key09 Key_9;
         public struct Key09
@@ -99,7 +106,8 @@ namespace FourPointImport.Web.Functions
             public string AhTble { get; set; }
         }
         public MOB206(SuspenseMaster _suspenseMaster, CoverageMasterService _cmCervice, AgentMasterService _amService, CoverageInsuranceService _coverageInsuranceService,
-            RateMasterService _rmService, RateDetailService _rdService, FormMasterService _fmService, AgentDetailService _adService)
+            RateMasterService _rmService, RateDetailService _rdService, FormMasterService _fmService, AgentDetailService _adService, LoanApplicationService _lmService,
+            PatronCustomerService _patCustService)
         {
             suspenseMaster = _suspenseMaster;
             coverageInsuranceService = _coverageInsuranceService;
@@ -107,6 +115,8 @@ namespace FourPointImport.Web.Functions
             adService = _adService;
             amService = _amService;
             fmService = _fmService;
+            lmService = _lmService;
+            patCustService = _patCustService;
             rmService = _rmService;
             rdService = _rdService;
             WorkDate = DateTime.Now;
@@ -315,76 +325,71 @@ namespace FourPointImport.Web.Functions
                     }
 
 
-            }
-        
 
-// Get Agent Detail Disability Underwriting Limits               
-if (SmDis > 0 &&
-                            SmDis <= 999
-    Key03Ah Setll     AgtDtll1
- Key03Ah       Reade     AgtDtll1                                                                 
-                Dow       *In03       = *Off                                                          
-                  if(        SmEfftTest >= AdEfft               &&                                       
-                          SmEfftTest <= AdExpr                                                         
-                        AhType      = AdType                                                         
-                         AhTble      = AdTble                                                         
-                       AhMxBa      = AdMxBa                                                         
-                          AhMxBM      = AdMxBM                                                         
-                        AhMnAg      = AdMnAg                                                         
-                       AhMxAg      = AdMxAg                                                         
-                       AhMnA2      = AdMnA2                                                         
-                        AhMxTr      = AdMxTr                                                         
-                      AhMxCT      = AdMxCT                                                         
-                        AhHqML      = AdHqML                                                         
-        AhHlth      = AdHlth                                                         
-                        AhLaps      = AdLaps                                                         
-                       AhComm      = AdComm                                                         
-                        AhPRat      = AdPRat                                                         
-                       AhTolP      = AdTolP                                                         
-                        AhTolA      = AdTolA                                                         
-                   Leave                                                                                  
-                  }                                                                                  
-     Key03Ah Reade     AgtDtlL1                                                        
-                 EndDo                                                                                  
-                  if(        *In03       = *On                                                           
-                  Move      "AGTDTL-DIS"  ErrCode                                                        
-                  ErrMsg(ErrCode);                                                                      
-                }                                                                                  
-                  }                                                                                  
-                                                                                                              
-//Get Agent Detail Debt Protection underwriting Limits                                                   
-                  if (SmDebt > 0
-     Key03Dp Setll     AgtDtll1
-     Key03Dp       Reade     AgtDtll1                                                            
-                  Dow       *In03       = *Off                                                           
-                if(        SmEfftTest >= AdEfft               &&                                       
-                            SmEfftTest <= AdExpr                                                         
-                         DpType      = AdType                                                         
-                       DpTble      = AdTble                                                         
-                        DpMxBa      = AdMxBa                                                         
-                         DpMxBM      = AdMxBM                                                         
-                        DpMnAg      = AdMnAg                                                         
-                        DpMxAg      = AdMxAg                                                         
-                        DpMnA2      = AdMnA2                                                         
-                       DpMxTr      = AdMxTr                                                         
-                      DpMxCT      = AdMxCT                                                         
-                      DpHqML      = AdHqML                                                         
-                        DpHlth      = AdHlth                                                         
-                       DpLaps      = AdLaps                                                         
-                        DpComm      = AdComm                                                         
-                         DpPRat      = AdPRat                                                         
-                        DpTolP      = AdTolP                                                         
-                       DpTolA      = AdTolA                                                         
-                   Leave                                                                                  
-                   }                                                                                  
-  Key03Dp Reade     AgtDtlL1                                                           
-                 EndDo                                                                                  
-                 if(        *In03       = *On                                                            
-                  Move      "AGTDTL-DP "  ErrCode                                                        
-                 ErrMsg(ErrCode);                                                                      
-                  }                                                                                  
-                  }                                                                                  
-                   
+
+
+                // Get Agent Detail Disability Underwriting Limits               
+                if (suspenseMaster.SmDis > 0 && suspenseMaster.SmDis <= 999)
+                {
+                    foreach (var item in agDetailList)
+                    {
+                        if (_SmEfftTest >= item.AdEfft && _SmEfftTest <= item.AdExpr)
+                        {
+                            AhType = item.AdType;
+                            AhTble = item.AdTble;
+                            AhMxBa = item.AdMxBa;
+                            AhMxBM = item.AdMxBM;
+                            AhMnAg = item.AdMnAg;
+                            AhMxAg = item.AdMxAg;
+                            AhMnA2 = item.AdMnA2;
+                            AhMxTr = item.AdMxTr;
+                            AhMxCT = item.AdMxCT;
+                            AhHqML = item.AdHqML;
+                            AhHlth = item.AdHlth;
+                            AhLaps = item.AdLaps;
+                            AhComm = item.AdComm;
+                            AhPRat = item.AdPRat;
+                            AhTolP = item.AdTolP;
+                            AhTolA = item.AdTolA;
+                            break;
+                        }
+
+                    }
+                }
+
+                //Get Agent Detail Debt Protection underwriting Limits                                                   
+                if (suspenseMaster.SmDebt > 0)
+                {
+                    foreach (var item in agDetailList)
+                    {
+                        if (_SmEfftTest >= item.AdEfft && _SmEfftTest <= item.AdExpr)
+                        {
+                            DpType = item.AdType;
+                            DpTble = item.AdTble;
+                            DpMxBa = item.AdMxBa;
+                            DpMxBM = item.AdMxBM;
+                            DpMnAg = item.AdMnAg;
+                            DpMxAg = item.AdMxAg;
+                            DpMnA2 = item.AdMnA2;
+                            DpMxTr = item.AdMxTr;
+                            DpMxCT = item.AdMxCT;
+                            DpHqML = item.AdHqML;
+                            DpHlth = item.AdHlth;
+                            DpLaps = item.AdLaps;
+                            DpComm = item.AdComm;
+                            DpPRat = item.AdPRat;
+                            DpTolP = item.AdTolP;
+                            DpTolA = item.AdTolA;
+                            break;
+                        }
+                        else
+                        {
+                            ErrCode = "AGTDTL-DP ";
+                            ErrMsg(ErrCode);
+                        }
+                    }
+                }
+            } 
         }
         private async void ChgData(string SmAgnt)
         {
@@ -525,7 +530,7 @@ if (SmDis > 0 &&
             //***** Field : Scheduled Payment **************************************************************
             if (suspenseMaster.SmSchd == 0)
             {
-                if (suspenseMaster.SmType != 'OEDP")
+                if (suspenseMaster.SmType != "OEDP")
                      {
                     ErrCode = "SCHDPMT";
                     ErrMsg(ErrCode);
@@ -552,7 +557,7 @@ if (SmDis > 0 &&
                 if (suspenseMaster.SmType == "CEMOB")
                     if (suspenseMaster.SmLif > 0)
                         if (agMaster.AmOnly == "N") {
-                            ErrCode("ANNUAL-LIF");
+                            ErrCode = "ANNUAL-LIF";
                             ErrMsg(ErrCode);
                         }
 
@@ -726,20 +731,20 @@ if (SmDis > 0 &&
                        suspenseMaster.SmHQ04A == " ")
             { }
             else {
-                ErrCode"1ST-HQ#4  ";
+                ErrCode="1ST-HQ#4  ";
                 ErrMsg(ErrCode);
             }
 
             // ***** Field : Second Insured Last Name *******************************************************            
-            if (suspenseMaster.SmLNam2 == "" or suspenseMaster.SmLNam2A == ""  )
-                {
+            if (suspenseMaster.SmLNam2 == "" || suspenseMaster.SmLNam2A == "")
+            {
                 ErrCode = "2ND-LNAME";
                 ErrMsg(ErrCode);
             }                                                                                                                                                                                  
 //***** Field : Second Insured First Name ******************************************************            
             if(suspenseMaster.SmFNam2     == "" || suspenseMaster.SmFNam2A == ""   )
             {
-                ErrCode   "2ND-FNAME";
+                ErrCode =  "2ND-FNAME";
                 ErrMsg(ErrCode);
             }
 
@@ -1247,7 +1252,10 @@ if (SmDis > 0 &&
                     suspenseMaster.SmEffP = _SmEfftTest;
             }
         }
+        private void Test2nd()
+        {
 
+        }
         private void UpdHist()
         {
             string pragnt = suspenseMaster.SmAgnt;
@@ -1255,7 +1263,7 @@ if (SmDis > 0 &&
 
             if (suspenseMaster.SmDebt == 0)
             {
-                new MOB208(pragnt, suspenseMaster.SmCert, suspenseMaster, covMaster);
+                new MOB208(pragnt, suspenseMaster.SmCert, suspenseMaster, covMaster, lmService, patCustService);
             }
             else
             {
