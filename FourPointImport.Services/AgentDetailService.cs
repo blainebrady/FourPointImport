@@ -12,4 +12,4 @@ namespace FourPointImport.Services
         public AgentDetailService(ApiDbContext dbContext) : base(dbContext) { }
     }
 }
-}
+

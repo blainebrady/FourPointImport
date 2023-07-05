@@ -8,10 +8,11 @@ namespace FourPointImport.Web.Functions
         public LoanApplicationMaster patronCustomer1 { get; set; }
         public readonly LoanApplicationService lmService;
         public readonly PatronCustomerService patCustService;
-        public List<CoverageInsuranceMaster> covMstr { get; set; }
+        public CoverageInsuranceMaster covMstr { get; set; }
        public List<LoanApplicationMaster> lonMstL1 { get; set; }
         public List<PatronCustomer> patronCustomer { get; set; }
-        public MOB208(string pragnt, string prcert, SuspenseMaster susMst, List<CoverageInsuranceMaster> CovMstr, LoanApplicationService _lmService,
+        private PatronCustomer _paCustomer { get; set; }
+        public MOB208(string pragnt, string prcert, SuspenseMaster susMst, CoverageInsuranceMaster CovMstr, LoanApplicationService _lmService,
             PatronCustomerService _patCustService )
         {
             covMstr = CovMstr;
@@ -54,6 +55,7 @@ namespace FourPointImport.Web.Functions
                 if (paCustomer != null)
                 {
                     PatronCustHist insHstR = PatronCustHist.ImportClass(paCustomer);
+                    _paCustomer = paCustomer;
                 }
             }
         }
@@ -64,7 +66,7 @@ namespace FourPointImport.Web.Functions
             { 
                 if (patronCustomer != null)
                 {
-                    PatronCustHist insHstR = PatronCustHist.ImportClass(paCustomer);
+                    PatronCustHist insHstR = PatronCustHist.ImportClass(_paCustomer);
                     //insHstR.Write();
 
                 }

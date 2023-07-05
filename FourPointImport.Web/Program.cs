@@ -17,9 +17,17 @@ builder.Services.AddDbContext<ApiDbContext>();
 builder.Services.AddSingleton<IDesignTimeDbContextFactory<ApiDbContext>, DesignTimeDbContext>();
 //register the other services in use
 builder.Services.AddScoped<BillingDetailService, BillingDetailService>();
-builder.Services.AddSingleton<CoverageMasterService, CoverageMasterService>();
-builder.Services.AddSingleton<FormMasterService, FormMasterService>();
-builder.Services.AddSingleton<ProductCoverageService, ProductCoverageService>();
+builder.Services.AddScoped<CoverageMasterService, CoverageMasterService>();
+builder.Services.AddScoped<FormMasterService, FormMasterService>();
+builder.Services.AddScoped<ProductCoverageService, ProductCoverageService>();
+builder.Services.AddScoped<SuspenseMasterService, SuspenseMasterService>();
+builder.Services.AddScoped<AgentMasterService, AgentMasterService>();
+builder.Services.AddScoped<CoverageInsuranceService, CoverageInsuranceService>();
+builder.Services.AddScoped<RateMasterService, RateMasterService>();
+builder.Services.AddScoped<RateDetailService, RateDetailService>();
+builder.Services.AddScoped<AgentDetailService, AgentDetailService>();
+builder.Services.AddScoped<LoanApplicationService, LoanApplicationService>();
+builder.Services.AddScoped<PatronCustomerService, PatronCustomerService>();
 
 var app = builder.Build();
 

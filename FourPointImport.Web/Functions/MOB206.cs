@@ -1,40 +1,23 @@
 ﻿using FourPointImport.Data;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
+using FourPointImport.Web.Models ;
 using System.Globalization;
 using Utilities;
 using FourPointImport.Services;
-using Microsoft.AspNetCore.Routing;
-using System.Xml.Linq;
-using Microsoft.AspNetCore.DataProtection;
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.VisualBasic;
-using System.Diagnostics.Metrics;
-using System.Runtime.Intrinsics.Arm;
-using System.Security.Cryptography;
-using System;
 using System.Data;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace FourPointImport.Web.Functions
 {
     public class MOB206
     {
         CoverageInsuranceMaster covInsMaster { get; set; }
+        StoreDebtProtection storeDebtProtection { get; set; }
         SuspenseMaster suspenseMaster { get; set; }
         List<CoverageInsuranceMaster> covMaster { get; set; }
         private DateTime _SmEfftTest { get; set; }
         string ErrCode { get; set; }
         private decimal ErrorLimit { get; set; }
         string ExCd { get; set; }
-        private decimal LfBand;
-        private decimal LfRate;
-        private decimal LfPrct;
-        private string LfDesc;
-        private decimal LfBase;
-        private decimal AhBase;
-        private string AhDesc;
-        private decimal AhBand;
-        private decimal AhRate;
-        private decimal AhPrct;
         private AgentDetail agDetail { get; set; }
         private AgentMaster agMaster { get; set; }
         bool PostData { get; set; }
@@ -42,6 +25,8 @@ namespace FourPointImport.Web.Functions
         private int Severity { get; set; }
         private string SeverityDesc { get; set; }
         private string SeverityErr { get; set; }
+        private StoreLifeCoverage storeLifeCoverage { get; set; }
+        private StoreDisabilityCoverage storeDisabilityCoverage { get; set; }
         private int TestDays { get; set; }
         protected readonly CoverageMasterService cmService;
         protected readonly AgentDetailService adService;
@@ -54,6 +39,13 @@ namespace FourPointImport.Web.Functions
         protected readonly PatronCustomerService patCustService;
         DateTime WorkDate { get; set; }
         DateTime WorkDate2 { get; set; }
+        
+        public Key01 Key_1;
+        public struct Key01
+        {
+            public string Agnt { get; set; }
+            public string Cert { get; set; }
+        }
         public Key03Ah Key_3Ah;
         public struct Key03Ah
         {
@@ -125,6 +117,11 @@ namespace FourPointImport.Web.Functions
         private async void getCoverage()
         {
             covMaster = await cmService.ReadAllAsync();
+            Key_1 = new Key01
+            {
+                Agnt = suspenseMaster.SmAgnt,
+                Cert = suspenseMaster.SmCert
+            };
         }
         public SuspenseMaster Process()
         {
@@ -202,8 +199,8 @@ namespace FourPointImport.Web.Functions
                 ChgData(suspenseMaster.SmAgnt);
                 Post_Data();
             }
-
-            NextRead();
+            //this was used to cycle to the next record - we do that in the controller now
+            //NextRead();
             Confirm();
             if (suspenseMaster.SmCert == "")
             {
@@ -232,6 +229,10 @@ namespace FourPointImport.Web.Functions
         }
         private async void AhRates()
         {
+            if(storeDisabilityCoverage == null)
+            {
+                storeDisabilityCoverage = new StoreDisabilityCoverage();
+            }
             //----------------------------------------------------------------------*
             //Get Rate Amounts and Defintions                                   
             //----------------------------------------------------------------------*
@@ -239,9 +240,9 @@ namespace FourPointImport.Web.Functions
             var RatMaster = await rmService.ReadAllAsync();
             var RatMstL1 = RatMaster.Find(x => x.RmEfft <= _SmEfftTest && x.RmExpr >= _SmEfftTest);
             if (RatMstL1 != null)
-            { 
-                AhBase = RatMstL1.RmBase;
-                AhDesc = RatMstL1.RmDesc;
+            {
+                storeDisabilityCoverage.AhBase = RatMstL1.RmBase;
+                storeDisabilityCoverage.AhDesc = RatMstL1.RmDesc;
 
             }
             // No Rate Master File Found of Not Active                                 
@@ -256,10 +257,11 @@ namespace FourPointImport.Web.Functions
             var RatDtlP   = RateDetail.Find(x=>x.RdEfft<= _SmEfftTest && x.RdExpr >= _SmEfftTest);
             if (RatDtlP != null)
             {
-                AhBand = RatDtlP.RdBand;
-                AhRate = RatDtlP.RdRate;
-                AhPrct = RatDtlP.RdPrct;
+                storeDisabilityCoverage.AhBand = RatDtlP.RdBand;
+                storeDisabilityCoverage.AhRate = RatDtlP.RdRate;
+                storeDisabilityCoverage.AhPrct = RatDtlP.RdPrct;
                 Key_11.AhTble = RatDtlP.RDTBLE;
+                storeDisabilityCoverage.AhTble = RatDtlP.RDTBLE;
                 return;
             }
             else
@@ -270,9 +272,9 @@ namespace FourPointImport.Web.Functions
                 {
                     if (_SmEfftTest >= RatDtlP.RdEfft && _SmEfftTest <= RatDtlP.RdExpr)
                     {
-                        AhBand = RatDtlP.RdBand;
-                        AhRate = RatDtlP.RdRate;
-                        AhPrct = RatDtlP.RdPrct;
+                        storeDisabilityCoverage.AhBand = RatDtlP.RdBand;
+                        storeDisabilityCoverage.AhRate = RatDtlP.RdRate;
+                        storeDisabilityCoverage.AhPrct = RatDtlP.RdPrct;
                     }
 
                     else
@@ -303,23 +305,24 @@ namespace FourPointImport.Web.Functions
                         if (_SmEfftTest >= agDetail.AdEfft &&
                                   _SmEfftTest <= agDetail.AdExpr)
                         {
-                            LfTble = agDetail.AdTble;
-                            LfType = agDetail.AdType;
-                            LfMxBa = agDetail.AdMxBa;
-                            LfMxBM = agDetail.AdMxBM;
-                            LfMnAg = agDetail.AdMnAg;
-                            LfMxAg = agDetail.AdMxAg;
-                            LfMnA2 = agDetail.AdMnA2;
-                            LfMxTr = agDetail.AdMxTr;
+                            storeLifeCoverage = new StoreLifeCoverage();
+                            storeLifeCoverage.LfTble = agDetail.AdTble;
+                            storeLifeCoverage.LfType = agDetail.AdType;
+                            storeLifeCoverage.LfMxBa = agDetail.AdMxBa;
+                            storeLifeCoverage.LfMxBM = agDetail.AdMxBM;
+                            storeLifeCoverage.LfMnAg = agDetail.AdMnAg;
+                            storeLifeCoverage.LfMxAg = agDetail.AdMxAg;
+                            storeLifeCoverage.LfMnA2 = agDetail.AdMnA2;
+                            storeLifeCoverage.LfMxTr = agDetail.AdMxTr;
 
-                            LfMxCT = agDetail.AdMxCT;
-                            LfHqML = agDetail.AdHqML;
-                            LfHlth = agDetail.AdHlth;
-                            LfLaps = agDetail.AdLaps;
-                            LfComm = agDetail.AdComm;
-                            LfPRat = agDetail.AdPRat;
-                            LfTolP = agDetail.AdTolP;
-                            LfTolA = agDetail.AdTolA;
+                            storeLifeCoverage.LfMxCT = agDetail.AdMxCT;
+                            storeLifeCoverage.LfHqML = agDetail.AdHqML;
+                            storeLifeCoverage.LfHlth = agDetail.AdHlth;
+                            storeLifeCoverage.LfLaps = agDetail.AdLaps;
+                            storeLifeCoverage.LfComm = agDetail.AdComm;
+                            storeLifeCoverage.LfPRat = agDetail.AdPRat;
+                            storeLifeCoverage.LfTolP = agDetail.AdTolP;
+                            storeLifeCoverage.LfTolA = agDetail.AdTolA;
                             break;
                         }
                     }
@@ -335,22 +338,23 @@ namespace FourPointImport.Web.Functions
                     {
                         if (_SmEfftTest >= item.AdEfft && _SmEfftTest <= item.AdExpr)
                         {
-                            AhType = item.AdType;
-                            AhTble = item.AdTble;
-                            AhMxBa = item.AdMxBa;
-                            AhMxBM = item.AdMxBM;
-                            AhMnAg = item.AdMnAg;
-                            AhMxAg = item.AdMxAg;
-                            AhMnA2 = item.AdMnA2;
-                            AhMxTr = item.AdMxTr;
-                            AhMxCT = item.AdMxCT;
-                            AhHqML = item.AdHqML;
-                            AhHlth = item.AdHlth;
-                            AhLaps = item.AdLaps;
-                            AhComm = item.AdComm;
-                            AhPRat = item.AdPRat;
-                            AhTolP = item.AdTolP;
-                            AhTolA = item.AdTolA;
+                            storeDisabilityCoverage = new StoreDisabilityCoverage();
+                            storeDisabilityCoverage.AhType = item.AdType;
+                            storeDisabilityCoverage.AhTble = item.AdTble;
+                            storeDisabilityCoverage.AhMxBa = item.AdMxBa;
+                            storeDisabilityCoverage.AhMxBM = item.AdMxBM;
+                            storeDisabilityCoverage.AhMnAg = item.AdMnAg;
+                            storeDisabilityCoverage.AhMxAg = item.AdMxAg;
+                            storeDisabilityCoverage.AhMnA2 = item.AdMnA2;
+                            storeDisabilityCoverage.AhMxTr = item.AdMxTr;
+                            storeDisabilityCoverage.AhMxCT = item.AdMxCT;
+                            storeDisabilityCoverage.AhHqML = item.AdHqML;
+                            storeDisabilityCoverage.AhHlth = item.AdHlth;
+                            storeDisabilityCoverage.AhLaps = item.AdLaps;
+                            storeDisabilityCoverage.AhComm = item.AdComm;
+                            storeDisabilityCoverage.AhPRat = item.AdPRat;
+                            storeDisabilityCoverage.AhTolP = item.AdTolP;
+                            storeDisabilityCoverage.AhTolA = item.AdTolA;
                             break;
                         }
 
@@ -364,22 +368,23 @@ namespace FourPointImport.Web.Functions
                     {
                         if (_SmEfftTest >= item.AdEfft && _SmEfftTest <= item.AdExpr)
                         {
-                            DpType = item.AdType;
-                            DpTble = item.AdTble;
-                            DpMxBa = item.AdMxBa;
-                            DpMxBM = item.AdMxBM;
-                            DpMnAg = item.AdMnAg;
-                            DpMxAg = item.AdMxAg;
-                            DpMnA2 = item.AdMnA2;
-                            DpMxTr = item.AdMxTr;
-                            DpMxCT = item.AdMxCT;
-                            DpHqML = item.AdHqML;
-                            DpHlth = item.AdHlth;
-                            DpLaps = item.AdLaps;
-                            DpComm = item.AdComm;
-                            DpPRat = item.AdPRat;
-                            DpTolP = item.AdTolP;
-                            DpTolA = item.AdTolA;
+                            storeDebtProtection = new StoreDebtProtection();
+                            storeDebtProtection.DpType = item.AdType;
+                            storeDebtProtection.DpTble = item.AdTble;
+                            storeDebtProtection.DpMxBa = item.AdMxBa;
+                            storeDebtProtection.DpMxBM = item.AdMxBM;
+                            storeDebtProtection.DpMnAg = item.AdMnAg;
+                            storeDebtProtection.DpMxAg = item.AdMxAg;
+                            storeDebtProtection.DpMnA2 = item.AdMnA2;
+                            storeDebtProtection.DpMxTr = item.AdMxTr;
+                            storeDebtProtection.DpMxCT = item.AdMxCT;
+                            storeDebtProtection.DpHqML = item.AdHqML;
+                            storeDebtProtection.DpHlth = item.AdHlth;
+                            storeDebtProtection.DpLaps = item.AdLaps;
+                            storeDebtProtection.DpComm = item.AdComm;
+                            storeDebtProtection.DpPRat = item.AdPRat;
+                            storeDebtProtection.DpTolP = item.AdTolP;
+                            storeDebtProtection.DpTolA = item.AdTolA;
                             break;
                         }
                         else
@@ -429,6 +434,52 @@ namespace FourPointImport.Web.Functions
             //process as it would normally...  
 
             return new MOB217(smAgnt, smcert, cOVMSTR).covMSTR;
+        }
+        public async void DpRates()
+        {
+            // ---------------------------------------------------------------------- *     
+            // -  Get Rate Amounts and Defintions                                   - *     
+            // ---------------------------------------------------------------------- *     
+
+
+            //  Get the Rate Master file infirmation for "Debt Protection"
+            var RatMaster = await rmService.ReadAllAsync();
+            var rmRes = RatMaster.Find(x => x.RmEfft <= _SmEfftTest && x.RmExpr >= _SmEfftTest);
+            if (rmRes != null)
+            {
+                storeDisabilityCoverage.AhBase = rmRes.RmBase;
+                storeDisabilityCoverage.AhDesc = rmRes.RmDesc;
+            }
+            else
+            {
+                // No Rate Master File Found or Not Active                                      
+
+                ErrMsg("DP - RATMSTP");
+            }
+            //  Get the Rate Detail for "LIFE" Coverage                                     
+            var RatDetail = await rdService.ReadAllAsync();
+            var rdRes = RatDetail.Find(x => x.RdEfft <= _SmEfftTest && x.RdExpr >= _SmEfftTest);
+            if (rdRes != null)
+            {
+                storeDisabilityCoverage.AhBand = rdRes.RdBand;
+                storeDisabilityCoverage.AhRate = rdRes.RdRate;
+                storeDisabilityCoverage.AhPrct = rdRes.RdPrct;
+            }
+            else
+            {
+                //  If No record found for this Coverage / Term check Term = 0 ( Straight Percentage )  
+                rdRes = RatDetail.Find(x => x.RdEfft <= _SmEfftTest && x.RdExpr >= _SmEfftTest);
+                if (rdRes != null)
+                {
+                    storeDisabilityCoverage.AhBand = rdRes.RdBand;
+                    storeDisabilityCoverage.AhRate = rdRes.RdRate;
+                    storeDisabilityCoverage.AhPrct = rdRes.RdPrct;
+                }
+                else
+                { // No Rate Detail File Found or Not Active                                      
+                    ErrMsg("DP - RATDTLP");
+                }
+            }
         }
         private void FieldTest()
         {
@@ -582,7 +633,7 @@ namespace FourPointImport.Web.Functions
                     ErrCode = "LFAMNT";
                     ErrMsg(ErrCode);
                 }
-                if (suspenseMaster.SmLBen > AdMxBa)
+                if (suspenseMaster.SmLBen > agDetail.AdMxBa)
                 {
                     ErrCode = "LFAMNT-MAX";
                     ErrMsg(ErrCode);
@@ -601,11 +652,11 @@ namespace FourPointImport.Web.Functions
                     ErrCode = "AHAMNT";
                     ErrMsg(ErrCode);
                 }
-                if (suspenseMaster.SmDBen > AHMxBA)
+                if (suspenseMaster.SmDBen > storeDisabilityCoverage.AhMxBa)
                 {
-                    AHExBa = (suspenseMaster.SmDBen * suspenseMaster.SmTrmD) - 1;
+                    storeDisabilityCoverage.AhExBa = (suspenseMaster.SmDBen * suspenseMaster.SmTrmD) - 1;
 
-                    if (AHExBa > AHMxBA)
+                    if (storeDisabilityCoverage.AhExBa > storeDisabilityCoverage.AhMxBa)
                     {
                         ErrCode = "AHAMNT-MAX";
                         ErrMsg(ErrCode);
@@ -621,7 +672,7 @@ namespace FourPointImport.Web.Functions
                     ErrCode = "LF-TERM-MN";
                     ErrMsg(ErrCode);
                 }
-                if (suspenseMaster.SmTrmL > LfMxCt)
+                if (suspenseMaster.SmTrmL > storeLifeCoverage.LfMxCT)
                 {
                     ErrCode = "LF-TERM-MX";
                     ErrMsg(ErrCode);
@@ -635,7 +686,7 @@ namespace FourPointImport.Web.Functions
                     ErrCode = "AH-TERM-MN";
                     ErrMsg(ErrCode);
                 }
-                if (suspenseMaster.SmTrmD > AhMxCt)
+                if (suspenseMaster.SmTrmD > storeDisabilityCoverage.AhMxCT)
                 {
                     ErrCode = "AH-TERM-MX";
                     ErrMsg(ErrCode);
@@ -649,7 +700,7 @@ namespace FourPointImport.Web.Functions
                     ErrCode = "DP-TERM-MN";
                     ErrMsg(ErrCode);
                 }
-                if (suspenseMaster.SmTrmP > DPMxCt)
+                if (suspenseMaster.SmTrmP > storeDebtProtection.DpMxCT)
                 {
                     if (suspenseMaster.SmType == "CEDP")
                     {
@@ -1114,21 +1165,17 @@ namespace FourPointImport.Web.Functions
             string key10 = string.Empty;
             string key11 = string.Empty;
             string key11a = string.Empty;
-            decimal AhBase;
-            string AhDesc = "";
-            decimal AhBand;
-            decimal RdBand;
-            decimal AhRate;
-            decimal AhPrct;
 
+            if (storeDisabilityCoverage == null)
+                storeDisabilityCoverage = new StoreDisabilityCoverage();
             // Get the Rate Master file information for "LIFE RATES"
             var ratMstL1 = RatMstL1.Find(x => x.RmTble == key10);
             if (ratMstL1 != null)
             {
                 if (_SmEfftTest >= ratMstL1.RmEfft && _SmEfftTest <= ratMstL1.RmExpr)
                 {
-                    AhBase = ratMstL1.RmBase;
-                    AhDesc = ratMstL1.RmDesc;
+                    storeDisabilityCoverage.AhBase = ratMstL1.RmBase;
+                    storeDisabilityCoverage.AhDesc = ratMstL1.RmDesc;
                 }
             }
             else         // No Rate Master File Found or Not Active
@@ -1143,9 +1190,9 @@ namespace FourPointImport.Web.Functions
             {
                 if (_SmEfftTest >= RateDetailLife.RdEfft && _SmEfftTest <= RateDetailLife.RdExpr)
                 {
-                    AhBand = RateDetailLife.RdBand;
-                    AhRate = RateDetailLife.RdRate;
-                    AhPrct = RateDetailLife.RdPrct;
+                    storeDisabilityCoverage.AhBand = RateDetailLife.RdBand;
+                    storeDisabilityCoverage.AhRate = RateDetailLife.RdRate;
+                    storeDisabilityCoverage.AhPrct = RateDetailLife.RdPrct;
                 }
             }
             else// If No record found for this Coverage / Term check Term = 0 ( Straight Percentage )
@@ -1155,9 +1202,9 @@ namespace FourPointImport.Web.Functions
                 {
                     if (_SmEfftTest >= RateDetailLife.RdEfft && _SmEfftTest <= RateDetailLife.RdExpr)
                     {
-                        AhBand = RateDetailLife.RdBand;
-                        AhRate = RateDetailLife.RdRate;
-                        AhPrct = RateDetailLife.RdPrct;
+                        storeDisabilityCoverage.AhBand = RateDetailLife.RdBand;
+                        storeDisabilityCoverage.AhRate = RateDetailLife.RdRate;
+                        storeDisabilityCoverage.AhPrct = RateDetailLife.RdPrct;
                     }
                 }
                 else // No Rate Detail File Found or Not Active
@@ -1172,7 +1219,10 @@ namespace FourPointImport.Web.Functions
 
         private void LfRates()
         {
-
+            if(storeLifeCoverage == null)
+            {
+                storeLifeCoverage = new StoreLifeCoverage();
+            }
             // Get the Rate Master file information for "LIFE RATES"
             List<RateMaster> ratMstL1 = new List<RateMaster>();
             var ratMstL = ratMstL1.Find(x => x.RmTble == Key_8.LfTble);
@@ -1181,8 +1231,8 @@ namespace FourPointImport.Web.Functions
             {
                 if (_SmEfftTest >= ratMstL.RmEfft && _SmEfftTest <= ratMstL.RmExpr)
                 {
-                    LfBase = ratMstL.RmBase;
-                    LfDesc = ratMstL.RmDesc;
+                    storeLifeCoverage.LfBase = ratMstL.RmBase;
+                    storeLifeCoverage.LfDesc = ratMstL.RmDesc;
                 }
             }
 
@@ -1200,9 +1250,9 @@ namespace FourPointImport.Web.Functions
             {
                 if (_SmEfftTest >= ratDtl.RdEfft && _SmEfftTest <= ratDtl.RdExpr)
                 {
-                    LfBand = ratDtl.RdBand;
-                    LfRate = ratDtl.RdRate;
-                    LfPrct = ratDtl.RdPrct;
+                    storeLifeCoverage.LfBand = ratDtl.RdBand;
+                    storeLifeCoverage.LfRate = ratDtl.RdRate;
+                    storeLifeCoverage.LfPrct = ratDtl.RdPrct;
                 }
             }
             else             // If No record found for this Coverage / Term check Term = 0 ( Straight Percentage )
@@ -1213,9 +1263,9 @@ namespace FourPointImport.Web.Functions
                 {
                     if (_SmEfftTest >= ratDtl.RdEfft && _SmEfftTest <= ratDtl.RdExpr)
                     {
-                        LfBand = ratDtl.RdBand;
-                        LfRate = ratDtl.RdRate;
-                        LfPrct = ratDtl.RdPrct;
+                        storeLifeCoverage.LfBand = ratDtl.RdBand;
+                        storeLifeCoverage.LfRate = ratDtl.RdRate;
+                        storeLifeCoverage.LfPrct = ratDtl.RdPrct;
                     }
                 }
                 else
@@ -1263,7 +1313,8 @@ namespace FourPointImport.Web.Functions
 
             if (suspenseMaster.SmDebt == 0)
             {
-                new MOB208(pragnt, suspenseMaster.SmCert, suspenseMaster, covMaster, lmService, patCustService);
+                var covItem = covMaster.Find(x => x.CmAgnt == Key_1.Agnt && x.CmAgnt == Key_1.Cert);
+                new MOB208(pragnt, suspenseMaster.SmCert, suspenseMaster, covItem, lmService, patCustService);
             }
             else
             {

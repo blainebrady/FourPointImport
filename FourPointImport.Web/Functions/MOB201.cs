@@ -14,6 +14,10 @@ namespace FourPointImport.Web.Functions
         protected readonly CoverageInsuranceService _coverageInsuranceService;
         protected readonly RateMasterService _rmService;
         protected readonly RateDetailService _rdService;
+        protected readonly FormMasterService _fmService;
+        protected readonly AgentDetailService _adService;
+        protected readonly LoanApplicationService _lmService;
+        protected readonly PatronCustomerService _patCustService;
         protected readonly Confirmation _conf;
         public string Param1
         {
@@ -30,13 +34,18 @@ namespace FourPointImport.Web.Functions
         public string LastAgent { get; set; }
                                                        
         public MOB201(List<SuspenseMaster> suspenseMaster, SuspenseMasterService service, CoverageMasterService cmService, AgentMasterService amService,
-            CoverageInsuranceService coverageInsuranceService, RateMasterService rmService, RateDetailService rdService, Confirmation conf)
+            CoverageInsuranceService coverageInsuranceService, RateMasterService rmService, RateDetailService rdService, Confirmation conf, 
+            FormMasterService fmService, AgentDetailService adService, LoanApplicationService lmService, PatronCustomerService patCustService)
         {
             _smService = service;
             _cmService = cmService;
             _rmService = rmService;
             _rdService = rdService;
             _amService = amService;
+            _patCustService = patCustService;
+            _fmService = fmService;
+            _adService = adService;
+            _lmService = lmService;
             _coverageInsuranceService = coverageInsuranceService;
             _conf = conf;
             
@@ -53,18 +62,19 @@ namespace FourPointImport.Web.Functions
                 {
                     suspenseMasterRes.SmCert = "";
                     suspenseMasterRes.SmDebt = 20;
-                    suspenseMasterRes = new MOB206(suspenseMasterRes, _cmService, _amService, _coverageInsuranceService,_rmService, _rdService).Process();
+                    suspenseMasterRes = new MOB206(suspenseMasterRes, _cmService, _amService, _coverageInsuranceService,_rmService, _rdService,
+                        _fmService, _adService, _lmService, _patCustService).Process();
                 }
                 if (!CompareAgentNumbers(item.SmAgnt, "DH00000") && CompareAgentNumbers(item.SmAgnt, "DH99999"))
                 {
-                    suspenseMasterRes = new MOB206(item, _cmService, _amService, _coverageInsuranceService,_rmService, _rdService).Process();
+                    suspenseMasterRes = new MOB206(item, _cmService, _amService, _coverageInsuranceService,_rmService, _rdService,
+                        _fmService, _adService, _lmService, _patCustService).Process();
                 }
                 //Process the CEMOB New Business Records from the Suspense File    
                 if (item.SmAgnt.ToInt() >= 90000 && item.SmAgnt.ToInt() <= 99999)
                 {
-                    Param2 = "";
-                    Param3 = 20;
-                    MOB206(Param1, Param2, Param3);
+                    suspenseMasterRes = new MOB206(item, _cmService, _amService, _coverageInsuranceService, _rmService, _rdService,
+                         _fmService, _adService, _lmService, _patCustService).Process();
                 }
                 // Process the OEMOB New Business Records from the Suspense File       
                 if (item.SmAgnt.ToInt() >= 20000 && item.SmAgnt.ToInt() <= 29999)
