@@ -4,41 +4,40 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace FourPointImport.Data
 {
     [Table("BillingDetail", Schema = "dbo")]
-    public class BillingDetail : Import
+    public class BillingDetail : Base
     {
-        public string BdAgnt { get; set; }
-        public string BdCert { get; set; }
-        public int BdSEQ { get; set; }
-        public decimal BdCovc  { get; set; }
-        public DateTime BdFrom { get; set; }
-        public DateTime BdDue { get; set; }
-        public decimal BdBill { get; set; }
-        public DateTime BdThru { get; set; }
-        public DateTime BdPaid { get; set; }
-        public  DateTime BdNext { get; set; }
-        public decimal BdBAmt { get; set; }
-        public decimal BdComm { get; set; }
-        public decimal BdPAmt { get; set; }
-        public decimal BdPCom { get; set; }
-        public decimal BdMOB { get; set; }
-        public decimal BdIntr { get; set; }
-        public  decimal BdInt { get; set; }
-        public decimal BdPrin { get; set; }
-        public decimal BdSchd { get; set; }
-        public string BdMsgC { get; set; }
-        public string BdMsgCD { get; set; }
-        public string BdCode { get; set; }
-        public string BdDesc { get; set; }
-        public DateTime BdData { get; set; }
-        public string BdUsrA { get; set; }
-        public DateTime BdDatU { get; set; }
-        public string BdUsrU { get; set; }
-        public DateTime BdDatC { get; set; }
-        public string BdUsrC { get; set; }
-        public decimal BdPanI { get { return BdInt + BdPrin; } }
+        public virtual string BdAgnt { get; set; }
+        public virtual string BdCert { get; set; }
+        public virtual int BdSEQ { get; set; }
+        public virtual decimal BdCovc  { get; set; }
+        public virtual DateTime BdFrom { get; set; }
+        public virtual DateTime BdDue { get; set; }
+        public virtual decimal BdBill { get; set; }
+        public virtual DateTime BdThru { get; set; }
+        public virtual DateTime BdPaid { get; set; }
+        public virtual  DateTime BdNext { get; set; }
+        public virtual decimal BdBAmt { get; set; }
+        public virtual decimal BdComm { get; set; }
+        public virtual decimal BdPAmt { get; set; }
+        public virtual decimal BdPCom { get; set; }
+        public virtual decimal BdMOB { get; set; }
+        public virtual decimal BdIntr { get; set; }
+        public virtual  decimal BdInt { get; set; }
+        public virtual decimal BdPrin { get; set; }
+        public virtual decimal BdSchd { get; set; }
+        public virtual string BdMsgC { get; set; }
+        public virtual string BdMsgCD { get; set; }
+        public virtual string BdCode { get; set; }
+        public virtual string BdDesc { get; set; }
+        public virtual DateTime BdData { get; set; }
+        public virtual string BdUsrA { get; set; }
+        public virtual DateTime BdDatU { get; set; }
+        public virtual string BdUsrU { get; set; }
+        public virtual DateTime BdDatC { get; set; }
+        public virtual string BdUsrC { get; set; }
+        public virtual decimal BdPanI { get { return BdInt + BdPrin; } }
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BillingDetail>().Property(x => x.id);
             modelBuilder.Entity<BillingDetail>().Property(x => x.BdAgnt).HasMaxLength(10);
             modelBuilder.Entity<BillingDetail>().Property(x => x.BdCert).HasMaxLength(20);
             modelBuilder.Entity<BillingDetail>().Property(x => x.BdSEQ).HasPrecision(9,0);

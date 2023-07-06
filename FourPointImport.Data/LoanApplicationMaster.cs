@@ -9,51 +9,50 @@ using System.Threading.Tasks;
 namespace FourPointImport.Data
 {
     [Table("LoanApplicationMaster", Schema = "dbo")]
-    public class LoanApplicationMaster : Import
+    public class LoanApplicationMaster : Base
     {
-        public string LmAgnt { get; set; }
-        public string LmCert { get; set; }
-        public int LmIdn1 { get; set; }
-        public decimal LmIdn2 { get; set; }
-        public string LmCalc { get; set; }
-        public string LmRegn { get; set; }
-        public string LmTerr { get; set; }
-        public string LmBrch { get; set; }
-        public string LmOffc { get; set; }
-        public string LmDeal { get; set; }
-        public string LmBen1 { get; set; }
-        public string LmBen2 { get; set; }
-        public DateTime LmFPay { get; set; }
-        public DateTime LmEfft { get; set; }
-        public DateTime LmExpr { get; set; }
-        public int LmCnlD { get; set; }
-        public int LmForm { get; set; }
-        public decimal LmTerm { get; set; }
-        public decimal LmFreq { get; set; }
-        public decimal LmAmnt { get; set; }
-        public int LmBall { get; set; }
-        public decimal LmSchd { get; set; }
-        public decimal LmIntr { get; set; }
-        public decimal LmPani { get; set; }
-        public decimal LmLine { get; set; }
-        public string LmStat { get; set; }
-        public string LmSig1 { get; set; }
-        public string LmSig2 { get; set; }
-        public string LmGuid { get; set; }
-        public string LmSts1 { get; set; }
-        public string LmSts2 { get; set; }
-        public string LmSts3 { get; set; }
-        public string LmPrev { get; set; }
-        public DateTime LmDatA { get; set; }
-        public string LmUsrA { get; set; }
-        public decimal LmDatU { get; set; }
-        public string LmUsrU { get; set; }
-        public decimal LmDatc { get; set; }
-        public string LmUsrc { get; set; }
-        public decimal LmMntf { get; set; }
+        public virtual string LmAgnt { get; set; }
+        public virtual string LmCert { get; set; }
+        public virtual int LmIdn1 { get; set; }
+        public virtual decimal LmIdn2 { get; set; }
+        public virtual string LmCalc { get; set; }
+        public virtual string LmRegn { get; set; }
+        public virtual string LmTerr { get; set; }
+        public virtual string LmBrch { get; set; }
+        public virtual string LmOffc { get; set; }
+        public virtual string LmDeal { get; set; }
+        public virtual string LmBen1 { get; set; }
+        public virtual string LmBen2 { get; set; }
+        public virtual DateTime LmFPay { get; set; }
+        public virtual DateTime LmEfft { get; set; }
+        public virtual DateTime LmExpr { get; set; }
+        public virtual int LmCnlD { get; set; }
+        public virtual int LmForm { get; set; }
+        public virtual decimal LmTerm { get; set; }
+        public virtual decimal LmFreq { get; set; }
+        public virtual decimal LmAmnt { get; set; }
+        public virtual int LmBall { get; set; }
+        public virtual decimal LmSchd { get; set; }
+        public virtual decimal LmIntr { get; set; }
+        public virtual decimal LmPani { get; set; }
+        public virtual decimal LmLine { get; set; }
+        public virtual string LmStat { get; set; }
+        public virtual string LmSig1 { get; set; }
+        public virtual string LmSig2 { get; set; }
+        public virtual string LmGuid { get; set; }
+        public virtual string LmSts1 { get; set; }
+        public virtual string LmSts2 { get; set; }
+        public virtual string LmSts3 { get; set; }
+        public virtual string LmPrev { get; set; }
+        public virtual DateTime LmDatA { get; set; }
+        public virtual string LmUsrA { get; set; }
+        public virtual decimal LmDatU { get; set; }
+        public virtual string LmUsrU { get; set; }
+        public virtual decimal LmDatc { get; set; }
+        public virtual string LmUsrc { get; set; }
+        public virtual decimal LmMntf { get; set; }
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.Archive);
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmAgnt).HasMaxLength(10);
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmCert).HasMaxLength(20);
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmIdn1);

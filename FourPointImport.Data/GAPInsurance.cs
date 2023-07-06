@@ -9,26 +9,26 @@ using System.Threading.Tasks;
 namespace FourPointImport.Data
 {
     [Table("GAPInsurance", Schema = "dbo")]
-    public class GAPInsurance : Import
+    public class GAPInsurance : Base
     {
-        public string GmAgnt { get; set; }
-        public string GmCert { get; set; }
-        public string GmVIN { get; set; }
-        public int GmYear { get; set; }
-        public string GmMake { get; set; }
-        public string GmModel { get; set; }
-        public decimal GmFee { get; set; }
-        public decimal GmComR { get; set; }
-        public DateTime GmEfft { get; set; }
-        public DateTime GmExpr { get; set; }
-        public string GmStat { get; set; }
-        public DateTime GmSDte { get; set; }
-        public DateTime GmDatU { get; set; }
-        public string GmUsrU { get; set; }
-        public DateTime GmDatA { get; set; }
-        public string GmUsrA { get; set; }
-        public DateTime GmHstD { get; set; }
-        public string GmHstU { get; set; }
+        public virtual string GmAgnt { get; set; }
+        public virtual string GmCert { get; set; }
+        public virtual string GmVIN { get; set; }
+        public virtual int GmYear { get; set; }
+        public virtual string GmMake { get; set; }
+        public virtual string GmModel { get; set; }
+        public virtual decimal GmFee { get; set; }
+        public virtual decimal GmComR { get; set; }
+        public virtual DateTime GmEfft { get; set; }
+        public virtual DateTime GmExpr { get; set; }
+        public virtual string GmStat { get; set; }
+        public virtual DateTime GmSDte { get; set; }
+        public virtual DateTime GmDatU { get; set; }
+        public virtual string GmUsrU { get; set; }
+        public virtual DateTime GmDatA { get; set; }
+        public virtual string GmUsrA { get; set; }
+        public virtual DateTime GmHstD { get; set; }
+        public virtual string GmHstU { get; set; }
 
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {

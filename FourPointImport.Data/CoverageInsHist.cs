@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace FourPointImport.Data
 {
     [Table("CoverageInsHist", Schema = "dbo")]
-    public class CoverageInsHist : Import
+    public class CoverageInsHist : Base
     {
         public virtual string CmAgnt { get; set; }
         public virtual string CmCert { get; set; }
@@ -40,7 +40,6 @@ namespace FourPointImport.Data
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CoverageInsHist>().Property(x => x.CmAgnt).HasMaxLength(10);
-
             modelBuilder.Entity<CoverageInsHist>().Property(x => x.CmCert).HasMaxLength(20);
             modelBuilder.Entity<CoverageInsHist>().Property(x => x.CmIDN1);
             modelBuilder.Entity<CoverageInsHist>().Property(x => x.CmIDN2).HasPrecision(9, 0);

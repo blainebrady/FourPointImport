@@ -9,38 +9,38 @@ using System.Threading.Tasks;
 namespace FourPointImport.Data
 {
     [Table("AgentMaster", Schema = "dbo")]
-    public class AgentMaster : Import
+    public class AgentMaster : Base
     {
-        public string AMHOLD { get; set; }
-        public string AMAGNT { get; set; }
-        public string AMCNTC { get; set; }
-        public string AMAGNY { get; set; }
-        public string AMADD1 { get; set; }
-        public string AMADD2 { get; set; }
-        public string AMCITY { get; set; }
-        public string AMSTE { get; set; }
-        public string AMZIP { get; set; }
-        public string AMRPST { get; set; }
-        public int AMPHNE { get; set; }
-        public int AMTXID { get; set; }
-        public int AMSSNO { get; set; }
-        public int AMREP { get; set; }
-        public string AMSTAT { get; set; }
-        public string AmOnly { get; set; }
-        public string AMRTRQ { get; set; }
-        public string AmBoRq { get; set; }
-        public string AMBILL { get; set; }
-        public string AMCLMD { get; set; }
-        public string AMMTHD { get; set; }
-        public string AMREIN { get; set; }
-        public DateTime AMEFFT { get; set; }
-        public DateTime AMEXPR { get; set; }
-        public DateTime AMDATA { get; set; }
-        public string AMUSRA { get; set; }
-        public DateTime AMDATU { get; set; }
-        public string AMUSRU { get; set; }
-        public DateTime AMDATC { get; set; }
-        public string AMUSRC { get; set; }
+        public virtual string AMHOLD { get; set; }
+        public virtual string AMAGNT { get; set; }
+        public virtual string AMCNTC { get; set; }
+        public virtual string AMAGNY { get; set; }
+        public virtual string AMADD1 { get; set; }
+        public virtual string AMADD2 { get; set; }
+        public virtual string AMCITY { get; set; }
+        public virtual string AMSTE { get; set; }
+        public virtual string AMZIP { get; set; }
+        public virtual string AMRPST { get; set; }
+        public virtual int AMPHNE { get; set; }
+        public virtual int AMTXID { get; set; }
+        public virtual int AMSSNO { get; set; }
+        public virtual int AMREP { get; set; }
+        public virtual string AMSTAT { get; set; }
+        public virtual string AmOnly { get; set; }
+        public virtual string AMRTRQ { get; set; }
+        public virtual string AmBoRq { get; set; }
+        public virtual string AMBILL { get; set; }
+        public virtual string AMCLMD { get; set; }
+        public virtual string AMMTHD { get; set; }
+        public virtual string AMREIN { get; set; }
+        public virtual DateTime AMEFFT { get; set; }
+        public virtual DateTime AMEXPR { get; set; }
+        public virtual DateTime AMDATA { get; set; }
+        public virtual string AMUSRA { get; set; }
+        public virtual DateTime AMDATU { get; set; }
+        public virtual string AMUSRU { get; set; }
+        public virtual DateTime AMDATC { get; set; }
+        public virtual string AMUSRC { get; set; }
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AgentMaster>().Property(x => x.AMHOLD).HasMaxLength(10);

@@ -9,24 +9,23 @@ using System.Threading.Tasks;
 namespace FourPointImport.Data
 {
     [Table("RateDetailLife", Schema = "dbo")]
-    public class RateDetailLife : Import
+    public class RateDetailLife : Base
     {
-        public string RDTBLE { get; set; }
-        public decimal RdBand { get; set; }
-        public decimal RdRate { get; set; }
-        public decimal RdPrct { get; set; }
-        public DateTime RdEfft { get; set; }
-        public DateTime RdExpr { get; set; }
-        public DateTime RDDATA { get; set; }
-        public string RDUSRA { get; set; }
-        public DateTime RDDATU { get; set; }
-        public string RDUSRU { get; set; }
-        public DateTime RDDATC { get; set; }
-        public string RDUSRC { get; set; }
+        public virtual string RDTBLE { get; set; }
+        public virtual decimal RdBand { get; set; }
+        public virtual decimal RdRate { get; set; }
+        public virtual decimal RdPrct { get; set; }
+        public virtual DateTime RdEfft { get; set; }
+        public virtual DateTime RdExpr { get; set; }
+        public virtual DateTime RDDATA { get; set; }
+        public virtual string RDUSRA { get; set; }
+        public virtual DateTime RDDATU { get; set; }
+        public virtual string RDUSRU { get; set; }
+        public virtual DateTime RDDATC { get; set; }
+        public virtual string RDUSRC { get; set; }
 
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<RateDetailLife>().Property(x => x.Archive);
             modelBuilder.Entity<RateDetailLife>().Property(x => x.RDTBLE).HasMaxLength(7);
             modelBuilder.Entity<RateDetailLife>().Property(x => x.RdBand).HasPrecision(3,0);
             modelBuilder.Entity<RateDetailLife>().Property(x => x.RdRate).HasPrecision(7,5);

@@ -5,28 +5,25 @@ using System.Xml.Linq;
 namespace FourPointImport.Data
 {
     [Table("BranchOffice", Schema = "dbo")]
-    public class BranchOffice : Import
+    public class BranchOffice : Base
     {
-        public  string BmAgnt { get; set; }
-        public  string BmRegn { get; set; }
-        public  string BMRNam { get; set; }
-        public string BmTerr { get; set; }
-        public string BMTNam { get; set; }
-        public  string BmBrch { get; set; }
-        public string BMBNam { get; set; }
-        public string BmOffc { get; set; }
-        public string BMONam { get; set; }
-        public  DateTime BmDatA { get; set; }
-        public  DateTime BmDatU { get; set; }
-        public  DateTime BmDatC { get; set; }
-        public  string BmUsrA { get; set; }
-        public  string BmUsrU { get; set; }
-        public  string BmUsrC { get; set; }
+        public virtual  string BmAgnt { get; set; }
+        public virtual  string BmRegn { get; set; }
+        public virtual  string BMRNam { get; set; }
+        public virtual string BmTerr { get; set; }
+        public virtual string BMTNam { get; set; }
+        public virtual  string BmBrch { get; set; }
+        public virtual string BMBNam { get; set; }
+        public virtual string BmOffc { get; set; }
+        public virtual string BMONam { get; set; }
+        public virtual  DateTime BmDatA { get; set; }
+        public virtual  DateTime BmDatU { get; set; }
+        public virtual  DateTime BmDatC { get; set; }
+        public virtual  string BmUsrA { get; set; }
+        public virtual  string BmUsrU { get; set; }
+        public virtual  string BmUsrC { get; set; }
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BranchOffice>().Property(x => x.Archive);
-            modelBuilder.Entity<BranchOffice>().Property(x => x.CreateOn);
-            modelBuilder.Entity<BranchOffice>().Property(x => x.LastUpdated);
             modelBuilder.Entity<BranchOffice>().Property(x => x.BmAgnt).HasMaxLength(10);
             modelBuilder.Entity<BranchOffice>().Property(x => x.BmBrch).HasMaxLength(10);
             modelBuilder.Entity<BranchOffice>().Property(x => x.BmRegn).HasMaxLength(10);

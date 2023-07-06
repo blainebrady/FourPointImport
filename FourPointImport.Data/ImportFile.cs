@@ -9,46 +9,45 @@ using System.Threading.Tasks;
 namespace FourPointImport.Data
 {
     [Table("ImportFile", Schema = "dbo")]
-    public class ImportFile : Import
+    public class ImportFile : Base
     {
-        public string BXAGNT { get; set; }
-        public string BXBRCH { get; set; }
-        public string BXCERT { get; set; }
-        public string BXNAME { get; set; }
-        public string BXCOVC { get; set; }
-        public DateTime BXEFFT { get; set; }
-        public DateTime BXFROM { get; set; }
-        public DateTime BXTHRU { get; set; }
-        public DateTime BXEXPR { get; set; }
-        public DateTime BXPAID { get; set; }
-        public DateTime BXNEXT { get; set; }
-        public string BXNEG01 { get; set; }
-        public decimal BXBAMT { get; set; }
-        public string BXNEG02 { get; set; }
-        public decimal BXCOMM { get; set; }
-        public string BXNEG03 { get; set; }
-        public decimal BXBGRS { get; set; }
-        public string BXNEG04 { get; set; }
-        public decimal BXPAMT { get; set; }
-        public string BXNEG05 { get; set; }
-        public decimal BXCOMP { get; set; }
-        public string BXNEG06 { get; set; }
-        public decimal BXPGRS { get; set; }
-        public string BXNEG07 { get; set; }
-        public decimal BXMOB { get; set; }
-        public decimal BXINTR { get; set; }
-        public decimal BXINT { get; set; }
-        public decimal BXPRIN { get; set; }
-        public decimal BXSCHD { get; set; }
-        public string BXMSGC { get; set; }
-        public string BXMSGD { get; set; }
-        public string BXCODE { get; set; }
-        public string BXDESC { get; set; }
-        public DateTime BXCAND { get; set; }
+        public virtual string BXAGNT { get; set; }
+        public virtual string BXBRCH { get; set; }
+        public virtual string BXCERT { get; set; }
+        public virtual string BXNAME { get; set; }
+        public virtual string BXCOVC { get; set; }
+        public virtual DateTime BXEFFT { get; set; }
+        public virtual DateTime BXFROM { get; set; }
+        public virtual DateTime BXTHRU { get; set; }
+        public virtual DateTime BXEXPR { get; set; }
+        public virtual DateTime BXPAID { get; set; }
+        public virtual DateTime BXNEXT { get; set; }
+        public virtual string BXNEG01 { get; set; }
+        public virtual decimal BXBAMT { get; set; }
+        public virtual string BXNEG02 { get; set; }
+        public virtual decimal BXCOMM { get; set; }
+        public virtual string BXNEG03 { get; set; }
+        public virtual decimal BXBGRS { get; set; }
+        public virtual string BXNEG04 { get; set; }
+        public virtual decimal BXPAMT { get; set; }
+        public virtual string BXNEG05 { get; set; }
+        public virtual decimal BXCOMP { get; set; }
+        public virtual string BXNEG06 { get; set; }
+        public virtual decimal BXPGRS { get; set; }
+        public virtual string BXNEG07 { get; set; }
+        public virtual decimal BXMOB { get; set; }
+        public virtual decimal BXINTR { get; set; }
+        public virtual decimal BXINT { get; set; }
+        public virtual decimal BXPRIN { get; set; }
+        public virtual decimal BXSCHD { get; set; }
+        public virtual string BXMSGC { get; set; }
+        public virtual string BXMSGD { get; set; }
+        public virtual string BXCODE { get; set; }
+        public virtual string BXDESC { get; set; }
+        public virtual DateTime BXCAND { get; set; }
 
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ImportFile>().Property(x => x.Archive);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXAGNT).HasMaxLength(10);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXBRCH).HasMaxLength(10);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXCERT).HasMaxLength(20);

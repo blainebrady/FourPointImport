@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace FourPointImport.Data
 {
-    public class ApiDbContext:DbContext
+    public class ApiDbContext : DbContext
     {
         protected IConfiguration _configuration;
 
@@ -24,6 +24,7 @@ namespace FourPointImport.Data
                 return new List<Assembly>() { Assembly.Load("FourPointImport.Data") };
             }
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             foreach (var assembly in Assemblies)
@@ -31,15 +32,14 @@ namespace FourPointImport.Data
                 try
                 {
                     var classes = assembly.GetTypes()
-                        .Where(type => type.IsClass && type.IsPublic && type.BaseType == typeof(Import) && type.IsPublic && !type.IsAbstract)
+                        .Where(type => type.IsClass && type.IsPublic && type.BaseType == typeof(Base) && type.IsPublic && !type.IsAbstract)
                         .ToList();
                     foreach (var classType in classes)
                     {
-                        Console.WriteLine("*****************" + classType.Name + "|" + classType.BaseType.ToString() + "**********************");
                         var onModelCreatingMethod = classType.GetMethods().FirstOrDefault(x => x.Name == "OnModelCreating" && x.IsStatic);
                         if (onModelCreatingMethod != null)
                             onModelCreatingMethod.Invoke(classType, new object[] { modelBuilder });
-                        if (classType.BaseType == null || classType.BaseType != typeof(Import))
+                        if (classType.BaseType == null || classType.BaseType != typeof(Base))
                         {
                             continue;
                         }
@@ -62,9 +62,10 @@ namespace FourPointImport.Data
 
             }
         }
+
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            if (!builder.IsConfigured || _configuration==null)
+            if (!builder.IsConfigured || _configuration == null)
             {
                 _configuration = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory())
@@ -79,13 +80,13 @@ namespace FourPointImport.Data
         {
             foreach (var entry in ChangeTracker.Entries())
             {
-                if (entry.Entity is Import)
+                if (entry.Entity is Base)
                 {
                     if (entry.State == EntityState.Added)
                     {
                         entry.Property("Created").CurrentValue = DateTimeOffset.Now;
                     }
-                    if(entry.State == EntityState.Modified)
+                    if (entry.State == EntityState.Modified)
                     {
                         entry.Property("LastUpdated").CurrentValue = DateTimeOffset.Now;
                     }

@@ -10,17 +10,16 @@ using System.Threading.Tasks;
 namespace FourPointImport.Data
 {
     [Table("Confirmation", Schema = "dbo")]
-    public class Confirmation : Import
+    public class Confirmation : Base
     {
-        public string CfAgnt { get; set; }
-        public string CfCert { get; set; }
-        public string CfFlag { get; set; }
-        public string CfErr { get; set; }
-        public DateTime CfProc { get; set; }
+        public virtual string CfAgnt { get; set; }
+        public virtual string CfCert { get; set; }
+        public virtual string CfFlag { get; set; }
+        public virtual string CfErr { get; set; }
+        public virtual DateTime CfProc { get; set; }
 
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Confirmation>().Property(x => x.Archive);
             modelBuilder.Entity<Confirmation>().Property(x => x.CfAgnt).HasMaxLength(10);
             modelBuilder.Entity<Confirmation>().Property(x => x.CfCert).HasMaxLength(20);
             modelBuilder.Entity<Confirmation>().Property(x => x.CfFlag).HasMaxLength(1);

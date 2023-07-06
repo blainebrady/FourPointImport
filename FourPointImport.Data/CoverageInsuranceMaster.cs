@@ -11,36 +11,35 @@ namespace FourPointImport.Data
 {
 
     [Table("CoverageInsuranceMaster", Schema = "dbo")]
-    public class CoverageInsuranceMaster : Import
+    public class CoverageInsuranceMaster : Base
     {
-        public string CmAgnt { get; set; }
-        public string CmCert { get; set; }
-        public int CmIDN1 { get; set; }
-        public decimal CmIDN2 { get; set; }
-        public DateTime CmFPrm { get; set; }
-        public DateTime CmEfft { get; set; }
-        public DateTime CmExpr { get; set; }
-        public int CmTerm { get; set; }
-        public decimal CmDays { get; set; }
-        public decimal CmAmnt { get; set; }
-        public decimal CmBAmt { get; set; }
-        public string CmStat { get; set; }
-        public decimal CmCovc { get; set; }
-        public string CmTble { get; set; }
-        public int CmLapD { get; set; }
-        public string CmLapR { get; set; }
-        public int CmCand { get; set; }
-        public string CmCanr { get; set; }
-        public string CmPrev { get; set; }
-        public DateTime CmData { get; set; }
-        public string CMUsrA { get; set; }
-        public DateTime CMDatU { get; set; }
-        public string CMUsrU { get; set; }
-        public DateTime CMDatC { get; set; }
-        public string CMUsrC { get; set; }
+        public virtual string CmAgnt { get; set; }
+        public virtual string CmCert { get; set; }
+        public virtual int CmIDN1 { get; set; }
+        public virtual decimal CmIDN2 { get; set; }
+        public virtual DateTime CmFPrm { get; set; }
+        public virtual DateTime CmEfft { get; set; }
+        public virtual DateTime CmExpr { get; set; }
+        public virtual int CmTerm { get; set; }
+        public virtual decimal CmDays { get; set; }
+        public virtual decimal CmAmnt { get; set; }
+        public virtual decimal CmBAmt { get; set; }
+        public virtual string CmStat { get; set; }
+        public virtual decimal CmCovc { get; set; }
+        public virtual string CmTble { get; set; }
+        public virtual int CmLapD { get; set; }
+        public virtual string CmLapR { get; set; }
+        public virtual int CmCand { get; set; }
+        public virtual string CmCanr { get; set; }
+        public virtual string CmPrev { get; set; }
+        public virtual DateTime CmData { get; set; }
+        public virtual string CMUsrA { get; set; }
+        public virtual DateTime CMDatU { get; set; }
+        public virtual string CMUsrU { get; set; }
+        public virtual DateTime CMDatC { get; set; }
+        public virtual string CMUsrC { get; set; }
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.Archive);
             modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmAgnt).HasMaxLength(10);
             modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmCert).HasMaxLength(20);
             modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmIDN1).HasPrecision(9,0);

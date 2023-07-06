@@ -9,26 +9,26 @@ using System.Threading.Tasks;
 namespace FourPointImport.Data
 {
     [Table("ProductCoverage", Schema = "dbo")]
-    public class productCoverage : Import
+    public class productCoverage : Base
     {
-        public decimal PCCOVC { get; set; }
-        public string PCDESC { get; set; }
-        public string PCLTYPE { get; set; }
-        public string PCSHRT { get; set; }
-        public string PCINS { get; set; }
-        public string PCCALC { get; set; }
-        public string PCSORJ { get; set; }
-        public decimal PCCOMM { get; set; }
-        public int PCEFFT { get; set; }
-        public int PCEXPR { get; set; }
-        public DateTime PCDATA { get; set; }
-        public string PCUSRA { get; set; }
-        public DateTime PCDATU { get; set; }
-        public string PCUSRU { get; set; }
-        public DateTime PCDATC { get; set; }
-        public string PCUSRC { get; set; }
-        public bool Archive { get; set; }
-        public DateTimeOffset Created { get; set; }
+        public virtual decimal PCCOVC { get; set; }
+        public virtual string PCDESC { get; set; }
+        public virtual string PCLTYPE { get; set; }
+        public virtual string PCSHRT { get; set; }
+        public virtual string PCINS { get; set; }
+        public virtual string PCCALC { get; set; }
+        public virtual string PCSORJ { get; set; }
+        public virtual decimal PCCOMM { get; set; }
+        public virtual int PCEFFT { get; set; }
+        public virtual int PCEXPR { get; set; }
+        public virtual DateTime PCDATA { get; set; }
+        public virtual string PCUSRA { get; set; }
+        public virtual DateTime PCDATU { get; set; }
+        public virtual string PCUSRU { get; set; }
+        public virtual DateTime PCDATC { get; set; }
+        public virtual string PCUSRC { get; set; }
+        public virtual bool Archive { get; set; }
+        public virtual DateTimeOffset Created { get; set; }
 
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {

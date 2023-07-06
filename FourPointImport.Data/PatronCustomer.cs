@@ -11,50 +11,49 @@ using System.Xml.Linq;
 namespace FourPointImport.Data
 {
     [Table("PatronCustomer", Schema = "dbo")]
-    public class PatronCustomer : Import
+    public class PatronCustomer : Base
     {
-        public decimal ImIDN { get; set; }
-        public string ImLNam { get; set; }
-        public string ImFNam { get; set; }
-        public string ImMNam { get; set; }
-        public string ImSufx { get; set; }
-        public string ImAdd1 { get; set; }
-        public string ImAdd2 { get; set; }
-        public string ImCity { get; set; }
-        public string ImSte { get; set; }
-        public string ImZip { get; set; }
-        public decimal ImPhne { get; set; }
-        public DateTime ImDob { get; set; }
-        public string ImSex { get; set; }
-        public string ImStat { get; set; }
-        public string IMHQ01 { get; set; }
-        public string IMHQ02 { get; set; }
-        public string IMHQ03 { get; set; }
-        public string IMHQ04 { get; set; }
-        public string IMHQ05 { get; set; }
-        public string IMHQ06 { get; set; }
-        public string IMHQ07 { get; set; }
-        public string IMHQ08 { get; set; }
-        public string IMHQ09 { get; set; }
-        public string IMHQ10 { get; set; }
-        public string IMHQ11 { get; set; }
-        public string IMHQ12 { get; set; }
-        public string IMHQ13 { get; set; }
-        public string IMHQ14 { get; set; }
-        public string IMHQ15 { get; set; }
-        public string IMHQ16 { get; set; }
-        public string IMHQ17 { get; set; }
-        public string IMHQ18 { get; set; }
-        public string IMHQ19 { get; set; }
-        public string IMHQ20 { get; set; }
-        public string ImUsrA { get; set; }
-        public DateTime ImDatU { get; set; }
-        public string ImUsrU { get; set; }
-        public DateTime ImDatA { get; set; }
+        public virtual decimal ImIDN { get; set; }
+        public virtual string ImLNam { get; set; }
+        public virtual string ImFNam { get; set; }
+        public virtual string ImMNam { get; set; }
+        public virtual string ImSufx { get; set; }
+        public virtual string ImAdd1 { get; set; }
+        public virtual string ImAdd2 { get; set; }
+        public virtual string ImCity { get; set; }
+        public virtual string ImSte { get; set; }
+        public virtual string ImZip { get; set; }
+        public virtual decimal ImPhne { get; set; }
+        public virtual DateTime ImDob { get; set; }
+        public virtual string ImSex { get; set; }
+        public virtual string ImStat { get; set; }
+        public virtual string IMHQ01 { get; set; }
+        public virtual string IMHQ02 { get; set; }
+        public virtual string IMHQ03 { get; set; }
+        public virtual string IMHQ04 { get; set; }
+        public virtual string IMHQ05 { get; set; }
+        public virtual string IMHQ06 { get; set; }
+        public virtual string IMHQ07 { get; set; }
+        public virtual string IMHQ08 { get; set; }
+        public virtual string IMHQ09 { get; set; }
+        public virtual string IMHQ10 { get; set; }
+        public virtual string IMHQ11 { get; set; }
+        public virtual string IMHQ12 { get; set; }
+        public virtual string IMHQ13 { get; set; }
+        public virtual string IMHQ14 { get; set; }
+        public virtual string IMHQ15 { get; set; }
+        public virtual string IMHQ16 { get; set; }
+        public virtual string IMHQ17 { get; set; }
+        public virtual string IMHQ18 { get; set; }
+        public virtual string IMHQ19 { get; set; }
+        public virtual string IMHQ20 { get; set; }
+        public virtual string ImUsrA { get; set; }
+        public virtual DateTime ImDatU { get; set; }
+        public virtual string ImUsrU { get; set; }
+        public virtual DateTime ImDatA { get; set; }
         
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<PatronCustomer>().Property(x => x.Archive).HasMaxLength(10);
             modelBuilder.Entity<PatronCustomer>().Property(x => x.ImIDN);
             modelBuilder.Entity<PatronCustomer>().Property(x => x.ImLNam).HasMaxLength(25);
             modelBuilder.Entity<PatronCustomer>().Property(x => x.ImFNam).HasMaxLength(25);

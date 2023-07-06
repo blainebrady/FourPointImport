@@ -9,22 +9,22 @@ using System.Threading.Tasks;
 namespace FourPointImport.Data
 {
     [Table("FormMaster", Schema = "dbo")]
-    public class FormMaster : Import
+    public class FormMaster : Base
     {
-        public string FmAGNT { get; set; } // Agent ID Number
-        public int FmForm { get; set; } // Form Number
-        public string FmDesc { get; set; } // Form Description
-        public string FmType { get; set; } // Product Type
-        public string FmCalc { get; set; } // Calculation Method
-        public string FmLend { get; set; } // Lending Type
-        public DateTime FmEfft { get; set; } // Effective Date
-        public DateTime FmExpr { get; set; } // Expiration Date
-        public DateTime FmDATA { get; set; } // Date Record Added
-        public string FmUSRA { get; set; } // User Added Record
-        public DateTime FmDATU { get; set; } // Date Record Updated
-        public string FmUSRU { get; set; } // User Created Record
-        public DateTime FmDATC { get; set; } // Date Record Cancelled
-        public string FmUSRC { get; set; } // User Cancelled Record
+        public virtual string FmAGNT { get; set; } // Agent ID Number
+        public virtual int FmForm { get; set; } // Form Number
+        public virtual string FmDesc { get; set; } // Form Description
+        public virtual string FmType { get; set; } // Product Type
+        public virtual string FmCalc { get; set; } // Calculation Method
+        public virtual string FmLend { get; set; } // Lending Type
+        public virtual DateTime FmEfft { get; set; } // Effective Date
+        public virtual DateTime FmExpr { get; set; } // Expiration Date
+        public virtual DateTime FmDATA { get; set; } // Date Record Added
+        public virtual string FmUSRA { get; set; } // User Added Record
+        public virtual DateTime FmDATU { get; set; } // Date Record Updated
+        public virtual string FmUSRU { get; set; } // User Created Record
+        public virtual DateTime FmDATC { get; set; } // Date Record Cancelled
+        public virtual string FmUSRC { get; set; } // User Cancelled Record
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<FormMaster>().Property(x => x.FmAGNT).HasMaxLength(10);

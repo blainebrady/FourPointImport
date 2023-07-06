@@ -725,7 +725,7 @@ namespace FourPointImport.Web.Functions
             suspenseMaster.SmHQ20A = inComing.SeHQ20A;
             suspenseMaster.SmSig1 = inComing.SeSig1;
             suspenseMaster.SmIdn2 = inComing.SeIdn2;
-            WrkName = suspenseMaster.SmLNam2.TrimEnd();
+            WrkName = suspenseMaster.SmLNam2.StringSafe().TrimEnd();
             if (WrkName != "" && WrkNameS == "")
             {
                 suspenseMaster.SmLNam2 = WrkName.Trim();

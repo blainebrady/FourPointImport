@@ -39,7 +39,7 @@ namespace FourPointImport.Services
             {
                 throw new ArgumentException("Unable to find record with id = " + id.ToString());
             }
-            entity.Archive = true;
+            entity.Archive = DateTime.Now;
             _db.Entry(entity).State = EntityState.Modified;
             await _db.SaveChangesAsync();
         }

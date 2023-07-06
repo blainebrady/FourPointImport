@@ -9,42 +9,42 @@ using System.Threading.Tasks;
 namespace FourPointImport.Data
 {
     [Table("AgentDetail", Schema = "dbo")]
-    public class AgentDetail : Import
+    public class AgentDetail : Base
     {
-        public string ADAGNT { get; set; }
-        public decimal ADCOVC { get; set; }
-        public string AdTble { get; set; }
-        public string AdType { get; set; }
-        public string ADCCF { get; set; }
-        public decimal ADGLCO { get; set; }
-        public decimal ADGL { get; set; }
-        public string ADCLM { get; set; }
-        public string ADCLMP { get; set; }
-        public string ADCLMT { get; set; }
-        public DateTime AdEfft { get; set; }
-        public DateTime AdExpr { get; set; }
-        public decimal AdMxBa { get; set; }
-        public decimal AdMxBM { get; set; }
-        public decimal AdMnAg { get; set; }
-        public decimal AdMxAg { get; set; }
-        public decimal AdMnA2 { get; set; }
-        public decimal ADMXA2 { get; set; }
-        public decimal AdMxTr { get; set; }
-        public decimal AdMxCT { get; set; }
-        public decimal AdHqML { get; set; }
-        public string AdHlth { get; set; }
-        public decimal AdLaps { get; set; }
-        public decimal ADDINY { get; set; }
-        public decimal AdComm { get; set; }
-        public decimal AdPRat { get; set; }
-        public decimal AdTolP { get; set; }
-        public decimal AdTolA { get; set; }
-        public decimal ADDATA { get; set; }
-        public string ADUSRA { get; set; }
-        public decimal ADDATU { get; set; }
-        public string ADUSRU { get; set; }
-        public decimal ADDATC { get; set; }
-        public string ADUSRC { get; set; }
+        public virtual string ADAGNT { get; set; }
+        public virtual decimal ADCOVC { get; set; }
+        public virtual string AdTble { get; set; }
+        public virtual string AdType { get; set; }
+        public virtual string ADCCF { get; set; }
+        public virtual decimal ADGLCO { get; set; }
+        public virtual decimal ADGL { get; set; }
+        public virtual string ADCLM { get; set; }
+        public virtual string ADCLMP { get; set; }
+        public virtual string ADCLMT { get; set; }
+        public virtual DateTime AdEfft { get; set; }
+        public virtual DateTime AdExpr { get; set; }
+        public virtual decimal AdMxBa { get; set; }
+        public virtual decimal AdMxBM { get; set; }
+        public virtual decimal AdMnAg { get; set; }
+        public virtual decimal AdMxAg { get; set; }
+        public virtual decimal AdMnA2 { get; set; }
+        public virtual decimal ADMXA2 { get; set; }
+        public virtual decimal AdMxTr { get; set; }
+        public virtual decimal AdMxCT { get; set; }
+        public virtual decimal AdHqML { get; set; }
+        public virtual string AdHlth { get; set; }
+        public virtual decimal AdLaps { get; set; }
+        public virtual decimal ADDINY { get; set; }
+        public virtual decimal AdComm { get; set; }
+        public virtual decimal AdPRat { get; set; }
+        public virtual decimal AdTolP { get; set; }
+        public virtual decimal AdTolA { get; set; }
+        public virtual decimal ADDATA { get; set; }
+        public virtual string ADUSRA { get; set; }
+        public virtual decimal ADDATU { get; set; }
+        public virtual string ADUSRU { get; set; }
+        public virtual decimal ADDATC { get; set; }
+        public virtual string ADUSRC { get; set; }
 
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
