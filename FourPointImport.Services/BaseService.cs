@@ -46,6 +46,7 @@ namespace FourPointImport.Services
         public virtual async Task<List<TEntity>> ReadAllAsync(bool tracking = true)
         {
             IQueryable<TEntity> query = _db.Set<TEntity>();
+            query = query.Where(entity => entity.Archive.HasValue);
             if (!tracking)
                 query = query.AsNoTracking();
 
@@ -56,7 +57,7 @@ namespace FourPointImport.Services
             var query = _db.Set<TEntity>().AsQueryable();
             if (!Tracking)
                 query = query.AsNoTracking();
-            return await query.FirstOrDefaultAsync(entity => entity.id == id);
+            return await query.FirstOrDefaultAsync(entity => entity.id == id && entity.Archive.HasValue);
         }
 
         public virtual async Task<TEntity> UpdateAsync(int id, TEntity updateEntity)
