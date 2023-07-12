@@ -48,40 +48,40 @@ namespace FourPointImport.Data
 
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXAGNT).HasMaxLength(10);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXBRCH).HasMaxLength(10);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXCERT).HasMaxLength(20);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXNAME).HasMaxLength(25);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXCOVC).HasMaxLength(30);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXEFFT);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXFROM);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXTHRU);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXEXPR);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXPAID);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXNEXT);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXNEG01).HasMaxLength(1);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXAGNT).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXBRCH).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXCERT).HasMaxLength(20).IsRequired(false);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXNAME).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXCOVC).HasMaxLength(30).IsRequired(false);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXEFFT).IsRequired(false);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXFROM).IsRequired(false);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXTHRU).IsRequired(false);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXEXPR).IsRequired(false);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXPAID).IsRequired(false);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXNEXT).IsRequired(false);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXNEG01).HasMaxLength(1).IsRequired(false);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXBAMT).HasPrecision(10, 2);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXNEG02).HasMaxLength(1);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXNEG02).HasMaxLength(1).IsRequired(false);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXCOMM).HasPrecision(10, 2);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXNEG03).HasMaxLength(1);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXNEG03).HasMaxLength(1).IsRequired(false);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXBGRS).HasPrecision(10, 2);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXNEG04).HasMaxLength(1);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXNEG04).HasMaxLength(1).IsRequired(false);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXPAMT).HasPrecision(10, 2);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXNEG05).HasMaxLength(1);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXNEG05).HasMaxLength(1).IsRequired(false);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXCOMP).HasPrecision(10, 2);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXNEG06).HasMaxLength(1);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXNEG06).HasMaxLength(1).IsRequired(false);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXPGRS).HasPrecision(10, 2);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXNEG07).HasMaxLength(1);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXNEG07).HasMaxLength(1).IsRequired(false);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXMOB).HasPrecision(10, 2);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXINTR).HasPrecision(7, 5);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXINT).HasPrecision(11, 2);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXPRIN).HasPrecision(11, 2);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXSCHD).HasPrecision(11, 2);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXMSGC).HasMaxLength(2);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXMSGD).HasMaxLength(25);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXCODE).HasMaxLength(2);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXDESC).HasMaxLength(25);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXCAND);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXMSGC).HasMaxLength(2).IsRequired(false);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXMSGD).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXCODE).HasMaxLength(2).IsRequired(false);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXDESC).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXCAND).IsRequired(false);
         }
     }
 }

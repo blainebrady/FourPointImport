@@ -24,13 +24,14 @@ namespace FourPointImport.Web.Controllers
         private ImportFile _billingDetail { get; set; }
         //SUSMSTPAccess tableAccess, PRDCOVPAccess prdcovpAccess, FrmMstPAccess frmMstLAccess, COVMSTRAccess covmstrAccess,
         public FileUploadController([NotNull] IConfiguration configuration, BillingDetailService bildtlService, CoverageMasterService coverageMasterService,
-            FormMasterService formMasterService, SuspenseMasterService suspenseMasterService)
+            FormMasterService formMasterService, SuspenseMasterService suspenseMasterService, ProductCoverageService productCoverageService)
         {
             _configuration = configuration;
             _suspenseMasterService = suspenseMasterService;
             _formMasterService = formMasterService;
             _bildtlService = bildtlService;
             _coverageService = coverageMasterService; 
+            _productCoverageService = productCoverageService;
         }
         [Route("newFile")]
         [HttpPost]

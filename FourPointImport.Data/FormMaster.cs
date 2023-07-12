@@ -27,20 +27,20 @@ namespace FourPointImport.Data
         public virtual string FmUSRC { get; set; } // User Cancelled Record
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<FormMaster>().Property(x => x.FmAGNT).HasMaxLength(10);
-            modelBuilder.Entity<FormMaster>().Property(x => x.FmForm).HasMaxLength(15);
-            modelBuilder.Entity<FormMaster>().Property(x => x.FmDesc).HasMaxLength(25);
-            modelBuilder.Entity<FormMaster>().Property(x => x.FmType).HasMaxLength(15);
-            modelBuilder.Entity<FormMaster>().Property(x => x.FmCalc).HasMaxLength(2);
-            modelBuilder.Entity<FormMaster>().Property(x => x.FmLend).HasMaxLength(15);
-            modelBuilder.Entity<FormMaster>().Property(x => x.FmEfft);
-            modelBuilder.Entity<FormMaster>().Property(x => x.FmExpr);
-            modelBuilder.Entity<FormMaster>().Property(x => x.FmDATA);
-            modelBuilder.Entity<FormMaster>().Property(x => x.FmUSRA).HasMaxLength(10);
-            modelBuilder.Entity<FormMaster>().Property(x => x.FmDATU);
-            modelBuilder.Entity<FormMaster>().Property(x => x.FmUSRU).HasMaxLength(10);
-            modelBuilder.Entity<FormMaster>().Property(x => x.FmDATC);
-            modelBuilder.Entity<FormMaster>().Property(x => x.FmUSRC).HasMaxLength(10);
+            modelBuilder.Entity<FormMaster>().Property(x => x.FmAGNT).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<FormMaster>().Property(x => x.FmForm).HasMaxLength(15).IsRequired(false);
+            modelBuilder.Entity<FormMaster>().Property(x => x.FmDesc).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<FormMaster>().Property(x => x.FmType).HasMaxLength(15).IsRequired(false);
+            modelBuilder.Entity<FormMaster>().Property(x => x.FmCalc).HasMaxLength(2).IsRequired(false);
+            modelBuilder.Entity<FormMaster>().Property(x => x.FmLend).HasMaxLength(15).IsRequired(false);
+            modelBuilder.Entity<FormMaster>().Property(x => x.FmEfft).IsRequired(false);
+            modelBuilder.Entity<FormMaster>().Property(x => x.FmExpr).IsRequired(false);
+            modelBuilder.Entity<FormMaster>().Property(x => x.FmDATA).IsRequired(false);
+            modelBuilder.Entity<FormMaster>().Property(x => x.FmUSRA).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<FormMaster>().Property(x => x.FmDATU).IsRequired(false);
+            modelBuilder.Entity<FormMaster>().Property(x => x.FmUSRU).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<FormMaster>().Property(x => x.FmDATC).IsRequired(false);
+            modelBuilder.Entity<FormMaster>().Property(x => x.FmUSRC).HasMaxLength(10).IsRequired(false);
         }
     }
 }

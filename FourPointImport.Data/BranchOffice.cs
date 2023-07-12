@@ -24,20 +24,20 @@ namespace FourPointImport.Data
         public virtual  string BmUsrC { get; set; }
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BranchOffice>().Property(x => x.BmAgnt).HasMaxLength(10);
-            modelBuilder.Entity<BranchOffice>().Property(x => x.BmBrch).HasMaxLength(10);
-            modelBuilder.Entity<BranchOffice>().Property(x => x.BmRegn).HasMaxLength(10);
-            modelBuilder.Entity<BranchOffice>().Property(x => x.BmTerr).HasMaxLength(10);
-            modelBuilder.Entity<BranchOffice>().Property(x => x.BMBNam).HasMaxLength(25);
-            modelBuilder.Entity<BranchOffice>().Property(x => x.BMTNam).HasMaxLength(25);
-            modelBuilder.Entity<BranchOffice>().Property(x => x.BmOffc).HasMaxLength(10);
-            modelBuilder.Entity<BranchOffice>().Property(x => x.BMONam).HasMaxLength(25);
-            modelBuilder.Entity<BranchOffice>().Property(x => x.BmDatA);
-            modelBuilder.Entity<BranchOffice>().Property(x => x.BmDatU);
-            modelBuilder.Entity<BranchOffice>().Property(x => x.BmDatC);
-            modelBuilder.Entity<BranchOffice>().Property(x => x.BmUsrA).HasMaxLength(10);
-            modelBuilder.Entity<BranchOffice>().Property(x => x.BmUsrU).HasMaxLength(10);
-            modelBuilder.Entity<BranchOffice>().Property(x => x.BmUsrA).HasMaxLength(10);
+            modelBuilder.Entity<BranchOffice>().Property(x => x.BmAgnt).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<BranchOffice>().Property(x => x.BmBrch).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<BranchOffice>().Property(x => x.BmRegn).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<BranchOffice>().Property(x => x.BmTerr).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<BranchOffice>().Property(x => x.BMBNam).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<BranchOffice>().Property(x => x.BMTNam).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<BranchOffice>().Property(x => x.BmOffc).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<BranchOffice>().Property(x => x.BMONam).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<BranchOffice>().Property(x => x.BmDatA).IsRequired(false);
+            modelBuilder.Entity<BranchOffice>().Property(x => x.BmDatU).IsRequired(false);
+            modelBuilder.Entity<BranchOffice>().Property(x => x.BmDatC).IsRequired(false);
+            modelBuilder.Entity<BranchOffice>().Property(x => x.BmUsrA).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<BranchOffice>().Property(x => x.BmUsrU).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<BranchOffice>().Property(x => x.BmUsrA).HasMaxLength(10).IsRequired(false);
         }
     }
 }

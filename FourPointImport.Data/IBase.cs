@@ -15,12 +15,6 @@ namespace FourPointImport.Data
         DateTimeOffset CreateOn { get; set; }
         DateTimeOffset? LastUpdated { get; set; }
 
-        //public static void OnModelCreating<TEntity>(ModelBuilder modelBuilder)
-        //    where TEntity :class, IBase
-        //{
-        //    modelBuilder.Entity<TEntity>().HasKey(entity => entity.id);
-
-        //}
         void OnModelCreating(ModelBuilder modelBuilder);
     }
 }

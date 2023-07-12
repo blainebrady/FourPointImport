@@ -49,39 +49,39 @@ namespace FourPointImport.Data
         public virtual string AHCov { get; set; }
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<OutputStructure>().Property(x => x.BankNo);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.SSNo1);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.Name1).HasMaxLength(25);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.Eadr1).HasMaxLength(25);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.Eadr2).HasMaxLength(25);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.ECity).HasMaxLength(25);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.ESt).HasMaxLength(2);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.EZip).HasMaxLength(10);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.BrthDD);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.BrthMM);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.BrthYY);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.SSNo2);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.Name2).HasMaxLength(25);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.Eadr12).HasMaxLength(25);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.Eadr22).HasMaxLength(25);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.ECity2).HasMaxLength(25);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.ESt2).HasMaxLength(2);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.EZip2).HasMaxLength(10);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.BrthD2);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.BrthM2);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.BrthY2);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.LoanNo).HasMaxLength(15);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.LoanDD);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.LoanMM);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.LoanYY);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.MatrDD);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.MatrMM);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.LnType).HasMaxLength(10);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.CkActNo);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.SignDD);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.SignMM);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.SignYY);
-            modelBuilder.Entity<OutputStructure>().Property(x => x.MatrYY);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.BankNo).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.SSNo1).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.Name1).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.Eadr1).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.Eadr2).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.ECity).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.ESt).HasMaxLength(2).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.EZip).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.BrthDD).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.BrthMM).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.BrthYY).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.SSNo2).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.Name2).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.Eadr12).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.Eadr22).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.ECity2).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.ESt2).HasMaxLength(2).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.EZip2).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.BrthD2).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.BrthM2).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.BrthY2).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.LoanNo).HasMaxLength(15).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.LoanDD).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.LoanMM).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.LoanYY).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.MatrDD).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.MatrMM).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.LnType).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.CkActNo).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.SignDD).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.SignMM).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.SignYY).IsRequired(false);
+            modelBuilder.Entity<OutputStructure>().Property(x => x.MatrYY).IsRequired(false);
         }
     }
 }

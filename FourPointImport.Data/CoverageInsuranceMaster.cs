@@ -40,31 +40,31 @@ namespace FourPointImport.Data
         public virtual string CMUsrC { get; set; }
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmAgnt).HasMaxLength(10);
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmCert).HasMaxLength(20);
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmIDN1).HasPrecision(9,0);
+            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmAgnt).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmCert).HasMaxLength(20).IsRequired(false);
+            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmIDN1).HasPrecision(9, 0);
             modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmIDN2).HasPrecision(9, 0);
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmFPrm);
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmEfft);
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmExpr);
+            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmFPrm).IsRequired(false);
+            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmEfft).IsRequired(false);
+            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmExpr).IsRequired(false);
             modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmTerm).HasPrecision(3, 0);
             modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmDays).HasPrecision(3, 0);
             modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmAmnt).HasPrecision(11, 2);
             modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmBAmt).HasPrecision(11, 2);
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmStat).HasMaxLength(1);
+            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmStat).HasMaxLength(1).IsRequired(false);
             modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmCovc).HasPrecision(5, 0);
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmTble).HasMaxLength(7);
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmLapD);
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmLapR).HasMaxLength(25);
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmCand);
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmCanr).HasMaxLength(25);
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmPrev).HasMaxLength(20);
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmData);
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CMUsrA).HasMaxLength(10);
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CMDatU);
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CMUsrU).HasMaxLength(10);
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CMDatC);
-            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CMUsrC).HasMaxLength(10);
+            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmTble).HasMaxLength(7).IsRequired(false);
+            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmLapD).IsRequired(false);
+            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmLapR).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmCand).IsRequired(false);
+            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmCanr).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmPrev).HasMaxLength(20).IsRequired(false);
+            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CmData).IsRequired(false);
+            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CMUsrA).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CMDatU).IsRequired(false);
+            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CMUsrU).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CMDatC).IsRequired(false);
+            modelBuilder.Entity<CoverageInsuranceMaster>().Property(x => x.CMUsrC).HasMaxLength(10).IsRequired(false);
         }
     }
 }

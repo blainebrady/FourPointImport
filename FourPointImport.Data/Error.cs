@@ -18,11 +18,11 @@ namespace FourPointImport.Data
         public virtual string CfProc { get; set; }
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Error>().Property(x => x.CfAgnt);
-            modelBuilder.Entity<Error>().Property(x => x.CfCert);
-            modelBuilder.Entity<Error>().Property(x => x.CfFlag);
-            modelBuilder.Entity<Error>().Property(x => x.CfErr);
-            modelBuilder.Entity<Error>().Property(x => x.CfProc);
+            modelBuilder.Entity<Error>().Property(x => x.CfAgnt).IsRequired(false);
+            modelBuilder.Entity<Error>().Property(x => x.CfCert).IsRequired(false);
+            modelBuilder.Entity<Error>().Property(x => x.CfFlag).IsRequired(false);
+            modelBuilder.Entity<Error>().Property(x => x.CfErr).IsRequired(false);
+            modelBuilder.Entity<Error>().Property(x => x.CfProc).IsRequired(false);
         }
     }
 }

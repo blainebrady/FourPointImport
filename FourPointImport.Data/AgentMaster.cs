@@ -43,36 +43,36 @@ namespace FourPointImport.Data
         public virtual string AMUSRC { get; set; }
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMHOLD).HasMaxLength(10);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMAGNT).HasMaxLength(10);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMCNTC).HasMaxLength(25);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMAGNY).HasMaxLength(25);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMADD1).HasMaxLength(25);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMADD2).HasMaxLength(25);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMCITY).HasMaxLength(25);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMSTE).HasMaxLength(2);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMZIP).HasMaxLength(10);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMRPST).HasMaxLength(2);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMPHNE);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMTXID);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMSSNO);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMREP);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMSTAT).HasMaxLength(1);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AmOnly).HasMaxLength(1);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMRTRQ).HasMaxLength(1);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AmBoRq).HasMaxLength(1);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMBILL).HasMaxLength(1);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMCLMD).HasMaxLength(1);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMMTHD).HasMaxLength(2);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMREIN).HasMaxLength(7);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMEFFT);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMEXPR);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMDATA);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMUSRA).HasMaxLength(10);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMDATU);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMUSRU).HasMaxLength(10);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMDATC);
-            modelBuilder.Entity<AgentMaster>().Property(x => x.AMUSRC).HasMaxLength(10);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMHOLD).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMAGNT).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMCNTC).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMAGNY).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMADD1).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMADD2).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMCITY).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMSTE).HasMaxLength(2).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMZIP).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMRPST).HasMaxLength(2).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMPHNE).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMTXID).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMSSNO).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMREP).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMSTAT).HasMaxLength(1).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AmOnly).HasMaxLength(1).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMRTRQ).HasMaxLength(1).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AmBoRq).HasMaxLength(1).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMBILL).HasMaxLength(1).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMCLMD).HasMaxLength(1).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMMTHD).HasMaxLength(2).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMREIN).HasMaxLength(7).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMEFFT).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMEXPR).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMDATA).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMUSRA).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMDATU).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMUSRU).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMDATC).IsRequired(false);
+            modelBuilder.Entity<AgentMaster>().Property(x => x.AMUSRC).HasMaxLength(10).IsRequired(false);
 
         }
     }

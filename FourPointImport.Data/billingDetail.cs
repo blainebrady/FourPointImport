@@ -38,35 +38,35 @@ namespace FourPointImport.Data
         public virtual decimal BdPanI { get { return BdInt + BdPrin; } }
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdAgnt).HasMaxLength(10);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdCert).HasMaxLength(20);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdAgnt).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdCert).HasMaxLength(20).IsRequired(false);
             modelBuilder.Entity<BillingDetail>().Property(x => x.BdSEQ).HasPrecision(9,0);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdCovc).HasPrecision(5,0);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdFrom);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdDue);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdBill);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdThru);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdPaid);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdNext);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdBAmt).HasPrecision(11,2);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdCovc).HasPrecision(5, 0);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdFrom).IsRequired(false);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdDue).IsRequired(false);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdBill).IsRequired(false);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdThru).IsRequired(false);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdPaid).IsRequired(false);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdNext).IsRequired(false);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdBAmt).HasPrecision(11, 2);
             modelBuilder.Entity<BillingDetail>().Property(x => x.BdComm).HasPrecision(11, 2);
             modelBuilder.Entity<BillingDetail>().Property(x => x.BdPCom).HasPrecision(11, 2);
             modelBuilder.Entity<BillingDetail>().Property(x => x.BdPAmt).HasPrecision(11, 2);
             modelBuilder.Entity<BillingDetail>().Property(x => x.BdMOB).HasPrecision(11, 2);
             modelBuilder.Entity<BillingDetail>().Property(x => x.BdIntr).HasPrecision(7, 5);
             modelBuilder.Entity<BillingDetail>().Property(x => x.BdInt).HasPrecision(11, 2);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdPrin).HasPrecision(11,2);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdPrin).HasPrecision(11, 2);
             modelBuilder.Entity<BillingDetail>().Property(x => x.BdSchd).HasPrecision(11, 2);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdMsgC).HasMaxLength(2);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdMsgCD).HasMaxLength(25);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdCode).HasMaxLength(2);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdDesc).HasMaxLength(25);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdData);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdUsrA).HasMaxLength(10);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdDatU);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdUsrU).HasMaxLength(10);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdDatC);
-            modelBuilder.Entity<BillingDetail>().Property(x => x.BdUsrC).HasMaxLength(10);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdMsgC).HasMaxLength(2).IsRequired(false);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdMsgCD).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdCode).HasMaxLength(2).IsRequired(false);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdDesc).HasMaxLength(25).IsRequired(false);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdData).IsRequired(false);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdUsrA).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdDatU).IsRequired(false);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdUsrU).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdDatC).IsRequired(false);
+            modelBuilder.Entity<BillingDetail>().Property(x => x.BdUsrC).HasMaxLength(10).IsRequired(false);
         }
     }
 }

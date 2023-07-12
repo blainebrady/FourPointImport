@@ -18,11 +18,11 @@ namespace FourPointImport.Data
         public virtual string QaQstn { get; set; }
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<QuestionAnswer>().Property(x => x.QaAgnt);
-            modelBuilder.Entity<QuestionAnswer>().Property(x => x.QaCert);
-            modelBuilder.Entity<QuestionAnswer>().Property(x => x.QaIDN);
-            modelBuilder.Entity<QuestionAnswer>().Property(x => x.QaSeq);
-            modelBuilder.Entity<QuestionAnswer>().Property(x => x.QaQstn);
+            modelBuilder.Entity<QuestionAnswer>().Property(x => x.QaAgnt).IsRequired(false);
+            modelBuilder.Entity<QuestionAnswer>().Property(x => x.QaCert).IsRequired(false);
+            modelBuilder.Entity<QuestionAnswer>().Property(x => x.QaIDN).IsRequired(false);
+            modelBuilder.Entity<QuestionAnswer>().Property(x => x.QaSeq).IsRequired(false);
+            modelBuilder.Entity<QuestionAnswer>().Property(x => x.QaQstn).IsRequired(false);
         }
     }
 }

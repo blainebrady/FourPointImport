@@ -20,11 +20,11 @@ namespace FourPointImport.Data
 
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Confirmation>().Property(x => x.CfAgnt).HasMaxLength(10);
-            modelBuilder.Entity<Confirmation>().Property(x => x.CfCert).HasMaxLength(20);
-            modelBuilder.Entity<Confirmation>().Property(x => x.CfFlag).HasMaxLength(1);
-            modelBuilder.Entity<Confirmation>().Property(x => x.CfErr).HasMaxLength(10);
-            modelBuilder.Entity<Confirmation>().Property(x => x.CfProc);
+            modelBuilder.Entity<Confirmation>().Property(x => x.CfAgnt).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<Confirmation>().Property(x => x.CfCert).HasMaxLength(20).IsRequired(false);
+            modelBuilder.Entity<Confirmation>().Property(x => x.CfFlag).HasMaxLength(1).IsRequired(false);
+            modelBuilder.Entity<Confirmation>().Property(x => x.CfErr).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<Confirmation>().Property(x => x.CfProc).IsRequired(false);
         }
     }
 }

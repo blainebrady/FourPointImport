@@ -48,18 +48,18 @@ namespace FourPointImport.Data
 
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AgentDetail>().Property(x => x.ADAGNT).HasMaxLength(10);
+            modelBuilder.Entity<AgentDetail>().Property(x => x.ADAGNT).HasMaxLength(10).IsRequired(false);
             modelBuilder.Entity<AgentDetail>().Property(x => x.ADCOVC).HasPrecision(5, 0);
-            modelBuilder.Entity<AgentDetail>().Property(x => x.AdTble).HasMaxLength(7);
-            modelBuilder.Entity<AgentDetail>().Property(x => x.AdType).HasMaxLength(2);
-            modelBuilder.Entity<AgentDetail>().Property(x => x.ADCCF).HasMaxLength(10);
+            modelBuilder.Entity<AgentDetail>().Property(x => x.AdTble).HasMaxLength(7).IsRequired(false);
+            modelBuilder.Entity<AgentDetail>().Property(x => x.AdType).HasMaxLength(2).IsRequired(false);
+            modelBuilder.Entity<AgentDetail>().Property(x => x.ADCCF).HasMaxLength(10).IsRequired(false);
             modelBuilder.Entity<AgentDetail>().Property(x => x.ADGLCO).HasPrecision(3, 0);
             modelBuilder.Entity<AgentDetail>().Property(x => x.ADGL).HasPrecision(7, 0);
-            modelBuilder.Entity<AgentDetail>().Property(x => x.ADCLM).HasMaxLength(10);
-            modelBuilder.Entity<AgentDetail>().Property(x => x.ADCLMP).HasMaxLength(10);
-            modelBuilder.Entity<AgentDetail>().Property(x => x.ADCLMT).HasMaxLength(10);
-            modelBuilder.Entity<AgentDetail>().Property(x => x.AdEfft);
-            modelBuilder.Entity<AgentDetail>().Property(x => x.AdExpr);
+            modelBuilder.Entity<AgentDetail>().Property(x => x.ADCLM).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<AgentDetail>().Property(x => x.ADCLMP).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<AgentDetail>().Property(x => x.ADCLMT).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<AgentDetail>().Property(x => x.AdEfft).IsRequired(false);
+            modelBuilder.Entity<AgentDetail>().Property(x => x.AdExpr).IsRequired(false);
             modelBuilder.Entity<AgentDetail>().Property(x => x.AdMxBa).HasPrecision(11, 2);
             modelBuilder.Entity<AgentDetail>().Property(x => x.AdMxBM).HasPrecision(11, 2);
             modelBuilder.Entity<AgentDetail>().Property(x => x.AdMnAg).HasPrecision(3, 0);
@@ -69,7 +69,7 @@ namespace FourPointImport.Data
             modelBuilder.Entity<AgentDetail>().Property(x => x.AdMxTr).HasPrecision(3, 0);
             modelBuilder.Entity<AgentDetail>().Property(x => x.AdMxCT).HasPrecision(3, 0);
             modelBuilder.Entity<AgentDetail>().Property(x => x.AdHqML).HasPrecision(11, 2);
-            modelBuilder.Entity<AgentDetail>().Property(x => x.AdHlth).HasMaxLength(1);
+            modelBuilder.Entity<AgentDetail>().Property(x => x.AdHlth).HasMaxLength(1).IsRequired(false);
             modelBuilder.Entity<AgentDetail>().Property(x => x.AdLaps).HasPrecision(3, 0);
             modelBuilder.Entity<AgentDetail>().Property(x => x.ADDINY).HasPrecision(3, 0);
             modelBuilder.Entity<AgentDetail>().Property(x => x.AdComm).HasPrecision(5, 3);
@@ -77,11 +77,11 @@ namespace FourPointImport.Data
             modelBuilder.Entity<AgentDetail>().Property(x => x.AdTolP).HasPrecision(5, 3);
             modelBuilder.Entity<AgentDetail>().Property(x => x.AdTolA).HasPrecision(11, 2);
             modelBuilder.Entity<AgentDetail>().Property(x => x.ADDATA).HasPrecision(14, 0);
-            modelBuilder.Entity<AgentDetail>().Property(x => x.ADUSRA).HasMaxLength(10);
+            modelBuilder.Entity<AgentDetail>().Property(x => x.ADUSRA).HasMaxLength(10).IsRequired(false);
             modelBuilder.Entity<AgentDetail>().Property(x => x.ADDATU).HasPrecision(14, 0);
-            modelBuilder.Entity<AgentDetail>().Property(x => x.ADUSRU).HasMaxLength(10);
+            modelBuilder.Entity<AgentDetail>().Property(x => x.ADUSRU).HasMaxLength(10).IsRequired(false);
             modelBuilder.Entity<AgentDetail>().Property(x => x.ADDATC).HasPrecision(14, 0);
-            modelBuilder.Entity<AgentDetail>().Property(x => x.ADUSRC).HasMaxLength(10);
+            modelBuilder.Entity<AgentDetail>().Property(x => x.ADUSRC).HasMaxLength(10).IsRequired(false);
         }
 
     }

@@ -25,18 +25,18 @@ namespace FourPointImport.Data
         public virtual string RmUSRC { get; set; }
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<RateMaster>().Property(x => x.RmTble).HasMaxLength(7);
-            modelBuilder.Entity<RateMaster>().Property(x => x.RmDesc).HasMaxLength(40);
-            modelBuilder.Entity<RateMaster>().Property(x => x.RmShrt).HasMaxLength(10);
-            modelBuilder.Entity<RateMaster>().Property(x => x.RmBase).HasPrecision(7, 2);
-            modelBuilder.Entity<RateMaster>().Property(x => x.RmEfft);
-            modelBuilder.Entity<RateMaster>().Property(x => x.RmExpr);
-            modelBuilder.Entity<RateMaster>().Property(x => x.RmDATA);
-            modelBuilder.Entity<RateMaster>().Property(x => x.RmUSRA).HasMaxLength(10);
-            modelBuilder.Entity<RateMaster>().Property(x => x.RmDATU);
-            modelBuilder.Entity<RateMaster>().Property(x => x.RmUSRU).HasMaxLength(10);
-            modelBuilder.Entity<RateMaster>().Property(x => x.RmDATC);
-            modelBuilder.Entity<RateMaster>().Property(x => x.RmUSRC).HasMaxLength(10);
+            modelBuilder.Entity<RateMaster>().Property(x => x.RmTble).HasMaxLength(7).IsRequired(false);
+            modelBuilder.Entity<RateMaster>().Property(x => x.RmDesc).HasMaxLength(40).IsRequired(false);
+            modelBuilder.Entity<RateMaster>().Property(x => x.RmShrt).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<RateMaster>().Property(x => x.RmBase).HasPrecision(7, 2).IsRequired(false);
+            modelBuilder.Entity<RateMaster>().Property(x => x.RmEfft).IsRequired(false);
+            modelBuilder.Entity<RateMaster>().Property(x => x.RmExpr).IsRequired(false);
+            modelBuilder.Entity<RateMaster>().Property(x => x.RmDATA).IsRequired(false);
+            modelBuilder.Entity<RateMaster>().Property(x => x.RmUSRA).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<RateMaster>().Property(x => x.RmDATU).IsRequired(false);
+            modelBuilder.Entity<RateMaster>().Property(x => x.RmUSRU).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<RateMaster>().Property(x => x.RmDATC).IsRequired(false);
+            modelBuilder.Entity<RateMaster>().Property(x => x.RmUSRC).HasMaxLength(10).IsRequired(false);
         }
     }
 }

@@ -32,22 +32,22 @@ namespace FourPointImport.Data
 
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmAgnt).HasMaxLength(10);
-            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmCert).HasMaxLength(20);
-            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmVIN).HasMaxLength(40);
-            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmYear);
-            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmMake).HasMaxLength(40);
-            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmModel).HasMaxLength(40);
+            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmAgnt).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmCert).HasMaxLength(20).IsRequired(false);
+            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmVIN).HasMaxLength(40).IsRequired(false);
+            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmYear).IsRequired(false);
+            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmMake).HasMaxLength(40).IsRequired(false);
+            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmModel).HasMaxLength(40).IsRequired(false);
             modelBuilder.Entity<GAPInsurance>().Property(x => x.GmFee).HasPrecision(11, 2);
             modelBuilder.Entity<GAPInsurance>().Property(x => x.GmComR).HasPrecision(7, 5);
-            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmEfft);
-            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmExpr);
-            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmStat).HasMaxLength(10);
-            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmSDte);
-            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmDatU);
-            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmUsrU).HasMaxLength(10);
-            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmDatA);
-            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmUsrA).HasMaxLength(10);
+            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmEfft).IsRequired(false);
+            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmExpr).IsRequired(false);
+            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmStat).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmSDte).IsRequired(false);
+            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmDatU).IsRequired(false);
+            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmUsrU).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmDatA).IsRequired(false);
+            modelBuilder.Entity<GAPInsurance>().Property(x => x.GmUsrA).HasMaxLength(10).IsRequired(false);
         }
     }
 }
