@@ -27,6 +27,7 @@ namespace FourPointImport.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
             foreach (var assembly in Assemblies)
             {
                 try
@@ -38,7 +39,9 @@ namespace FourPointImport.Data
                     {
                         var onModelCreatingMethod = classType.GetMethods().FirstOrDefault(x => x.Name == "OnModelCreating" && x.IsStatic);
                         if (onModelCreatingMethod != null)
-                            onModelCreatingMethod.Invoke(classType, new object[] { modelBuilder });
+                        {
+                            Console.WriteLine(classType.Name);
+                        }
                         if (classType.BaseType == null || classType.BaseType != typeof(Base))
                         {
                             continue;
@@ -50,14 +53,17 @@ namespace FourPointImport.Data
                             continue;
                         }
                         baseOnModelCreatingMethod.Invoke(classType, new object[] { modelBuilder });
-                        //var baseInModelCratingGenericMethod = baseOnModelCreatingMethod.MakeGenericMethod(new Type[] { classType });
-                        //if (baseInModelCratingGenericMethod == null)
-                        //    continue;
+                        var baseInModelCratingGenericMethod = baseOnModelCreatingMethod.MakeGenericMethod(new Type[] { classType });
+                        if (baseInModelCratingGenericMethod == null)
+                        {
+                            continue;
+                        }
+                           
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("*********************Error: " + ex.Message);
+                    Console.WriteLine("*********************Error: " + ex.InnerException);
                 }
 
             }

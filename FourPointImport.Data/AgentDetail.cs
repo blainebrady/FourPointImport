@@ -58,8 +58,8 @@ namespace FourPointImport.Data
             modelBuilder.Entity<AgentDetail>().Property(x => x.ADCLM).HasMaxLength(10).IsRequired(false);
             modelBuilder.Entity<AgentDetail>().Property(x => x.ADCLMP).HasMaxLength(10).IsRequired(false);
             modelBuilder.Entity<AgentDetail>().Property(x => x.ADCLMT).HasMaxLength(10).IsRequired(false);
-            modelBuilder.Entity<AgentDetail>().Property(x => x.AdEfft).IsRequired(false);
-            modelBuilder.Entity<AgentDetail>().Property(x => x.AdExpr).IsRequired(false);
+            modelBuilder.Entity<AgentDetail>().Property(x => x.AdEfft);
+            modelBuilder.Entity<AgentDetail>().Property(x => x.AdExpr);
             modelBuilder.Entity<AgentDetail>().Property(x => x.AdMxBa).HasPrecision(11, 2);
             modelBuilder.Entity<AgentDetail>().Property(x => x.AdMxBM).HasPrecision(11, 2);
             modelBuilder.Entity<AgentDetail>().Property(x => x.AdMnAg).HasPrecision(3, 0);

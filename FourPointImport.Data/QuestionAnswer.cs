@@ -20,8 +20,8 @@ namespace FourPointImport.Data
         {
             modelBuilder.Entity<QuestionAnswer>().Property(x => x.QaAgnt).IsRequired(false);
             modelBuilder.Entity<QuestionAnswer>().Property(x => x.QaCert).IsRequired(false);
-            modelBuilder.Entity<QuestionAnswer>().Property(x => x.QaIDN).IsRequired(false);
-            modelBuilder.Entity<QuestionAnswer>().Property(x => x.QaSeq).IsRequired(false);
+            modelBuilder.Entity<QuestionAnswer>().Property(x => x.QaIDN);
+            modelBuilder.Entity<QuestionAnswer>().Property(x => x.QaSeq);
             modelBuilder.Entity<QuestionAnswer>().Property(x => x.QaQstn).IsRequired(false);
         }
     }

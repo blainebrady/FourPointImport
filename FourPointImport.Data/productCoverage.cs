@@ -40,13 +40,13 @@ namespace FourPointImport.Data
             modelBuilder.Entity<productCoverage>().Property(x => x.PCCALC).HasMaxLength(2).IsRequired(false);
             modelBuilder.Entity<productCoverage>().Property(x => x.PCSORJ).HasMaxLength(1).IsRequired(false);
             modelBuilder.Entity<productCoverage>().Property(x => x.PCCOMM).HasPrecision(5, 3);
-            modelBuilder.Entity<productCoverage>().Property(x => x.PCEFFT).IsRequired(false);
-            modelBuilder.Entity<productCoverage>().Property(x => x.PCEXPR).IsRequired(false);
-            modelBuilder.Entity<productCoverage>().Property(x => x.PCDATA).IsRequired(false);
+            modelBuilder.Entity<productCoverage>().Property(x => x.PCEFFT);
+            modelBuilder.Entity<productCoverage>().Property(x => x.PCEXPR);
+            modelBuilder.Entity<productCoverage>().Property(x => x.PCDATA);
             modelBuilder.Entity<productCoverage>().Property(x => x.PCUSRA).HasMaxLength(10).IsRequired(false);
-            modelBuilder.Entity<productCoverage>().Property(x => x.PCDATU).IsRequired(false);
+            modelBuilder.Entity<productCoverage>().Property(x => x.PCDATU);
             modelBuilder.Entity<productCoverage>().Property(x => x.PCUSRU).HasMaxLength(10).IsRequired(false);
-            modelBuilder.Entity<productCoverage>().Property(x => x.PCDATC).IsRequired(false);
+            modelBuilder.Entity<productCoverage>().Property(x => x.PCDATC);
             modelBuilder.Entity<productCoverage>().Property(x => x.PCUSRC).HasMaxLength(10).IsRequired(false);
         }
     }

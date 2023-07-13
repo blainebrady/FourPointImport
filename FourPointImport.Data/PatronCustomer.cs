@@ -54,7 +54,7 @@ namespace FourPointImport.Data
         
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<PatronCustomer>().Property(x => x.ImIDN).IsRequired(false);
+            modelBuilder.Entity<PatronCustomer>().Property(x => x.ImIDN);
             modelBuilder.Entity<PatronCustomer>().Property(x => x.ImLNam).HasMaxLength(25).IsRequired(false);
             modelBuilder.Entity<PatronCustomer>().Property(x => x.ImFNam).HasMaxLength(25).IsRequired(false);
             modelBuilder.Entity<PatronCustomer>().Property(x => x.ImMNam).HasMaxLength(25).IsRequired(false);
@@ -65,7 +65,7 @@ namespace FourPointImport.Data
             modelBuilder.Entity<PatronCustomer>().Property(x => x.ImSte).HasMaxLength(2).IsRequired(false);
             modelBuilder.Entity<PatronCustomer>().Property(x => x.ImZip).HasMaxLength(10).IsRequired(false);
             modelBuilder.Entity<PatronCustomer>().Property(x => x.ImPhne).HasPrecision(10, 0);
-            modelBuilder.Entity<PatronCustomer>().Property(x => x.ImDob).IsRequired(false);
+            modelBuilder.Entity<PatronCustomer>().Property(x => x.ImDob);
             modelBuilder.Entity<PatronCustomer>().Property(x => x.ImSex).HasMaxLength(1).IsRequired(false);
             modelBuilder.Entity<PatronCustomer>().Property(x => x.IMHQ01).HasMaxLength(1).IsRequired(false);
             modelBuilder.Entity<PatronCustomer>().Property(x => x.IMHQ02).HasMaxLength(1).IsRequired(false);
@@ -88,9 +88,9 @@ namespace FourPointImport.Data
             modelBuilder.Entity<PatronCustomer>().Property(x => x.IMHQ19).HasMaxLength(1).IsRequired(false);
             modelBuilder.Entity<PatronCustomer>().Property(x => x.IMHQ20).HasMaxLength(1).IsRequired(false);
             modelBuilder.Entity<PatronCustomer>().Property(x => x.ImUsrA).HasMaxLength(10).IsRequired(false);
-            modelBuilder.Entity<PatronCustomer>().Property(x => x.ImDatU).IsRequired(false);
+            modelBuilder.Entity<PatronCustomer>().Property(x => x.ImDatU);
             modelBuilder.Entity<PatronCustomer>().Property(x => x.ImUsrU).HasMaxLength(10).IsRequired(false);
-            modelBuilder.Entity<PatronCustomer>().Property(x => x.ImDatA).IsRequired(false);
+            modelBuilder.Entity<PatronCustomer>().Property(x => x.ImDatA);
             modelBuilder.Entity<PatronCustomer>().Property(x => x.ImStat).HasMaxLength(1).IsRequired(false);
         }
     }

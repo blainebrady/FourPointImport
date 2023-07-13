@@ -30,13 +30,13 @@ namespace FourPointImport.Data
             modelBuilder.Entity<RateDetailLife>().Property(x => x.RdBand).HasPrecision(3, 0);
             modelBuilder.Entity<RateDetailLife>().Property(x => x.RdRate).HasPrecision(7, 5);
             modelBuilder.Entity<RateDetailLife>().Property(x => x.RdPrct).HasPrecision(7, 5);
-            modelBuilder.Entity<RateDetailLife>().Property(x => x.RdEfft).IsRequired(false);
-            modelBuilder.Entity<RateDetailLife>().Property(x => x.RdExpr).IsRequired(false);
-            modelBuilder.Entity<RateDetailLife>().Property(x => x.RDDATA).IsRequired(false);
+            modelBuilder.Entity<RateDetailLife>().Property(x => x.RdEfft);
+            modelBuilder.Entity<RateDetailLife>().Property(x => x.RdExpr);
+            modelBuilder.Entity<RateDetailLife>().Property(x => x.RDDATA);
             modelBuilder.Entity<RateDetailLife>().Property(x => x.RDUSRA).HasMaxLength(10).IsRequired(false);
-            modelBuilder.Entity<RateDetailLife>().Property(x => x.RDDATU).IsRequired(false);
+            modelBuilder.Entity<RateDetailLife>().Property(x => x.RDDATU);
             modelBuilder.Entity<RateDetailLife>().Property(x => x.RDUSRU).HasMaxLength(10).IsRequired(false);
-            modelBuilder.Entity<RateDetailLife>().Property(x => x.RDDATC).IsRequired(false);
+            modelBuilder.Entity<RateDetailLife>().Property(x => x.RDDATC);
             modelBuilder.Entity<RateDetailLife>().Property(x => x.RDUSRC).HasMaxLength(10).IsRequired(false);
         }
     }

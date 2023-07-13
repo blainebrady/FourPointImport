@@ -55,8 +55,8 @@ namespace FourPointImport.Data
         {
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmAgnt).HasMaxLength(10).IsRequired(false);
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmCert).HasMaxLength(20).IsRequired(false);
-            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmIdn1).IsRequired(false);
-            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmIdn2).IsRequired(false);
+            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmIdn1);
+            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmIdn2);
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmCalc).HasMaxLength(2).IsRequired(false);
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmRegn).HasMaxLength(10).IsRequired(false);
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmTerr).HasMaxLength(10).IsRequired(false);
@@ -65,15 +65,15 @@ namespace FourPointImport.Data
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmDeal).HasMaxLength(20).IsRequired(false);
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmBen1).HasMaxLength(10).IsRequired(false);
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmBen2).HasMaxLength(25).IsRequired(false);
-            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmFPay).IsRequired(false);
-            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmEfft).IsRequired(false);
-            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmExpr).IsRequired(false);
-            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmCnlD).IsRequired(false);
-            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmForm).HasMaxLength(15).IsRequired(false);
-            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmTerm).IsRequired(false);
-            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmFreq).IsRequired(false);
+            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmFPay);
+            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmEfft);
+            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmExpr);
+            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmCnlD);
+            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmForm);
+            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmTerm);
+            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmFreq);
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmAmnt).HasPrecision(11, 2);
-            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmBall).IsRequired(false);
+            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmBall);
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmSchd).HasPrecision(11, 2);
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmIntr).HasPrecision(7, 5);
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmPani).HasPrecision(11, 2);
@@ -86,11 +86,11 @@ namespace FourPointImport.Data
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmSts2).HasMaxLength(1).IsRequired(false);
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmSts3).HasMaxLength(1).IsRequired(false);
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmPrev).HasMaxLength(20).IsRequired(false);
-            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmDatA).IsRequired(false);
+            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmDatA);
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmUsrA).HasMaxLength(10).IsRequired(false);
-            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmDatU).IsRequired(false);
+            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmDatU);
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmUsrU).HasMaxLength(10).IsRequired(false);
-            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmDatc).IsRequired(false);
+            modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmDatc);
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmUsrc).HasMaxLength(10).IsRequired(false);
             modelBuilder.Entity<LoanApplicationMaster>().Property(x => x.LmMntf).HasPrecision(11, 2);
         }

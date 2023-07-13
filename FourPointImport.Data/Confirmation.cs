@@ -24,7 +24,7 @@ namespace FourPointImport.Data
             modelBuilder.Entity<Confirmation>().Property(x => x.CfCert).HasMaxLength(20).IsRequired(false);
             modelBuilder.Entity<Confirmation>().Property(x => x.CfFlag).HasMaxLength(1).IsRequired(false);
             modelBuilder.Entity<Confirmation>().Property(x => x.CfErr).HasMaxLength(10).IsRequired(false);
-            modelBuilder.Entity<Confirmation>().Property(x => x.CfProc).IsRequired(false);
+            modelBuilder.Entity<Confirmation>().Property(x => x.CfProc);
         }
     }
 }

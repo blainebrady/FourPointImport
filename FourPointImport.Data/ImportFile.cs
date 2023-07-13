@@ -53,12 +53,12 @@ namespace FourPointImport.Data
             modelBuilder.Entity<ImportFile>().Property(x => x.BXCERT).HasMaxLength(20).IsRequired(false);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXNAME).HasMaxLength(25).IsRequired(false);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXCOVC).HasMaxLength(30).IsRequired(false);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXEFFT).IsRequired(false);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXFROM).IsRequired(false);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXTHRU).IsRequired(false);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXEXPR).IsRequired(false);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXPAID).IsRequired(false);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXNEXT).IsRequired(false);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXEFFT);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXFROM);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXTHRU);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXEXPR);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXPAID);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXNEXT);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXNEG01).HasMaxLength(1).IsRequired(false);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXBAMT).HasPrecision(10, 2);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXNEG02).HasMaxLength(1).IsRequired(false);
@@ -81,7 +81,7 @@ namespace FourPointImport.Data
             modelBuilder.Entity<ImportFile>().Property(x => x.BXMSGD).HasMaxLength(25).IsRequired(false);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXCODE).HasMaxLength(2).IsRequired(false);
             modelBuilder.Entity<ImportFile>().Property(x => x.BXDESC).HasMaxLength(25).IsRequired(false);
-            modelBuilder.Entity<ImportFile>().Property(x => x.BXCAND).IsRequired(false);
+            modelBuilder.Entity<ImportFile>().Property(x => x.BXCAND);
         }
     }
 }
