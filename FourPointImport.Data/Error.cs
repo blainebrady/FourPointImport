@@ -11,18 +11,20 @@ namespace FourPointImport.Data
     [Table("Error", Schema = "dbo")]
     public class Error : Base
     {
-        public virtual string CfAgnt { get; set; }
-        public virtual string CfCert { get; set; }
-        public virtual string CfFlag { get; set; }
-        public virtual string CfErr { get; set; }
-        public virtual string CfProc { get; set; }
+        public virtual string EMPGM { get; set; }
+        public virtual string EMERR { get; set; }
+        public virtual string EMDESC { get; set; }
+        public virtual decimal EMSEVR { get; set; }
+        public virtual string EMDATA{ get; set; }
+        public virtual string EMUSRA { get; set; }
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Error>().Property(x => x.CfAgnt).IsRequired(false);
-            modelBuilder.Entity<Error>().Property(x => x.CfCert).IsRequired(false);
-            modelBuilder.Entity<Error>().Property(x => x.CfFlag).IsRequired(false);
-            modelBuilder.Entity<Error>().Property(x => x.CfErr).IsRequired(false);
-            modelBuilder.Entity<Error>().Property(x => x.CfProc).IsRequired(false);
+            modelBuilder.Entity<Error>().Property(x => x.EMPGM).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<Error>().Property(x => x.EMERR).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<Error>().Property(x => x.EMDESC).HasMaxLength(80).IsRequired(false);
+            modelBuilder.Entity<Error>().Property(x => x.EMSEVR).HasPrecision(3,0);
+            modelBuilder.Entity<Error>().Property(x => x.EMDATA).HasPrecision(14,0);
+            modelBuilder.Entity<Error>().Property(x => x.EMUSRA).HasMaxLength(10).IsRequired(false);
         }
     }
 }

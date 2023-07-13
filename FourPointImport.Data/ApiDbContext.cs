@@ -35,11 +35,13 @@ namespace FourPointImport.Data
                     var classes = assembly.GetTypes()
                         .Where(type => type.IsClass && type.IsPublic && type.BaseType == typeof(Base) && type.IsPublic && !type.IsAbstract)
                         .ToList();
+                    Console.WriteLine(classes.Count.ToString());
                     foreach (var classType in classes)
                     {
                         var onModelCreatingMethod = classType.GetMethods().FirstOrDefault(x => x.Name == "OnModelCreating" && x.IsStatic);
                         if (onModelCreatingMethod != null)
                         {
+                            onModelCreatingMethod.Invoke(classType, new object[] { modelBuilder });
                             Console.WriteLine(classType.Name);
                         }
                         if (classType.BaseType == null || classType.BaseType != typeof(Base))

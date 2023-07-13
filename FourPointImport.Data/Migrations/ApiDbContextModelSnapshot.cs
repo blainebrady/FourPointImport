@@ -799,23 +799,33 @@ namespace FourPointImport.Data.Migrations
                     b.Property<DateTimeOffset?>("Archive")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("CfAgnt")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CfCert")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CfErr")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CfFlag")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CfProc")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTimeOffset>("CreateOn")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("EMDATA")
+                        .IsRequired()
+                        .HasPrecision(14)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EMDESC")
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
+
+                    b.Property<string>("EMERR")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("EMPGM")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<decimal>("EMSEVR")
+                        .HasPrecision(3)
+                        .HasColumnType("decimal(3,0)");
+
+                    b.Property<string>("EMUSRA")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<DateTimeOffset?>("LastUpdated")
                         .HasColumnType("datetimeoffset");

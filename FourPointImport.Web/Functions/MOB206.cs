@@ -31,6 +31,7 @@ namespace FourPointImport.Web.Functions
         protected readonly CoverageMasterService cmService;
         protected readonly AgentDetailService adService;
         protected readonly AgentMasterService amService;
+        protected readonly ConfirmationService confService;
         protected readonly CoverageInsuranceService coverageInsuranceService;
         protected readonly FormMasterService fmService;
         protected readonly RateMasterService rmService;
@@ -99,9 +100,10 @@ namespace FourPointImport.Web.Functions
         }
         public MOB206(SuspenseMaster _suspenseMaster, CoverageMasterService _cmCervice, AgentMasterService _amService, CoverageInsuranceService _coverageInsuranceService,
             RateMasterService _rmService, RateDetailService _rdService, FormMasterService _fmService, AgentDetailService _adService, LoanApplicationService _lmService,
-            PatronCustomerService _patCustService)
+            PatronCustomerService _patCustService, ConfirmationService _confService)
         {
             suspenseMaster = _suspenseMaster;
+            confService = _confService;
             coverageInsuranceService = _coverageInsuranceService;
             cmService = _cmCervice;
             adService = _adService;
@@ -885,14 +887,14 @@ namespace FourPointImport.Web.Functions
         }
         public void Confirm()
         {
-            Error error = new Error();
+            Confirmation error = new Confirmation();
             if (Severity < ErrorLimit)
             {
                 error.CfAgnt = suspenseMaster.SmAgnt;
                 error.CfCert = suspenseMaster.SmCert;
                 error.CfFlag = "A";
                 error.CfErr = "";
-                error.CfProc = DateTime.Now.ToString("HHmmss");
+                error.CfProc = DateTime.Now;
                 // ConFrmR.Write();                                                      get a way to store this
             }
             else
@@ -901,7 +903,7 @@ namespace FourPointImport.Web.Functions
                 error.CfCert = suspenseMaster.SmCert;
                 error.CfFlag = "R";
                 error.CfErr = SeverityErr;
-                error.CfProc = DateTime.Now.ToString("hh:mm:ss tt");
+                error.CfProc = DateTime.Now;
                 // ConFrmR.WriteLine();
             }
 
@@ -909,7 +911,7 @@ namespace FourPointImport.Web.Functions
             {
                 ExCd = "NV";
             }
-
+            confService.CreateAsync(error).Wait();
             suspenseMaster = Mob207(suspenseMaster);
         }
         private void ErrMsg(string err)

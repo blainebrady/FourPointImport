@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FourPointImport.Data.Migrations
 {
-    public partial class NoNulls : Migration
+    public partial class NewMig : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -294,11 +294,12 @@ namespace FourPointImport.Data.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CfAgnt = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CfCert = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CfFlag = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CfErr = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CfProc = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EMPGM = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    EMERR = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    EMDESC = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
+                    EMSEVR = table.Column<decimal>(type: "decimal(3,0)", precision: 3, scale: 0, nullable: false),
+                    EMDATA = table.Column<string>(type: "nvarchar(max)", precision: 14, scale: 0, nullable: false),
+                    EMUSRA = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     Archive = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     CreateOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     LastUpdated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
