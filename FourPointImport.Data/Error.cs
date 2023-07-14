@@ -17,14 +17,16 @@ namespace FourPointImport.Data
         public virtual decimal EMSEVR { get; set; }
         public virtual string EMDATA{ get; set; }
         public virtual string EMUSRA { get; set; }
+        public virtual string EMTYPE { get; set; }
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Error>().Property(x => x.EMPGM).HasMaxLength(10).IsRequired(false);
             modelBuilder.Entity<Error>().Property(x => x.EMERR).HasMaxLength(10).IsRequired(false);
-            modelBuilder.Entity<Error>().Property(x => x.EMDESC).HasMaxLength(80).IsRequired(false);
+            modelBuilder.Entity<Error>().Property(x => x.EMDESC).HasMaxLength(100).IsRequired(false);
             modelBuilder.Entity<Error>().Property(x => x.EMSEVR).HasPrecision(3,0);
             modelBuilder.Entity<Error>().Property(x => x.EMDATA).HasPrecision(14,0);
             modelBuilder.Entity<Error>().Property(x => x.EMUSRA).HasMaxLength(10).IsRequired(false);
+            modelBuilder.Entity<Error>().Property(x => x.EMTYPE).HasMaxLength(10).IsRequired(false);
         }
     }
 }

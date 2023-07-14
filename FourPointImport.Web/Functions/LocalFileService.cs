@@ -75,165 +75,33 @@ namespace FourPointImport.Web.Functions
             {
                 new Diagram
                 {
-                    fieldName = "BXAGNT",
+                    fieldName = "CFAGNT",
                     start = 0,
                     length = 10
                 },
                 new Diagram
                 {
-                    fieldName = "BXBRCH",
+                    fieldName = "CFCERT",
                     start = 10,
-                    length = 10
-                },
-                new Diagram
-                {
-                    fieldName = "BXCERT",
-                    start = 20,
                     length = 20
                 },
                 new Diagram
                 {
-                    fieldName = "BXNAME",
-                    start = 40,
-                    length = 25
+                    fieldName = "CFFLAG",
+                    start = 30,
+                    length = 1
                 },
                 new Diagram
                 {
-                    fieldName = "BXCOVC",                                                  //SeDebtCode
-                    start = 65,
-                    length = 30
+                    fieldName = "CFERR",                                                
+                    start = 31,
+                    length = 10
                 },
                 new Diagram
                 {
-                    fieldName = "BXEFFT",
-                    start = 95,
-                    length = 8
-                },
-                new Diagram
-                {
-                    fieldName = "BXFROM",                                           //from date
-                    start = 103,
-                    length = 8
-                },
-                new Diagram
-                {
-                    fieldName = "BXTHRU",                                              //thru date
-                    start = 111,
-                    length = 8
-                },
-                new Diagram
-                {
-                    fieldName = "BXEXPR",                                       //expiration Date
-                    start = 119,
-                    length = 8
-                },
-                new Diagram
-                {
-                    fieldName = "BXPAID",                                       //date payment made
-                    start = 127,
-                    length = 8
-                },
-                new Diagram
-                {
-                    fieldName = "BXNEXT",                                       //next payment due
-                    start = 135,
-                    length = 8
-                },
-                new Diagram
-                {
-                    fieldName = "BXBAMT",
-                    start = 143,
-                    length = 11
-                },
-                new Diagram
-                {
-                    fieldName = "BXCOMM",                                       //Commission amount billed
-                    start = 154,
-                    length = 11
-                },
-                new Diagram
-                {
-                    fieldName = "BXBGRS",                                       //gross billeded amount
-                    start = 165,
-                    length = 11
-                },
-                new Diagram
-                {
-                    fieldName = "BXPAMT",                                       //BXAMT
-                    start = 176,
-                    length = 11
-                },
-                new Diagram
-                {
-                    fieldName = "BXCOMP",
-                    start = 187,
-                    length = 11
-                },
-                new Diagram
-                {
-                    fieldName = "BXGRS",                                    //gross collected amount
-                    start = 198,
-                    length = 11
-                },
-                new Diagram
-                {
-                    fieldName = "BXMOB",                                    //current MOB
-                    start = 209,
-                    length = 11
-                },
-                new Diagram
-                {
-                    fieldName = "BXINTR",
-                    start = 220,
-                    length = 7
-                },
-                new Diagram
-                {
-                    fieldName = "BXINT",                                    //Current Interest
-                    start = 227,
-                    length = 11
-                },
-                new Diagram
-                {
-                    fieldName = "BXPRIN",                                       //Current Principal
-                    start = 238,
-                    length = 11
-                },
-                new Diagram
-                {
-                    fieldName = "BXSCHD",
-                    start = 249,
-                    length = 11
-                },
-                new Diagram
-                {
-                    fieldName = "BXMSGC",                                   //message code
-                    start = 260,
-                    length = 2
-                },
-                new Diagram
-                {
-                    fieldName = "BXMSGD",                                   //Message Desc
-                    start = 262,
-                    length = 25
-                },
-                new Diagram
-                {
-                    fieldName = "BXCODE",
-                    start= 287,
-                    length = 2,
-                },
-                new Diagram
-                {
-                    fieldName = "BXDESC",
-                    start = 289,
-                    length = 25
-                },
-                new Diagram
-                {
-                    fieldName = "BXCAND",
-                    start = 314,
-                    length = 8
+                    fieldName = "CFTIMEDATE",
+                    start = 41,
+                    length = 14
                 }
             };
             return diagram;

@@ -85,7 +85,7 @@ namespace FourPointImport.Web.Functions
         private string WrkNameS { get; set; }
 
         //suspenseMasterAccess tableAccess, PRDCOVPAccess prdcovpAccess, FrmMstPAccess frmMstLAccess, COVMSTRAccess covmstr,
-        public billingExportFunctions([NotNull] BillingDetailService _billingService, billingExport _inComing, CoverageMasterService _coverageService, FormMasterService _formMasterService,
+        public billingExportFunctions([NotNull] BillingDetailService _billingService, Confirmation _confirmation, CoverageMasterService _coverageService, FormMasterService _formMasterService,
             ProductCoverageService _productCoverageService, SuspenseMasterService _suspenseMasterService)
         {
             billingService = _billingService;
@@ -101,12 +101,17 @@ namespace FourPointImport.Web.Functions
             formMasterService = _formMasterService;
             coverageMasterService = _coverageService;
             suspenseMasterService = _suspenseMasterService;
-            inComing = _inComing;
+            inComing = new billingExport
+            {
+                SeAgnt=_confirmation.CfAgnt,
+                SeCert=_confirmation.CfCert,
+                SeFlag=_confirmation.CfFlag
+            };
 
             Initialize();
             sysDte = (sysDate.Year * 10000 + sysDate.Month * 100 + sysDate.Day).ToString();
 
-            if (inComing.SeCert.StringSafe() != "")
+            if (_confirmation.CfCert.StringSafe() != "")
             {
 
                 // Correct Problem where SeFut1 and SeFut2 are blank

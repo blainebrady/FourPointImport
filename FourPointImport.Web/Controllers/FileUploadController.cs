@@ -21,7 +21,7 @@ namespace FourPointImport.Web.Controllers
         protected readonly CoverageMasterService _coverageService;
         protected readonly BillingDetailService _bildtlService;
         protected readonly SuspenseMasterService _suspenseMasterService;
-        private ImportFile _billingDetail { get; set; }
+        private Confirmation _billingDetail { get; set; }
         //SUSMSTPAccess tableAccess, PRDCOVPAccess prdcovpAccess, FrmMstPAccess frmMstLAccess, COVMSTRAccess covmstrAccess,
         public FileUploadController([NotNull] IConfiguration configuration, BillingDetailService bildtlService, CoverageMasterService coverageMasterService,
             FormMasterService formMasterService, SuspenseMasterService suspenseMasterService, ProductCoverageService productCoverageService)
@@ -42,7 +42,7 @@ namespace FourPointImport.Web.Controllers
                 return BadRequest("Please select a file");
             }
             LocalFileService fs = new LocalFileService();
-
+            List<Diagram> pattern = fs.mapImportFile();
             IConfiguration settings = _configuration.GetSection("settings");
             foreach (var _file in files)
             {
@@ -64,15 +64,12 @@ namespace FourPointImport.Web.Controllers
 
                             while ((fileLine = await reader.ReadLineAsync()) != null)
                             {
-
-                                List<Diagram> pattern = fs.mapImportFile();
-
-                                ConvertToEntity<ImportFile> converter = new ConvertToEntity<ImportFile>(fileLine, pattern);
+                                ConvertToEntity<Confirmation> converter = new ConvertToEntity<Confirmation>(fileLine, pattern);
                                 _billingDetail = converter.Convert();
-                                var _billingEntity = converter.PairFiles(_billingDetail);
+                                
                                 //now we have the actual class, which we can build with the other functions  _covmstrAccess, _bildtlAccess
-                                var _functions = new billingExportFunctions<BillingDetail>(_bildtlService, _billingEntity, _coverageService, _formMasterService, _productCoverageService, _suspenseMasterService);
-                                if (_billingEntity.SeCert.StringSafe().Length > 0)
+                                var _functions = new billingExportFunctions<BillingDetail>(_bildtlService, _billingDetail, _coverageService, _formMasterService, _productCoverageService, _suspenseMasterService);
+                                if (_billingDetail.CfCert.StringSafe().Length > 0)
                                 {
                                     _functions.HomeSavings();
                                     _functions.Clear();
